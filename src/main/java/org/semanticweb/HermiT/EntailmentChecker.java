@@ -382,7 +382,7 @@ implements OWLAxiomVisitorEx<Boolean> {
 
     public Boolean visit(OWLDisjointObjectPropertiesAxiom axiom) {
         int n = axiom.getProperties().size();
-        OWLObjectPropertyExpression[] props = axiom.getProperties().toArray((T[])new OWLObjectPropertyExpression[n]);
+        OWLObjectPropertyExpression[] props=axiom.getProperties().toArray(new OWLObjectPropertyExpression[n]);
         for (int i = 0; i < n - 1; ++i) {
             for (int j = i + 1; j < n; ++j) {
                 if (this.reasoner.isDisjointObjectProperty(props[i], props[j])) continue;
@@ -429,7 +429,7 @@ implements OWLAxiomVisitorEx<Boolean> {
 
     public Boolean visit(OWLDisjointDataPropertiesAxiom axiom) {
         int n = axiom.getProperties().size();
-        OWLDataPropertyExpression[] props = axiom.getProperties().toArray((T[])new OWLDataPropertyExpression[n]);
+        OWLDataPropertyExpression[] props = axiom.getProperties().toArray(new OWLDataPropertyExpression[n]);
         for (int i = 0; i < n - 1; ++i) {
             for (int j = i + 1; j < n; ++j) {
                 OWLDataSomeValuesFrom some_i = this.factory.getOWLDataSomeValuesFrom(props[i], (OWLDataRange)this.factory.getOWLDatatype(IRI.create((String)InternalDatatype.RDFS_LITERAL.getIRI())));
@@ -466,7 +466,7 @@ implements OWLAxiomVisitorEx<Boolean> {
 
     public Boolean visit(OWLDisjointClassesAxiom axiom) {
         int n = axiom.getClassExpressions().size();
-        OWLClassExpression[] classes = axiom.getClassExpressions().toArray((T[])new OWLClassExpression[n]);
+        OWLClassExpression[] classes = axiom.getClassExpressions().toArray(new OWLClassExpression[n]);
         for (int i = 0; i < n - 1; ++i) {
             for (int j = i + 1; j < n; ++j) {
                 OWLObjectComplementOf notj = this.factory.getOWLObjectComplementOf(classes[j]);
@@ -479,7 +479,7 @@ implements OWLAxiomVisitorEx<Boolean> {
 
     public Boolean visit(OWLDisjointUnionAxiom axiom) {
         OWLClass c = axiom.getOWLClass();
-        HashSet<OWLObjectComplementOf> cs = new HashSet<OWLObjectComplementOf>(axiom.getClassExpressions());
+        Set<OWLClassExpression> cs = new HashSet<OWLClassExpression>(axiom.getClassExpressions());
         cs.add(this.factory.getOWLObjectComplementOf((OWLClassExpression)c));
         OWLObjectUnionOf incl1 = this.factory.getOWLObjectUnionOf(cs);
         OWLObjectUnionOf incl2 = this.factory.getOWLObjectUnionOf(new OWLClassExpression[]{this.factory.getOWLObjectComplementOf((OWLClassExpression)this.factory.getOWLObjectUnionOf(axiom.getClassExpressions())), c});
@@ -487,7 +487,7 @@ implements OWLAxiomVisitorEx<Boolean> {
         conjuncts.add(incl1);
         conjuncts.add(incl2);
         int n = axiom.getClassExpressions().size();
-        OWLClassExpression[] descs = axiom.getClassExpressions().toArray((T[])new OWLClassExpression[n]);
+        OWLClassExpression[] descs = axiom.getClassExpressions().toArray(new OWLClassExpression[n]);
         for (int i = 0; i < n - 1; ++i) {
             for (int j = i + 1; j < n; ++j) {
                 conjuncts.add(this.factory.getOWLObjectUnionOf(new OWLClassExpression[]{this.factory.getOWLObjectComplementOf(descs[i]), this.factory.getOWLObjectComplementOf(descs[j])}));
@@ -543,7 +543,7 @@ implements OWLAxiomVisitorEx<Boolean> {
             axioms.add((Object)df.getOWLObjectPropertyAssertionAxiom(p, (OWLIndividual)individualB, (OWLIndividual)tmp));
             ++i;
         }
-        for (OWLObjectPropertyExpression p : axiom.getDataPropertyExpressions()) {
+        for (OWLDataPropertyExpression p : axiom.getDataPropertyExpressions()) {
             OWLDatatype anonymousConstantsDatatype = df.getOWLDatatype(IRI.create((String)"internal:anonymous-constants"));
             OWLLiteral constant = df.getOWLLiteral("internal:constant-" + i, anonymousConstantsDatatype);
             axioms.add((Object)df.getOWLDataPropertyAssertionAxiom((OWLDataPropertyExpression)p, (OWLIndividual)individualA, constant));
@@ -551,7 +551,7 @@ implements OWLAxiomVisitorEx<Boolean> {
             ++i;
         }
         axioms.add((Object)df.getOWLDifferentIndividualsAxiom(new OWLIndividual[]{individualA, individualB}));
-        Tableau tableau = this.reasoner.getTableau(axioms.toArray((T[])new OWLAxiom[axioms.size()]));
+        Tableau tableau = this.reasoner.getTableau(axioms.toArray(new OWLAxiom[axioms.size()]));
         return !tableau.isSatisfiable(true, true, null, null, null, null, null, ReasoningTaskDescription.isAxiomEntailed((Object)axiom));
     }
 
@@ -819,7 +819,7 @@ implements OWLAxiomVisitorEx<Boolean> {
             if (this.nodelLabels.containsKey((Object)sub)) {
                 this.nodelLabels.get((Object)sub).add((OWLClassExpression)c);
             } else {
-                HashSet<OWLDataHasValue> labels = new HashSet<OWLDataHasValue>();
+                HashSet<OWLClassExpression> labels = new HashSet<OWLClassExpression>();
                 labels.add(c);
                 this.nodelLabels.put(sub, labels);
             }

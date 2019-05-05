@@ -17,7 +17,7 @@ public class HierarchyNode<E> {
 
     public HierarchyNode(E representative) {
         this.m_representative = representative;
-        this.m_equivalentElements = new HashSet();
+        this.m_equivalentElements = new HashSet<>();
         this.m_equivalentElements.add(this.m_representative);
         this.m_parentNodes = new HashSet<HierarchyNode<E>>();
         this.m_childNodes = new HashSet<HierarchyNode<E>>();

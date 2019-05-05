@@ -56,7 +56,7 @@ implements Action {
             classes = hermit.getSuperClasses((OWLClassExpression)owlClass, false);
             output.println("Direct super-classes of '" + this.conceptName + "':");
         }
-        for (Node set : classes) {
+        for (Node<OWLClass> set : classes) {
             for (OWLClass classInSet : set) {
                 if (ignoreOntologyPrefixes) {
                     String iri = classInSet.getIRI().toString();

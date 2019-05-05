@@ -42,7 +42,7 @@ implements Action {
             inferences.add(InferenceType.DATA_PROPERTY_HIERARCHY);
         }
         status.log(2, "Classifying...");
-        hermit.precomputeInferences(inferences.toArray((T[])new InferenceType[0]));
+        hermit.precomputeInferences(inferences.toArray(new InferenceType[0]));
         if (output != null) {
             if (this.outputLocation != null) {
                 status.log(2, "Writing results to " + this.outputLocation);

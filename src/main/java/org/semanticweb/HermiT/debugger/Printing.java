@@ -191,9 +191,9 @@ public class Printing {
             if (atomicRoleObject instanceof AtomicRole) {
                 AtomicRole atomicRole = (AtomicRole)retrieval.getTupleBuffer()[0];
                 Node toNode = (Node)retrieval.getTupleBuffer()[2];
-                TreeSet<Role> set = (TreeSet<Role>)outgoingEdges.get(toNode);
+                Set<AtomicRole> set = outgoingEdges.get(toNode);
                 if (set == null) {
-                    set = new TreeSet<Role>(RoleComparator.INSTANCE);
+                    set = new TreeSet<AtomicRole>(RoleComparator.INSTANCE);
                     outgoingEdges.put(toNode, set);
                 }
                 set.add(atomicRole);
@@ -213,9 +213,9 @@ public class Printing {
             if (atomicRoleObject instanceof AtomicRole) {
                 AtomicRole atomicRole = (AtomicRole)retrieval.getTupleBuffer()[0];
                 Node fromNode = (Node)retrieval.getTupleBuffer()[1];
-                TreeSet<Role> set = (TreeSet<Role>)incomingEdges.get(fromNode);
+                Set<AtomicRole> set = incomingEdges.get(fromNode);
                 if (set == null) {
-                    set = new TreeSet<Role>(RoleComparator.INSTANCE);
+                    set = new TreeSet<AtomicRole>(RoleComparator.INSTANCE);
                     incomingEdges.put(fromNode, set);
                 }
                 set.add(atomicRole);
@@ -341,7 +341,10 @@ public class Printing {
         }
 
         protected int getRoleType(Role ar) {
-            return !(ar instanceof AtomicRole);
+        	if (ar instanceof AtomicRole)
+                return 0;
+            else
+                return 1;
         }
     }
 

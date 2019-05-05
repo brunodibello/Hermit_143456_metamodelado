@@ -106,10 +106,10 @@ Cloneable {
             return true;
         }
         HashSet result = new HashSet();
-        LinkedList<Object> toVisit = new LinkedList<Object>();
+        LinkedList<T> toVisit = new LinkedList<T>();
         toVisit.add(fromNode);
         while (!toVisit.isEmpty()) {
-            Object current = toVisit.poll();
+            T current = toVisit.poll();
             Set successors = this.getSuccessors(current);
             if (successors.contains(toNode)) {
                 return true;
@@ -122,10 +122,10 @@ Cloneable {
 
     public Set<T> getReachableSuccessors(T fromNode) {
         HashSet result = new HashSet();
-        LinkedList<Object> toVisit = new LinkedList<Object>();
+        LinkedList<T> toVisit = new LinkedList<T>();
         toVisit.add(fromNode);
         while (!toVisit.isEmpty()) {
-            Object current = toVisit.poll();
+            T current = toVisit.poll();
             if (!result.add(current)) continue;
             toVisit.addAll(this.getSuccessors(current));
         }

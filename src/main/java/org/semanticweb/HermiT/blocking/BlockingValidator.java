@@ -139,7 +139,7 @@ public class BlockingValidator {
         this.m_binaryRetrieval1Bound.open();
         Object[] tupleBuffer = this.m_binaryRetrieval1Bound.getTupleBuffer();
         while (!this.m_binaryRetrieval1Bound.afterLast()) {
-            Object atleast;
+        	AtLeastConcept atleast;
             if (tupleBuffer[0] instanceof AtomicConcept) {
                 AtomicConcept atomicConcept = (AtomicConcept)tupleBuffer[0];
                 List<DLClauseInfo> dlClauseInfosForXConcept = this.m_dlClauseInfosByXConcepts.get(atomicConcept);
@@ -660,7 +660,7 @@ public class BlockingValidator {
             HashSet<AtomicRole> x2xRoles = new HashSet<AtomicRole>();
             HashSet<Variable> ys = new HashSet<Variable>();
             HashMap y2concepts = new HashMap();
-            HashMap z2concepts = new HashMap();
+            HashMap<Variable,Set<AtomicConcept>> z2concepts = new HashMap<Variable,Set<AtomicConcept>>();
             HashMap x2yRoles = new HashMap();
             HashMap y2xRoles = new HashMap();
             for (int i = 0; i < dlClause.getBodyLength(); ++i) {
@@ -750,10 +750,10 @@ public class BlockingValidator {
             int i = 0;
             int num_xyRoles = 0;
             for (i = 0; i < this.m_yVariables.length; ++i) {
-                Set yxRoles;
+                Set<AtomicRole> yxRoles;
                 Variable y = this.m_yVariables[i];
-                Set yConcepts = (Set)y2concepts.get(y);
-                Set xyRoles = (Set)x2yRoles.get(y);
+                Set<AtomicConcept> yConcepts = (Set)y2concepts.get(y);
+                Set<AtomicRole> xyRoles = (Set)x2yRoles.get(y);
                 if (xyRoles != null) {
                     assert (xyRoles.size() == 1);
                     assert (this.m_y2xRetrievals.length < this.m_x2yRetrievals.length);
@@ -774,7 +774,7 @@ public class BlockingValidator {
             this.m_zNodes = new Node[this.m_zVariables.length];
             this.m_zConcepts = new AtomicConcept[this.m_zNodes.length][];
             for (int varIndex = 0; varIndex < this.m_zVariables.length; ++varIndex) {
-                this.m_zConcepts[varIndex] = ((Set)z2concepts.get(this.m_zVariables[varIndex])).toArray(noConcepts);
+                this.m_zConcepts[varIndex] = ((Set<AtomicConcept>)z2concepts.get(this.m_zVariables[varIndex])).toArray(noConcepts);
             }
             this.m_zRetrievals = new ExtensionTable.Retrieval[this.m_zNodes.length];
             for (i = 0; i < this.m_zRetrievals.length; ++i) {

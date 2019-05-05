@@ -51,7 +51,7 @@ implements ValueSpaceSubset {
 
     @Override
     public void enumerateDataValues(Collection<Object> dataValues) {
-        Set elements = this.m_automaton.getFiniteStrings();
+        Set<String> elements = this.m_automaton.getFiniteStrings();
         if (elements == null) {
             throw new IllegalStateException("The value space range is infinite.");
         }

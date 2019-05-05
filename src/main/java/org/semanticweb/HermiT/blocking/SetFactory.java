@@ -51,7 +51,7 @@ implements Serializable {
     public Set<E> getSet(Set<E> elements) {
         int hashCode = elements.hashCode();
         int index = SetFactory.getIndexFor(hashCode, this.m_entries.length);
-        Entry<Object> entry = this.m_entries[index];
+        Entry<E> entry = this.m_entries[index];
         while (entry != null) {
             if (hashCode == entry.m_hashCode && entry.equalsTo(elements)) {
                 return entry;
@@ -149,7 +149,7 @@ implements Serializable {
         protected boolean m_permanent;
 
         public Entry(int size) {
-            this.m_table = new Object[size];
+            this.m_table = (T[])new Object[size];
         }
 
         public void initialize(Collection<T> elements, int hashCode) {

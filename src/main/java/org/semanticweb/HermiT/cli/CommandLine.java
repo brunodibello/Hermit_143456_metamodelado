@@ -373,7 +373,7 @@ public class CommandLine {
                     OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
                     if (ont.isAbsolute() && (scheme = (uri = URI.create(ont.getNamespace())).getScheme()) != null && scheme.equalsIgnoreCase("file") && (file = new File(URI.create(ont.getNamespace()))).isDirectory()) {
                         AutoIRIMapper mapper = new AutoIRIMapper(file, false);
-                        ontologyManager.getIRIMappers().add((Serializable)mapper);
+                        ontologyManager.getIRIMappers().add(mapper);
                     }
                     OWLOntology ontology = ontologyManager.loadOntology(ont);
                     long parseTime = System.currentTimeMillis() - startTime;

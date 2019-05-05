@@ -47,13 +47,13 @@ extends AbstractCommand {
     @Override
     public void execute(String[] args) {
         Node node;
-        HashMap<LiteralConcept, OriginInfo[]> originInfos = new HashMap<LiteralConcept, OriginInfo[]>();
+        HashMap<LiteralConcept, OriginInfo> originInfos = new HashMap<LiteralConcept, OriginInfo>();
         for (node = this.m_debugger.getTableau().getFirstTableauNode(); node != null; node = node.getNextTableauNode()) {
             Debugger.NodeCreationInfo nodeCreationInfo = this.m_debugger.getNodeCreationInfo(node);
             ExistentialConcept existentialConcept = nodeCreationInfo.m_createdByExistential;
             if (!(existentialConcept instanceof AtLeastConcept)) continue;
             LiteralConcept toConcept = ((AtLeastConcept)existentialConcept).getToConcept();
-            OriginInfo[] originInfo = (OriginInfo[])originInfos.get(toConcept);
+            OriginInfo originInfo = originInfos.get(toConcept);
             if (originInfo == null) {
                 originInfo = new OriginInfo(toConcept);
                 originInfos.put(toConcept, originInfo);

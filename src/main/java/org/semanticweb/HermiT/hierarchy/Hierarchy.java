@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import org.semanticweb.HermiT.hierarchy.HierarchyNode;
+import org.semanticweb.HermiT.hierarchy.Hierarchy.HierarchyNodeComparator;
 
 public class Hierarchy<E> {
     protected final HierarchyNode<E> m_topNode;
@@ -27,10 +28,10 @@ public class Hierarchy<E> {
         this.m_topNode = topNode;
         this.m_bottomNode = bottomNode;
         this.m_nodesByElements = new HashMap<E, HierarchyNode<E>>();
-        for (Object element : this.m_topNode.m_equivalentElements) {
+        for (E element : this.m_topNode.m_equivalentElements) {
             this.m_nodesByElements.put(element, this.m_topNode);
         }
-        for (Object element : this.m_bottomNode.m_equivalentElements) {
+        for (E element : this.m_bottomNode.m_equivalentElements) {
             this.m_nodesByElements.put(element, this.m_bottomNode);
         }
     }
@@ -70,45 +71,44 @@ public class Hierarchy<E> {
     }
 
     public <T> Hierarchy<T> transform(Transformer<? super E, T> transformer, Comparator<T> comparator) {
-        HierarchyNodeComparator<T> newNodeComparator = new HierarchyNodeComparator<T>(comparator);
-        HashMap<HierarchyNode<E>, HierarchyNode<T>> oldToNew = new HashMap<HierarchyNode<E>, HierarchyNode<T>>();
-        for (HierarchyNode<E> oldNode : this.m_nodesByElements.values()) {
-            Iterator newParentNodes;
-            Void newChildNodes3;
-            AbstractSet newEquivalentElements;
-            if (comparator == null) {
-                newEquivalentElements = new HashSet();
-                newParentNodes = new HashSet();
-                HashSet newChildNodes2 = new HashSet();
-            } else {
-                newEquivalentElements = new TreeSet<T>(comparator);
-                newParentNodes = new TreeSet<T>(newNodeComparator);
-                TreeSet<T> newChildNodes3 = new TreeSet<T>(newNodeComparator);
+        HierarchyNodeComparator<T> newNodeComparator=new HierarchyNodeComparator<T>(comparator);
+        Map<HierarchyNode<E>,HierarchyNode<T>> oldToNew=new HashMap<HierarchyNode<E>,HierarchyNode<T>>();
+        for (HierarchyNode<E> oldNode : m_nodesByElements.values()) {
+            Set<T> newEquivalentElements;
+            Set<HierarchyNode<T>> newParentNodes;
+            Set<HierarchyNode<T>> newChildNodes;
+            if (comparator==null) {
+                newEquivalentElements=new HashSet<T>();
+                newParentNodes=new HashSet<HierarchyNode<T>>();
+                newChildNodes=new HashSet<HierarchyNode<T>>();
             }
-            for (Object oldElement : oldNode.m_equivalentElements) {
-                T newElement = transformer.transform(oldElement);
+            else {
+                newEquivalentElements=new TreeSet<T>(comparator);
+                newParentNodes=new TreeSet<HierarchyNode<T>>(newNodeComparator);
+                newChildNodes=new TreeSet<HierarchyNode<T>>(newNodeComparator);
+            }
+            for (E oldElement : oldNode.m_equivalentElements) {
+                T newElement=transformer.transform(oldElement);
                 newEquivalentElements.add(newElement);
             }
-            T newRepresentative = transformer.determineRepresentative(oldNode.m_representative, newEquivalentElements);
-            HierarchyNode<T> newNode = new HierarchyNode<T>(newRepresentative, newEquivalentElements, (Set<HierarchyNode<T>>)((Object)newParentNodes), (Set<HierarchyNode<T>>)newChildNodes3);
-            oldToNew.put(oldNode, newNode);
+            T newRepresentative=transformer.determineRepresentative(oldNode.m_representative,newEquivalentElements);
+            HierarchyNode<T> newNode=new HierarchyNode<T>(newRepresentative,newEquivalentElements,newParentNodes,newChildNodes);
+            oldToNew.put(oldNode,newNode);
         }
-        for (HierarchyNode<E> oldParentNode : this.m_nodesByElements.values()) {
-            HierarchyNode newParentNode = (HierarchyNode)oldToNew.get(oldParentNode);
-            for (HierarchyNode oldChildNode : oldParentNode.m_childNodes) {
-                HierarchyNode newChildNode = (HierarchyNode)oldToNew.get(oldChildNode);
+        for (HierarchyNode<E> oldParentNode : m_nodesByElements.values()) {
+            HierarchyNode<T> newParentNode=oldToNew.get(oldParentNode);
+            for (HierarchyNode<E> oldChildNode : oldParentNode.m_childNodes) {
+                HierarchyNode<T> newChildNode=oldToNew.get(oldChildNode);
                 newParentNode.m_childNodes.add(newChildNode);
                 newChildNode.m_parentNodes.add(newParentNode);
             }
         }
-        HierarchyNode newTopNode = (HierarchyNode)oldToNew.get(this.m_topNode);
-        HierarchyNode newBottomNode = (HierarchyNode)oldToNew.get(this.m_bottomNode);
-        Hierarchy<E> newHierarchy = new Hierarchy<E>(newTopNode, newBottomNode);
-        for (HierarchyNode newNode : oldToNew.values()) {
-            for (Object newElement : newNode.m_equivalentElements) {
-                newHierarchy.m_nodesByElements.put(newElement, newNode);
-            }
-        }
+        HierarchyNode<T> newTopNode=oldToNew.get(m_topNode);
+        HierarchyNode<T> newBottomNode=oldToNew.get(m_bottomNode);
+        Hierarchy<T> newHierarchy=new Hierarchy<T>(newTopNode,newBottomNode);
+        for (HierarchyNode<T> newNode : oldToNew.values())
+            for (T newElement : newNode.m_equivalentElements)
+                newHierarchy.m_nodesByElements.put(newElement,newNode);
         return newHierarchy;
     }
 

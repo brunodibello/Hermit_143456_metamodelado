@@ -87,9 +87,11 @@ Serializable {
                         if (this.m_blockingSignatureCache.containsSignature(node)) {
                             node.setBlocked(Node.SIGNATURE_CACHE_BLOCKER, true);
                         } else {
+                        	blocker = this.m_currentBlockersCache.getBlocker(node);
                             node.setBlocked(blocker, (blocker = this.m_currentBlockersCache.getBlocker(node)) != null);
                         }
                     } else {
+                    	blocker = this.m_currentBlockersCache.getBlocker(node);
                         node.setBlocked(blocker, (blocker = this.m_currentBlockersCache.getBlocker(node)) != null);
                     }
                     if (!node.isBlocked() && this.m_directBlockingChecker.canBeBlocker(node)) {

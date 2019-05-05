@@ -127,14 +127,14 @@ public class DeterministicClassification {
         if (graphNode.m_SCChead == graphNode) {
             GraphNode<T> poppedNode;
             int nextTopologicalOrderIndex = topologicalOrder.size();
-            HashSet equivalentElements = new HashSet();
+            HashSet<T> equivalentElements = new HashSet<T>();
             do {
                 poppedNode = stack.pop();
                 poppedNode.m_topologicalOrderIndex = nextTopologicalOrderIndex;
                 equivalentElements.add(poppedNode.m_element);
             } while (poppedNode != graphNode);
             HierarchyNode<T> hierarchyNode = equivalentElements.contains(hierarchy.getTopNode().m_representative) ? hierarchy.getTopNode() : (equivalentElements.contains(hierarchy.getBottomNode().m_representative) ? hierarchy.getBottomNode() : new HierarchyNode(graphNode.m_element));
-            for (Object element : equivalentElements) {
+            for (T element : equivalentElements) {
                 hierarchyNode.m_equivalentElements.add(element);
                 hierarchy.m_nodesByElements.put(element, hierarchyNode);
             }

@@ -49,9 +49,9 @@ public class HierarchySearch {
             return parentNodes;
         }
         Iterator<HierarchyNode<E>> parentNodesIterator = parentNodes.iterator();
-        HashSet<HierarchyNode<E>> marked = new HashSet<HierarchyNode<E>>(parentNodesIterator.next().getDescendantNodes());
+        Set<HierarchyNode<E>> marked = new HashSet<HierarchyNode<E>>(parentNodesIterator.next().getDescendantNodes());
         while (parentNodesIterator.hasNext()) {
-            HierarchyNode currentNode;
+            HierarchyNode<E> currentNode;
             HashSet freshlyMarked = new HashSet();
             HashSet visited = new HashSet();
             LinkedList toProcess = new LinkedList();
@@ -77,13 +77,13 @@ public class HierarchySearch {
             }
             marked = freshlyMarked;
         }
-        HashSet<HierarchyNode> aboveBottomNodes = new HashSet<HierarchyNode>();
-        for (HierarchyNode node : marked) {
+        Set<HierarchyNode> aboveBottomNodes = new HashSet<HierarchyNode>();
+        for (HierarchyNode<E> node : marked) {
             if (!node.m_childNodes.contains(bottomNode) || !hierarchyRelation.doesSubsume(element, node.getRepresentative())) continue;
             aboveBottomNodes.add(node);
         }
         if (aboveBottomNodes.isEmpty()) {
-            HashSet<HierarchyNode<HierarchyNode<E>>> childNodes = new HashSet<HierarchyNode<HierarchyNode<E>>>();
+        	Set<HierarchyNode<E>> childNodes=new HashSet<HierarchyNode<E>>();
             childNodes.add(bottomNode);
             return childNodes;
         }
@@ -112,7 +112,7 @@ public class HierarchySearch {
         HashSet<U> visited = new HashSet<U>(startSearch);
         LinkedList<U> toProcess = new LinkedList<U>(startSearch);
         while (!toProcess.isEmpty()) {
-            Object current = toProcess.remove();
+            U current = toProcess.remove();
             boolean foundSubordinateElement = false;
             Set<U> subordinateElements = searchPredicate.getSuccessorElements(current);
             for (U subordinateElement : subordinateElements) {

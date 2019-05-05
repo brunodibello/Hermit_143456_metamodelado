@@ -54,7 +54,7 @@ implements Action {
             classes = hermit.getSubClasses((OWLClassExpression)owlClass, true);
             output.println("Direct sub-classes of '" + this.conceptName + "':");
         }
-        for (Node set : classes) {
+        for (Node<OWLClass> set : classes) {
             for (OWLClass classInSet : set) {
                 if (ignoreOntologyPrefixes) {
                     String iri = classInSet.getIRI().toString();

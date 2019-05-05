@@ -108,7 +108,7 @@ public class HierarchyPrinterFSS {
 
         @Override
         public E determineRepresentative(E oldRepresentative, Set<E> newEquivalentElements) {
-            return ((SortedSet)newEquivalentElements).first();
+            return ((SortedSet<E>)newEquivalentElements).first();
         }
     }
 

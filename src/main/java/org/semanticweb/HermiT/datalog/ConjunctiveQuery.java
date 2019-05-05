@@ -101,7 +101,7 @@ public class ConjunctiveQuery {
                 int answerVariableIndex = this.m_variables.indexOf(answerTerm);
                 copyAnswers.add(new int[]{answerVariableIndex, index});
             }
-            this.m_workers.add(new QueryAnswerCallback(this.m_conjunctiveQuery, this.m_nodesToTerms, this.m_resultBuffer, this.m_queryResultCollector, (int[][])copyAnswers.toArray((T[])new int[copyAnswers.size()][]), this.m_valuesBufferManager.m_valuesBuffer));
+            this.m_workers.add(new QueryAnswerCallback(this.m_conjunctiveQuery, this.m_nodesToTerms, this.m_resultBuffer, this.m_queryResultCollector, (int[][])copyAnswers.toArray(new int[copyAnswers.size()][]), this.m_valuesBufferManager.m_valuesBuffer));
         }
 
         protected static List<Variable> getAnswerVariables(Term[] answerTerms) {
