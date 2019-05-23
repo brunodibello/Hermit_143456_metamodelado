@@ -219,7 +219,7 @@ public class OWLClausification {
         OWLDataFactory factory = rootOntology.getOWLOntologyManager().getOWLDataFactory();
         Optional defaultDocumentIRI = rootOntology.getOntologyID().getDefaultDocumentIRI();
         String ontologyIRI = defaultDocumentIRI.isPresent() ? ((IRI)defaultDocumentIRI.get()).toString() : "urn:hermit:kb";
-        Set importClosure = rootOntology.getImportsClosure();
+        Set<OWLOntology> importClosure = rootOntology.getImportsClosure();
         OWLAxioms axioms = new OWLAxioms();
         OWLNormalization normalization = new OWLNormalization(factory, axioms, 0);
         for (OWLOntology ontology : importClosure) {
@@ -719,7 +719,7 @@ public class OWLClausification {
 
         public void visit(OWLSameIndividualAxiom object) {
             OWLIndividual[] individuals = new OWLIndividual[object.getIndividuals().size()];
-            object.getIndividuals().toArray((T[])individuals);
+            object.getIndividuals().toArray(individuals);
             for (int i = 0; i < individuals.length - 1; ++i) {
                 this.m_positiveFacts.add(Atom.create(Equality.create(), OWLClausification.getIndividual(individuals[i]), OWLClausification.getIndividual(individuals[i + 1])));
             }
@@ -727,7 +727,7 @@ public class OWLClausification {
 
         public void visit(OWLDifferentIndividualsAxiom object) {
             OWLIndividual[] individuals = new OWLIndividual[object.getIndividuals().size()];
-            object.getIndividuals().toArray((T[])individuals);
+            object.getIndividuals().toArray(individuals);
             for (int i = 0; i < individuals.length; ++i) {
                 for (int j = i + 1; j < individuals.length; ++j) {
                     this.m_positiveFacts.add(Atom.create(Inequality.create(), OWLClausification.getIndividual(individuals[i]), OWLClausification.getIndividual(individuals[j])));

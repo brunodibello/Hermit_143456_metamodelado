@@ -77,7 +77,7 @@ public class HierarchySearch {
             }
             marked = freshlyMarked;
         }
-        Set<HierarchyNode> aboveBottomNodes = new HashSet<HierarchyNode>();
+        Set<HierarchyNode<E>> aboveBottomNodes = new HashSet<HierarchyNode<E>>();
         for (HierarchyNode<E> node : marked) {
             if (!node.m_childNodes.contains(bottomNode) || !hierarchyRelation.doesSubsume(element, node.getRepresentative())) continue;
             aboveBottomNodes.add(node);

@@ -334,7 +334,7 @@ public class OWLNormalization {
             if (simplifiedDescription instanceof OWLObjectUnionOf) {
                 OWLObjectUnionOf objectOr = (OWLObjectUnionOf)simplifiedDescription;
                 OWLClassExpression[] descriptions = new OWLClassExpression[objectOr.getOperands().size()];
-                objectOr.getOperands().toArray((T[])descriptions);
+                objectOr.getOperands().toArray(descriptions);
                 if (this.distributeUnionOverAnd(descriptions, inclusions) || this.optimizedNegativeOneOfTranslation(descriptions, this.m_axioms.m_facts)) continue;
                 for (int index = 0; index < descriptions.length; ++index) {
                     descriptions[index] = (OWLClassExpression)descriptions[index].accept((OWLClassExpressionVisitorEx)classExpressionNormalizer);
@@ -359,7 +359,7 @@ public class OWLNormalization {
             if (simplifiedDescription instanceof OWLDataUnionOf) {
                 OWLDataUnionOf dataOr = (OWLDataUnionOf)simplifiedDescription;
                 OWLDataRange[] descriptions = new OWLDataRange[dataOr.getOperands().size()];
-                dataOr.getOperands().toArray((T[])descriptions);
+                dataOr.getOperands().toArray(descriptions);
                 if (this.distributeUnionOverAnd(descriptions, dataRangeInclusions)) continue;
                 for (int index = 0; index < descriptions.length; ++index) {
                     descriptions[index] = (OWLDataRange)descriptions[index].accept((OWLDataVisitorEx)dataRangeNormalizer);
@@ -672,7 +672,7 @@ public class OWLNormalization {
                 if (!this.m_bodyDataRangeVariables.containsAll(this.m_headDataRangeVariables)) {
                     throw new IllegalArgumentException("A SWRL rule contains data range variables in the head, but not in the body, and this is not supported.");
                 }
-                this.m_rules.add(new OWLAxioms.DisjunctiveRule(this.m_normalizedBodyAtoms.toArray((T[])new SWRLAtom[this.m_normalizedBodyAtoms.size()]), this.m_normalizedHeadAtoms.toArray((T[])new SWRLAtom[this.m_normalizedHeadAtoms.size()])));
+                this.m_rules.add(new OWLAxioms.DisjunctiveRule(this.m_normalizedBodyAtoms.toArray(new SWRLAtom[this.m_normalizedBodyAtoms.size()]), this.m_normalizedHeadAtoms.toArray(new SWRLAtom[this.m_normalizedHeadAtoms.size()])));
             }
         }
 
@@ -1263,7 +1263,7 @@ public class OWLNormalization {
                 throw new IllegalArgumentException("Error: Parsed " + axiom.toString() + ". A DisjointClasses axiom in OWL 2 DL must have at least two classes as parameters. ");
             }
             OWLClassExpression[] descriptions = new OWLClassExpression[axiom.getClassExpressions().size()];
-            axiom.getClassExpressions().toArray((T[])descriptions);
+            axiom.getClassExpressions().toArray(descriptions);
             for (i = 0; i < descriptions.length; ++i) {
                 descriptions[i] = OWLNormalization.this.m_expressionManager.getComplementNNF(descriptions[i]);
             }
@@ -1279,13 +1279,13 @@ public class OWLNormalization {
             HashSet<OWLClassExpression> inclusion = new HashSet<OWLClassExpression>(axiom.getClassExpressions());
             inclusion.add(OWLNormalization.this.m_expressionManager.getComplementNNF((OWLClassExpression)axiom.getOWLClass()));
             OWLClassExpression[] inclusionArray = new OWLClassExpression[axiom.getClassExpressions().size() + 1];
-            inclusion.toArray((T[])inclusionArray);
+            inclusion.toArray(inclusionArray);
             this.m_classExpressionInclusionsAsDisjunctions.add(inclusionArray);
             for (OWLClassExpression description : axiom.getClassExpressions()) {
                 this.m_classExpressionInclusionsAsDisjunctions.add(new OWLClassExpression[]{OWLNormalization.this.negative(description), axiom.getOWLClass()});
             }
             OWLClassExpression[] descriptions = new OWLClassExpression[axiom.getClassExpressions().size()];
-            axiom.getClassExpressions().toArray((T[])descriptions);
+            axiom.getClassExpressions().toArray(descriptions);
             for (i = 0; i < descriptions.length; ++i) {
                 descriptions[i] = OWLNormalization.this.m_expressionManager.getComplementNNF(descriptions[i]);
             }
@@ -1305,7 +1305,7 @@ public class OWLNormalization {
         }
 
         public void visit(OWLSubPropertyChainOfAxiom axiom) {
-            List subPropertyChain = axiom.getPropertyChain();
+            List<OWLObjectPropertyExpression> subPropertyChain = axiom.getPropertyChain();
             if (!this.containsBottomObjectProperty(subPropertyChain) && !axiom.getSuperProperty().isOWLTopObjectProperty()) {
                 OWLObjectPropertyExpression superObjectPropertyExpression = axiom.getSuperProperty();
                 if (subPropertyChain.size() == 1) {
@@ -1317,7 +1317,7 @@ public class OWLNormalization {
                         throw new IllegalArgumentException("Error: In OWL 2 DL, an empty property chain in property chain axioms is not allowed, but the ontology contains an axiom that the empty chain is a subproperty of " + (Object)superObjectPropertyExpression + ".");
                     }
                     OWLObjectPropertyExpression[] subObjectProperties = new OWLObjectPropertyExpression[subPropertyChain.size()];
-                    subPropertyChain.toArray((T[])subObjectProperties);
+                    subPropertyChain.toArray(subObjectProperties);
                     OWLNormalization.this.addInclusion(subObjectProperties, superObjectPropertyExpression);
                 }
             }
@@ -1336,7 +1336,7 @@ public class OWLNormalization {
         }
 
         public void visit(OWLEquivalentObjectPropertiesAxiom axiom) {
-            Set objectPropertyExpressions = axiom.getProperties();
+            Set<OWLObjectPropertyExpression> objectPropertyExpressions = axiom.getProperties();
             if (objectPropertyExpressions.size() > 1) {
                 OWLObjectPropertyExpression first;
                 Iterator iterator = objectPropertyExpressions.iterator();
@@ -1355,7 +1355,7 @@ public class OWLNormalization {
 
         public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
             OWLObjectPropertyExpression[] objectPropertyExpressions = new OWLObjectPropertyExpression[axiom.getProperties().size()];
-            axiom.getProperties().toArray((T[])objectPropertyExpressions);
+            axiom.getProperties().toArray(objectPropertyExpressions);
             for (int i = 0; i < objectPropertyExpressions.length; ++i) {
                 objectPropertyExpressions[i] = objectPropertyExpressions[i];
                 OWLNormalization.this.m_axioms.m_objectPropertiesOccurringInOWLAxioms.add(objectPropertyExpressions[i].getNamedProperty());
@@ -1449,7 +1449,7 @@ public class OWLNormalization {
 
         public void visit(OWLDisjointDataPropertiesAxiom axiom) {
             OWLDataPropertyExpression[] dataProperties = new OWLDataPropertyExpression[axiom.getProperties().size()];
-            axiom.getProperties().toArray((T[])dataProperties);
+            axiom.getProperties().toArray(dataProperties);
             for (OWLDataPropertyExpression dataProperty : dataProperties) {
                 this.checkTopDataPropertyUse(dataProperty, (OWLAxiom)axiom);
             }

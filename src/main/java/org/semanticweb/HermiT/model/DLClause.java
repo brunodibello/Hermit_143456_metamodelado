@@ -119,8 +119,8 @@ implements Serializable {
         Atom[] newBodyAtoms = new Atom[this.m_bodyAtoms.length + variables.size()];
         System.arraycopy(this.m_bodyAtoms, 0, newBodyAtoms, 0, this.m_bodyAtoms.length);
         int index = this.m_bodyAtoms.length;
-        for (Variable variable2 : variables) {
-            newBodyAtoms[index++] = Atom.create(safeMakingPredicate, variable2);
+        for (Variable variable3 : variables) {
+            newBodyAtoms[index++] = Atom.create(safeMakingPredicate, variable3);
         }
         return DLClause.create(this.m_headAtoms, newBodyAtoms);
     }

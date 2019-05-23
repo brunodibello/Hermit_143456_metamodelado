@@ -503,9 +503,9 @@ public class ExpressionManager {
             if (d.getCardinality() == 0) {
                 return ExpressionManager.this.m_factory.getOWLObjectMinCardinality(1, d.getProperty(), filler);
             }
-            HashSet<Object> disjuncts = new HashSet<Object>();
-            disjuncts.add((Object)ExpressionManager.this.m_factory.getOWLObjectMaxCardinality(d.getCardinality() - 1, d.getProperty(), filler));
-            disjuncts.add((Object)ExpressionManager.this.m_factory.getOWLObjectMinCardinality(d.getCardinality() + 1, d.getProperty(), filler));
+            HashSet<OWLClassExpression> disjuncts = new HashSet<OWLClassExpression>();
+            disjuncts.add(ExpressionManager.this.m_factory.getOWLObjectMaxCardinality(d.getCardinality() - 1, d.getProperty(), filler));
+            disjuncts.add(ExpressionManager.this.m_factory.getOWLObjectMinCardinality(d.getCardinality() + 1, d.getProperty(), filler));
             return ExpressionManager.this.m_factory.getOWLObjectUnionOf(disjuncts);
         }
 
@@ -541,9 +541,9 @@ public class ExpressionManager {
             if (d.getCardinality() == 0) {
                 return ExpressionManager.this.m_factory.getOWLDataMinCardinality(1, d.getProperty(), filler);
             }
-            HashSet<Object> disjuncts = new HashSet<Object>();
-            disjuncts.add((Object)ExpressionManager.this.m_factory.getOWLDataMaxCardinality(d.getCardinality() - 1, d.getProperty(), filler));
-            disjuncts.add((Object)ExpressionManager.this.m_factory.getOWLDataMinCardinality(d.getCardinality() + 1, d.getProperty(), filler));
+            HashSet<OWLClassExpression> disjuncts = new HashSet<OWLClassExpression>();
+            disjuncts.add(ExpressionManager.this.m_factory.getOWLDataMaxCardinality(d.getCardinality() - 1, d.getProperty(), filler));
+            disjuncts.add(ExpressionManager.this.m_factory.getOWLDataMinCardinality(d.getCardinality() + 1, d.getProperty(), filler));
             return ExpressionManager.this.m_factory.getOWLObjectUnionOf(disjuncts);
         }
     }

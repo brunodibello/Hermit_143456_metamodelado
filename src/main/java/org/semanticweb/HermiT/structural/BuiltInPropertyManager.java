@@ -178,10 +178,9 @@ public class BuiltInPropertyManager {
                 this.visitProperty(inclusion[1]);
             }
             for (OWLAxioms.ComplexObjectPropertyInclusion inclusion : axioms.m_complexObjectPropertyInclusions) {
-                for (OWLClassExpression subObjectProperty : inclusion.m_subObjectProperties) {
-                    this.visitProperty((OWLObjectPropertyExpression)subObjectProperty);
-                }
-                this.visitProperty(inclusion.m_superObjectProperty);
+                for (OWLObjectPropertyExpression subObjectProperty : inclusion.m_subObjectProperties)
+                    visitProperty(subObjectProperty);
+                visitProperty(inclusion.m_superObjectProperty);
             }
             for (OWLObjectPropertyExpression[] disjoint : axioms.m_disjointObjectProperties) {
                 for (int index = 0; index < disjoint.length; ++index) {

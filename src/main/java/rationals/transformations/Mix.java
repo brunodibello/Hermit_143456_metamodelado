@@ -107,7 +107,7 @@ implements BinaryTransformation {
                     todo.add(sc);
                 }
             }
-            for (Map.Entry<Object, Set<State>> me : tcm.entrySet()) {
+            for (Map.Entry<Object, StatesCouple> me : tcm.entrySet()) {
                 l = me.getKey();
                 sc = (StatesCouple)((Object)me.getValue());
                 State to3 = (State)amap.get(sc);

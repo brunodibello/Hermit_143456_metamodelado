@@ -164,7 +164,7 @@ extends OWLAxiomVisitorAdapter {
 
     public void visit(OWLSameIndividualAxiom object) {
         OWLIndividual[] individuals = new OWLIndividual[object.getIndividuals().size()];
-        object.getIndividuals().toArray((T[])individuals);
+        object.getIndividuals().toArray(individuals);
         for (int i = 0; i < individuals.length - 1; ++i) {
             this.m_positiveFacts.add(Atom.create(Equality.create(), this.getIndividual(individuals[i]), this.getIndividual(individuals[i + 1])));
         }
@@ -172,7 +172,7 @@ extends OWLAxiomVisitorAdapter {
 
     public void visit(OWLDifferentIndividualsAxiom object) {
         OWLIndividual[] individuals = new OWLIndividual[object.getIndividuals().size()];
-        object.getIndividuals().toArray((T[])individuals);
+        object.getIndividuals().toArray(individuals);
         for (int i = 0; i < individuals.length; ++i) {
             for (int j = i + 1; j < individuals.length; ++j) {
                 this.m_positiveFacts.add(Atom.create(Inequality.create(), this.getIndividual(individuals[i]), this.getIndividual(individuals[j])));

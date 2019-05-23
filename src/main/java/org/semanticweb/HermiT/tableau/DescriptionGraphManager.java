@@ -102,7 +102,7 @@ implements Serializable {
         this.m_newNodes.clear();
         this.m_binaryUnionDependencySet.m_dependencySets[0] = null;
         this.m_binaryUnionDependencySet.m_dependencySets[1] = null;
-        for (Object[] retrieval : this.m_deltaOldRetrievals) {
+        for (ExtensionTable.Retrieval retrieval : this.m_deltaOldRetrievals) {
             retrieval.clear();
         }
     }

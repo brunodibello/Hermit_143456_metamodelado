@@ -146,7 +146,7 @@ Cloneable {
     }
 
     protected void add(Map<Key, Set<Transition>> m, Transition t) {
-        Set<Object> s;
+        Set<Transition> s;
         Key n = new Key(t.start(), t.label());
         if (!m.containsKey(n)) {
             s = new HashSet();

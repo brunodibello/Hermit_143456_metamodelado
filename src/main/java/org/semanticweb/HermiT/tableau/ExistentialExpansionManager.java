@@ -67,10 +67,10 @@ implements Serializable {
     }
 
     protected void updateFunctionalRoles() {
-        Graph superRoleGraph = new Graph();
+        Graph<Role> superRoleGraph = new Graph();
         HashSet<Role> functionalRoles = new HashSet<Role>();
         ExistentialExpansionManager.loadDLClausesIntoGraph(this.m_tableau.m_permanentDLOntology.getDLClauses(), superRoleGraph, functionalRoles);
-        for (Object role : superRoleGraph.getElements()) {
+        for (Role role : superRoleGraph.getElements()) {
             superRoleGraph.addEdge(role, role);
             superRoleGraph.addEdge(role.getInverse(), role.getInverse());
         }

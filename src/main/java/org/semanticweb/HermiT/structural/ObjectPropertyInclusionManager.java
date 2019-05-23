@@ -104,13 +104,13 @@ public class ObjectPropertyInclusionManager {
                 throw new IllegalArgumentException("Non-simple property '" + (Object)properties[i] + "' or its inverse appears in disjoint properties axiom.");
             }
         }
-        HashMap<OWLObjectAllValuesFrom, void> replacedDescriptions = new HashMap<OWLObjectAllValuesFrom, void>();
+        HashMap<OWLObjectAllValuesFrom, OWLClassExpression> replacedDescriptions = new HashMap<OWLObjectAllValuesFrom, OWLClassExpression>();
         for (OWLClassExpression[] inclusion : axioms.m_conceptInclusions) {
             for (int index = 0; index < inclusion.length; ++index) {
                 OWLObjectAllValuesFrom objectAll;
                 Object objectProperty;
                 OWLObjectHasSelf objectSelfRestriction;
-                Void replacement2222;
+                OWLClassExpression replacement2222;
                 OWLClassExpression classExpression = inclusion[index];
                 if (classExpression instanceof OWLObjectCardinalityRestriction) {
                     OWLObjectCardinalityRestriction objectCardinalityRestriction = (OWLObjectCardinalityRestriction)classExpression;
@@ -122,12 +122,11 @@ public class ObjectPropertyInclusionManager {
                     throw new IllegalArgumentException("Non-simple property '" + (Object)objectSelfRestriction.getProperty() + "' or its inverse appears in the Self restriction '" + (Object)objectSelfRestriction + "'.");
                 }
                 if (!(classExpression instanceof OWLObjectAllValuesFrom) || ((OWLClassExpression)(objectAll = (OWLObjectAllValuesFrom)classExpression).getFiller()).equals((Object)dataFactory.getOWLThing()) || !this.m_automataByProperty.containsKey(objectProperty = objectAll.getProperty())) continue;
-                OWLClassExpression replacement2222 = (OWLClassExpression)replacedDescriptions.get((Object)objectAll);
+                replacement2222 = (OWLClassExpression)replacedDescriptions.get((Object)objectAll);
                 if (replacement2222 == null) {
-                    Void replacement2222;
-                    OWLClass replacement2222 = dataFactory.getOWLClass(IRI.create((String)("internal:all#" + firstReplacementIndex++)));
+                    replacement2222 = dataFactory.getOWLClass(IRI.create((String)("internal:all#" + firstReplacementIndex++)));
                     if (objectAll.getFiller() instanceof OWLObjectComplementOf || ((OWLClassExpression)objectAll.getFiller()).equals((Object)dataFactory.getOWLNothing())) {
-                        OWLClassExpression replacement2222 = replacement2222.getComplementNNF();
+                        replacement2222 = replacement2222.getComplementNNF();
                     }
                     replacedDescriptions.put(objectAll, replacement2222);
                 }
@@ -144,7 +143,7 @@ public class ObjectPropertyInclusionManager {
                     statesToConcepts.put(state, replacement.getValue());
                     continue;
                 }
-                OWLClass stateConcept = dataFactory.getOWLClass(IRI.create((String)("internal:all#" + firstReplacementIndex++)));
+                OWLClassExpression stateConcept = dataFactory.getOWLClass(IRI.create((String)("internal:all#" + firstReplacementIndex++)));
                 if (isOfNegativePolarity) {
                     stateConcept = stateConcept.getComplementNNF();
                 }
@@ -179,7 +178,7 @@ public class ObjectPropertyInclusionManager {
         Map<OWLObjectPropertyExpression, Set<OWLObjectPropertyExpression>> inversePropertiesMap = this.buildInversePropertiesMap(simpleObjectPropertyInclusions, explicitInverses);
         Graph<OWLObjectPropertyExpression> propertyDependencyGraph = this.buildPropertyOrdering(simpleObjectPropertyInclusions, complexObjectPropertyInclusions, equivalentPropertiesMap);
         this.checkForRegularity(propertyDependencyGraph, equivalentPropertiesMap);
-        Object complexPropertiesDependencyGraph = propertyDependencyGraph.clone();
+        Graph<OWLObjectPropertyExpression> complexPropertiesDependencyGraph = propertyDependencyGraph.clone();
         HashSet<OWLObjectPropertyExpression> transitiveProperties = new HashSet<OWLObjectPropertyExpression>();
         Map<OWLObjectPropertyExpression, Automaton> individualAutomata = this.buildIndividualAutomata((Graph<OWLObjectPropertyExpression>)complexPropertiesDependencyGraph, complexObjectPropertyInclusions, equivalentPropertiesMap, transitiveProperties);
         Set<OWLObjectPropertyExpression> simpleProperties = this.findSimpleProperties((Graph<OWLObjectPropertyExpression>)complexPropertiesDependencyGraph, individualAutomata);
@@ -266,7 +265,7 @@ public class ObjectPropertyInclusionManager {
     }
 
     protected Map<OWLObjectPropertyExpression, Set<OWLObjectPropertyExpression>> findEquivalentProperties(Collection<OWLObjectPropertyExpression[]> simpleObjectPropertyInclusions) {
-        Graph propertyDependencyGraph = new Graph();
+        Graph<OWLObjectPropertyExpression> propertyDependencyGraph = new Graph<OWLObjectPropertyExpression>();
         HashMap<OWLObjectPropertyExpression, Set<OWLObjectPropertyExpression>> equivalentObjectPropertiesMapping = new HashMap<OWLObjectPropertyExpression, Set<OWLObjectPropertyExpression>>();
         for (OWLObjectPropertyExpression[] inclusion : simpleObjectPropertyInclusions) {
             if (inclusion[0].equals((Object)inclusion[1]) || inclusion[0].equals((Object)inclusion[1].getInverseProperty())) continue;
@@ -287,7 +286,7 @@ public class ObjectPropertyInclusionManager {
 
     protected Set<OWLObjectPropertyExpression> findSimpleProperties(Graph<OWLObjectPropertyExpression> complexPropertiesDependencyGraph, Map<OWLObjectPropertyExpression, Automaton> individualAutomata) {
         HashSet<OWLObjectPropertyExpression> simpleProperties = new HashSet<OWLObjectPropertyExpression>();
-        Object complexPropertiesDependencyGraphWithInverses = complexPropertiesDependencyGraph.clone();
+        Graph<OWLObjectPropertyExpression> complexPropertiesDependencyGraphWithInverses = complexPropertiesDependencyGraph.clone();
         for (OWLObjectPropertyExpression complexProperty1 : complexPropertiesDependencyGraph.getElements()) {
             for (OWLObjectPropertyExpression complexProperty2 : complexPropertiesDependencyGraph.getSuccessors(complexProperty1)) {
                 complexPropertiesDependencyGraphWithInverses.addEdge(complexProperty1.getInverseProperty(), complexProperty2.getInverseProperty());
@@ -309,10 +308,10 @@ public class ObjectPropertyInclusionManager {
     }
 
     protected void connectAllAutomata(Map<OWLObjectPropertyExpression, Automaton> completeAutomata, Graph<OWLObjectPropertyExpression> propertyDependencyGraph, Map<OWLObjectPropertyExpression, Set<OWLObjectPropertyExpression>> inversePropertiesMap, Map<OWLObjectPropertyExpression, Automaton> individualAutomata, Set<OWLObjectPropertyExpression> symmetricObjectProperties, Set<OWLObjectPropertyExpression> transitiveProperties) {
-        Object transClosedGraph = propertyDependencyGraph.clone();
+    	Graph<OWLObjectPropertyExpression> transClosedGraph = propertyDependencyGraph.clone();
         transClosedGraph.transitivelyClose();
-        HashSet<Object> propertiesToStartRecursion = new HashSet<Object>();
-        for (Object owlProp : transClosedGraph.getElements()) {
+        HashSet<OWLObjectPropertyExpression> propertiesToStartRecursion = new HashSet<OWLObjectPropertyExpression>();
+        for (OWLObjectPropertyExpression owlProp : transClosedGraph.getElements()) {
             if (!transClosedGraph.getSuccessors(owlProp).isEmpty()) continue;
             propertiesToStartRecursion.add(owlProp);
         }
@@ -579,11 +578,11 @@ public class ObjectPropertyInclusionManager {
     }
 
     protected void checkForRegularity(Graph<OWLObjectPropertyExpression> propertyDependencyGraph, Map<OWLObjectPropertyExpression, Set<OWLObjectPropertyExpression>> equivalentPropertiesMap) {
-        Object regularityCheckGraph = propertyDependencyGraph.clone();
+    	Graph<OWLObjectPropertyExpression> regularityCheckGraph = propertyDependencyGraph.clone();
         boolean trimmed = false;
         do {
             trimmed = false;
-            Object regularityCheckGraphTemp = regularityCheckGraph.clone();
+            Graph<OWLObjectPropertyExpression> regularityCheckGraphTemp = regularityCheckGraph.clone();
             for (OWLObjectPropertyExpression prop : regularityCheckGraphTemp.getElements()) {
                 for (OWLObjectPropertyExpression succProp : regularityCheckGraphTemp.getSuccessors(prop)) {
                     if (!equivalentPropertiesMap.containsKey((Object)prop) || !equivalentPropertiesMap.get((Object)prop).contains((Object)succProp)) continue;
@@ -709,7 +708,7 @@ public class ObjectPropertyInclusionManager {
     protected Automaton getMirroredCopy(Automaton automaton) {
         Automaton mirroredCopy = new Automaton();
         HashMap<State, State> map = new HashMap<State, State>();
-        Iterator<Object> iterator = automaton.states().iterator();
+        Iterator<State> iterator = automaton.states().iterator();
         while (iterator.hasNext()) {
             State stateObject;
             State state = stateObject = iterator.next();

@@ -38,6 +38,7 @@ import org.semanticweb.HermiT.hierarchy.DeterministicClassification;
 import org.semanticweb.HermiT.hierarchy.Hierarchy;
 import org.semanticweb.HermiT.hierarchy.HierarchyNode;
 import org.semanticweb.HermiT.hierarchy.RoleElementManager;
+import org.semanticweb.HermiT.hierarchy.RoleElementManager.RoleElement;
 import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
@@ -284,29 +285,29 @@ public class InstanceManager {
                     if (known.isEmpty() && possible == null && representativeConcept != this.m_topConcept) continue;
                     this.m_conceptToElement.put(representativeConcept, new AtomicConceptElement(known, (Set<Individual>)possible));
                 }
-                LinkedList<HierarchyNode> toProcess = new LinkedList<HierarchyNode>();
+                LinkedList<HierarchyNode<AtomicConcept>> toProcess = new LinkedList<HierarchyNode<AtomicConcept>>();
                 toProcess.addAll(this.m_currentConceptHierarchy.m_bottomNode.m_parentNodes);
                 while (!toProcess.isEmpty()) {
-                    HierarchyNode current = (HierarchyNode)toProcess.remove();
-                    AtomicConcept currentConcept = (AtomicConcept)current.getRepresentative();
-                    AtomicConceptElement currentElement = this.m_conceptToElement.get(currentConcept);
-                    if (currentElement != null) {
-                        Set ancestors = current.getAncestorNodes();
+                    HierarchyNode<AtomicConcept> current=toProcess.remove();
+                    AtomicConcept currentConcept=current.getRepresentative();
+                    AtomicConceptElement currentElement=m_conceptToElement.get(currentConcept);
+                    if (currentElement!=null) {
+                        Set<HierarchyNode<AtomicConcept>> ancestors=current.getAncestorNodes();
                         ancestors.remove(current);
-                        for (HierarchyNode ancestor : ancestors) {
-                            AtomicConcept ancestorConcept = (AtomicConcept)ancestor.getRepresentative();
-                            AtomicConceptElement ancestorElement = this.m_conceptToElement.get(ancestorConcept);
-                            if (ancestorElement == null) continue;
-                            ancestorElement.m_knownInstances.removeAll(currentElement.m_knownInstances);
-                            ancestorElement.m_possibleInstances.removeAll(currentElement.m_knownInstances);
-                            ancestorElement.m_possibleInstances.removeAll(currentElement.m_possibleInstances);
+                        for (HierarchyNode<AtomicConcept> ancestor : ancestors) {
+                            AtomicConcept ancestorConcept=ancestor.getRepresentative();
+                            AtomicConceptElement ancestorElement=m_conceptToElement.get(ancestorConcept);
+                            if (ancestorElement!=null) {
+                                ancestorElement.m_knownInstances.removeAll(currentElement.m_knownInstances);
+                                ancestorElement.m_possibleInstances.removeAll(currentElement.m_knownInstances);
+                                ancestorElement.m_possibleInstances.removeAll(currentElement.m_possibleInstances);
+                            }
                         }
-                        for (HierarchyNode parent : current.getParentNodes()) {
-                            if (toProcess.contains(parent)) continue;
-                            toProcess.add(parent);
-                        }
+                        for (HierarchyNode<AtomicConcept> parent : current.getParentNodes())
+                            if (!toProcess.contains(parent))
+                                toProcess.add(parent);
                     }
-                    this.m_interruptFlag.checkInterrupt();
+                    m_interruptFlag.checkInterrupt();
                 }
             }
             this.m_usesClassifiedConceptHierarchy = true;
@@ -399,9 +400,9 @@ public class InstanceManager {
             LinkedList toProcess = new LinkedList();
             toProcess.add(this.m_currentRoleHierarchy.m_bottomNode);
             while (!toProcess.isEmpty()) {
-                HierarchyNode current = (HierarchyNode)toProcess.remove();
+                HierarchyNode<RoleElement> current = (HierarchyNode)toProcess.remove();
                 RoleElementManager.RoleElement currentRepresentative = (RoleElementManager.RoleElement)current.getRepresentative();
-                Set ancestors = current.getAncestorNodes();
+                Set<HierarchyNode<RoleElement>> ancestors = current.getAncestorNodes();
                 ancestors.remove(current);
                 for (HierarchyNode ancestor : ancestors) {
                     Set<Individual> successors;
@@ -458,42 +459,40 @@ public class InstanceManager {
      * WARNING - Removed try catching itself - possible behaviour change.
      */
     public OWLAxiom[] getAxiomsForReadingOffCompexProperties(OWLDataFactory factory, ReasonerProgressMonitor monitor, int completedSteps, int steps) {
-        if (!this.m_complexRoles.isEmpty()) {
-            ArrayList<OWLClassAssertionAxiom> additionalAxioms;
-            int noAdditionalAxioms = 0;
-            additionalAxioms = new ArrayList<OWLClassAssertionAxiom>();
-            this.m_interruptFlag.startTask();
+        if (m_complexRoles.size()>0) {
+            int noAdditionalAxioms=0;
+            List<OWLAxiom> additionalAxioms=new ArrayList<OWLAxiom>();
+            m_interruptFlag.startTask();
             try {
-                while (this.m_currentIndividualIndex < this.m_individuals.length && noAdditionalAxioms < 10000) {
-                    Individual ind = this.m_individuals[this.m_currentIndividualIndex];
-                    for (AtomicRole objectRole : this.m_complexRoles) {
-                        ++completedSteps;
-                        if (monitor != null) {
-                            monitor.reasonerTaskProgressChanged(completedSteps, steps);
-                        }
-                        OWLObjectProperty objectProperty = factory.getOWLObjectProperty(IRI.create((String)objectRole.getIRI()));
-                        String indIRI = ind.getIRI();
-                        OWLClass classForIndividual = factory.getOWLClass(IRI.create((String)("internal:individual-concept#" + indIRI)));
-                        OWLClassAssertionAxiom axiom = factory.getOWLClassAssertionAxiom((OWLClassExpression)classForIndividual, (OWLIndividual)factory.getOWLNamedIndividual(IRI.create((String)indIRI)));
-                        additionalAxioms.add(axiom);
-                        AtomicConcept conceptForRole = AtomicConcept.create("internal:individual-concept#" + objectRole.getIRI() + "#" + indIRI);
-                        OWLClass classForRoleAndIndividual = factory.getOWLClass(IRI.create((String)conceptForRole.getIRI()));
-                        axiom = factory.getOWLSubClassOfAxiom((OWLClassExpression)classForIndividual, (OWLClassExpression)factory.getOWLObjectAllValuesFrom((OWLObjectPropertyExpression)objectProperty, (OWLClassExpression)classForRoleAndIndividual));
-                        additionalAxioms.add(axiom);
-                        noAdditionalAxioms += 2;
-                        this.m_interruptFlag.checkInterrupt();
+                for (;m_currentIndividualIndex<m_individuals.length && noAdditionalAxioms < thresholdForAdditionalAxioms;m_currentIndividualIndex++) {
+                    Individual ind=m_individuals[m_currentIndividualIndex];
+                    for (AtomicRole objectRole : m_complexRoles) {
+                        completedSteps++;
+                        if (monitor!=null)
+                            monitor.reasonerTaskProgressChanged(completedSteps,steps);
+                        OWLObjectProperty objectProperty=factory.getOWLObjectProperty(IRI.create(objectRole.getIRI()));
+                        String indIRI=ind.getIRI();
+                        OWLClass classForIndividual=factory.getOWLClass(IRI.create("internal:individual-concept#"+indIRI));
+                        OWLAxiom axiom=factory.getOWLClassAssertionAxiom(classForIndividual,factory.getOWLNamedIndividual(IRI.create(indIRI)));
+                        additionalAxioms.add(axiom); // A_a(a)
+                        AtomicConcept conceptForRole=AtomicConcept.create("internal:individual-concept#"+objectRole.getIRI()+"#"+indIRI);
+                        OWLClass classForRoleAndIndividual=factory.getOWLClass(IRI.create(conceptForRole.getIRI()));
+                        axiom=factory.getOWLSubClassOfAxiom(classForIndividual,factory.getOWLObjectAllValuesFrom(objectProperty,classForRoleAndIndividual));
+                        additionalAxioms.add(axiom); // A_a implies forall r.A_a^r
+                        noAdditionalAxioms+=2;
+                        m_interruptFlag.checkInterrupt();
                     }
-                    ++this.m_currentIndividualIndex;
                 }
+            } finally {
+                m_interruptFlag.endTask();
             }
-            finally {
-                this.m_interruptFlag.endTask();
-            }
-            OWLAxiom[] additionalAxiomsArray = new OWLAxiom[additionalAxioms.size()];
-            return additionalAxioms.toArray((T[])additionalAxiomsArray);
+            OWLAxiom[] additionalAxiomsArray=new OWLAxiom[additionalAxioms.size()];
+            return additionalAxioms.toArray(additionalAxiomsArray);
         }
-        this.m_currentIndividualIndex = this.m_individuals.length - 1;
-        return new OWLAxiom[0];
+        else {
+            m_currentIndividualIndex=m_individuals.length-1;
+            return new OWLAxiom[0];
+        }
     }
 
     /*
@@ -901,7 +900,7 @@ public class InstanceManager {
                 AtomicConcept atomicConcept = (AtomicConcept)current.getRepresentative();
                 AtomicConceptElement atomicConceptElement = this.m_conceptToElement.get(atomicConcept);
                 if (atomicConceptElement != null) {
-                    Set parents = current.getParentNodes();
+                    Set<HierarchyNode> parents = current.getParentNodes();
                     for (HierarchyNode parent : parents) {
                         if (visited.contains(parent) || toProcess.contains(parent)) continue;
                         toProcess.add(parent);
@@ -960,7 +959,7 @@ public class InstanceManager {
                 ++currentHierarchyNode;
                 RoleElementManager.RoleElement roleElement = (RoleElementManager.RoleElement)current.getRepresentative();
                 AtomicRole role = roleElement.getRole();
-                Set parents = current.getParentNodes();
+                Set<HierarchyNode> parents = current.getParentNodes();
                 for (HierarchyNode parent : parents) {
                     if (toProcess.contains(parent) || visited.contains(parent)) continue;
                     toProcess.add(parent);
@@ -1019,7 +1018,7 @@ public class InstanceManager {
                 }
             }
             if (current == null) continue;
-            Set parents = current.getParentNodes();
+            Set<HierarchyNode> parents = current.getParentNodes();
             AtomicConcept atomicConcept = (AtomicConcept)current.getRepresentative();
             AtomicConceptElement atomicConceptElement = this.m_conceptToElement.get(atomicConcept);
             if (atomicConceptElement != null && atomicConceptElement.isPossible(individual)) {
@@ -1141,7 +1140,7 @@ public class InstanceManager {
         if (representativeElement != null) {
             Set<Individual> possibleInstances = representativeElement.getPossibleInstances();
             if (!possibleInstances.isEmpty()) {
-                for (Individual possibleInstance : new HashSet(possibleInstances)) {
+                for (Individual possibleInstance : new HashSet<>(possibleInstances)) {
                     if (this.isInstance(possibleInstance, representative)) {
                         representativeElement.setToKnown(possibleInstance);
                         continue;
@@ -1242,7 +1241,7 @@ public class InstanceManager {
         }
         Map<Individual, Set<Individual>> possibleInstances = representativeElement.getPossibleRelations();
         for (Individual possibleInstance : new HashSet<Individual>(possibleInstances.keySet())) {
-            for (Individual possibleSuccessor : new HashSet(possibleInstances.get(possibleInstance))) {
+            for (Individual possibleSuccessor : new HashSet<>(possibleInstances.get(possibleInstance))) {
                 if (this.isRoleInstance(representativeElement.getRole(), possibleInstance, possibleSuccessor)) {
                     representativeElement.setToKnown(possibleInstance, possibleSuccessor);
                     continue;
@@ -1378,7 +1377,7 @@ public class InstanceManager {
                 this.m_individualToPossibleEquivalenceClass.remove(possiblyEquivalentClass);
             }
         }
-        for (Set otherEquivalenceClass : new HashSet<Set<Individual>>(this.m_individualToPossibleEquivalenceClass.keySet())) {
+        for (Set<Individual> otherEquivalenceClass : new HashSet<Set<Individual>>(this.m_individualToPossibleEquivalenceClass.keySet())) {
             if (otherEquivalenceClass == equivalenceClass || !this.m_individualToPossibleEquivalenceClass.get(otherEquivalenceClass).contains(equivalenceClass) || !this.isSameIndividual(equivalenceClass.iterator().next(), (Individual)otherEquivalenceClass.iterator().next())) continue;
             this.m_individualToPossibleEquivalenceClass.get(otherEquivalenceClass).remove(equivalenceClass);
             if (this.m_individualToPossibleEquivalenceClass.get(otherEquivalenceClass).isEmpty()) {

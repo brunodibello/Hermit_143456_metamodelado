@@ -2011,7 +2011,7 @@ implements OWLReasoner {
     }
 
     protected NodeSet<OWLNamedIndividual> sortBySameAsIfNecessary(Set<Individual> individuals) {
-        HashSet<OWLNamedIndividualNode> result;
+        Set result;
         OWLDataFactory factory = this.getDataFactory();
         result = new HashSet<OWLNamedIndividualNode>();
         if (this.m_configuration.individualNodeSetPolicy == IndividualNodeSetPolicy.BY_SAME_AS) {

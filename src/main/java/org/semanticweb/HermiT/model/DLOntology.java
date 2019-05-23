@@ -328,7 +328,7 @@ implements Serializable {
             stringBuffer.append("  ").append(dlClause.toString(prefixes)).append(CRLF);
         }
         stringBuffer.append("]").append(CRLF).append("Disjunctive DL-clauses: [").append(CRLF);
-        boolean numNondeterministicClauses = false;
+        int numNondeterministicClauses = 0;
         int numDisjunctions = 0;
         for (DLClause dlClause : this.m_dlClauses) {
             if (dlClause.getHeadLength() <= 1) continue;

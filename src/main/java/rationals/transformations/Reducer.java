@@ -72,7 +72,7 @@ implements UnaryTransformation {
             }
         } while (!new HashSet(current.values()).equals(new HashSet(old.values())));
         Automaton c = new Automaton();
-        HashSet setSet = new HashSet(current.values());
+        HashSet<Set> setSet = new HashSet<Set>(current.values());
         Iterator sets = setSet.iterator();
         HashMap<Set, State> newStates = new HashMap<Set, State>();
         while (sets.hasNext()) {

@@ -108,7 +108,7 @@ public class QuasiOrderClassification {
             }
             unclassifiedElements.removeAll(classifiedElements);
             if (unclassifiedElements.isEmpty()) break;
-            Set<Object> unknownPossibleSubsumers = this.m_possibleSubsumptions.getSuccessors(unclassifiedElement);
+            Set<AtomicConcept> unknownPossibleSubsumers = this.m_possibleSubsumptions.getSuccessors(unclassifiedElement);
             if (!this.isEveryPossibleSubsumerNonSubsumer(unknownPossibleSubsumers, unclassifiedElement, 2, 7) && !unknownPossibleSubsumers.isEmpty()) {
                 Hierarchy<AtomicConcept> smallHierarchy = this.buildHierarchyOfUnknownPossible(unknownPossibleSubsumers);
                 this.checkUnknownSubsumersUsingEnhancedTraversal(hierarchyRelation, smallHierarchy.getTopNode(), unclassifiedElement);
@@ -157,7 +157,7 @@ public class QuasiOrderClassification {
                 HashSet<HierarchyNode> visited = new HashSet<HierarchyNode>();
                 LinkedList toVisit = new LinkedList(currentHierarchyElement.getChildNodes());
                 while (!toVisit.isEmpty()) {
-                    HierarchyNode current = (HierarchyNode)toVisit.poll();
+                    HierarchyNode<AtomicConcept> current = (HierarchyNode)toVisit.poll();
                     if (!visited.add(current) || unsatHierarchyNodes.contains(current)) continue;
                     toVisit.addAll(current.getChildNodes());
                     unsatHierarchyNodes.add(current);
@@ -306,7 +306,7 @@ public class QuasiOrderClassification {
         LinkedList<HierarchyNode<AtomicConcept>> toProcess = new LinkedList<HierarchyNode<AtomicConcept>>(startSearch);
         while (!toProcess.isEmpty()) {
             HierarchyNode current = (HierarchyNode)toProcess.remove();
-            Set subordinateElements = current.getChildNodes();
+            Set<HierarchyNode> subordinateElements = current.getChildNodes();
             for (HierarchyNode subordinateElement : subordinateElements) {
                 AtomicConcept element = (AtomicConcept)subordinateElement.getRepresentative();
                 if (visited.contains(subordinateElement)) continue;
