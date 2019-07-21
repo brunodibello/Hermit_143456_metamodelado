@@ -40,7 +40,6 @@ extends BranchingPoint {
             this.m_groundDisjunction.getGroundDisjunctionHeader().increaseNumberOfBacktrackings(this.m_sortedDisjunctIndexes[this.m_currentIndex]);
         }
         ++this.m_currentIndex;
-        assert (this.m_currentIndex < this.m_groundDisjunction.getNumberOfDisjuncts());
         int currentDisjunctIndex = this.m_sortedDisjunctIndexes[this.m_currentIndex];
         if (tableau.m_tableauMonitor != null) {
             tableau.m_tableauMonitor.disjunctProcessingStarted(this.m_groundDisjunction, currentDisjunctIndex);

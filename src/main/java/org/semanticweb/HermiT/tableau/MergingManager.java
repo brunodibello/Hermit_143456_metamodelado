@@ -4,8 +4,13 @@
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
+
+import org.fing.metamodelling.MetamodellingAxiomHelper;
+import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.DescriptionGraph;
+import org.semanticweb.HermiT.model.Equality;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
+import org.semanticweb.HermiT.structural.OWLClausification;
 import org.semanticweb.HermiT.tableau.DependencySet;
 import org.semanticweb.HermiT.tableau.DescriptionGraphManager;
 import org.semanticweb.HermiT.tableau.ExtensionManager;
@@ -52,6 +57,9 @@ implements Serializable {
     }
 
     public boolean mergeNodes(Node node0, Node node1, DependencySet dependencySet) {
+    	System.out.println("---- Merge de Nodos ----");
+    	System.out.println("	node0 -> "+node0);
+    	System.out.println("	node1 -> "+node1);
         Node mergeInto;
         Node mergeFrom;
         int node1Precedence;
@@ -90,6 +98,8 @@ implements Serializable {
                 throw new IllegalStateException("Internal error: unsupported merge type.");
             }
         }
+        System.out.println("	mergeFrom -> "+mergeFrom);
+    	System.out.println("	mergeInto -> "+mergeInto);
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.mergeStarted(mergeFrom, mergeInto);
         }

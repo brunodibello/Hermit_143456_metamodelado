@@ -22,6 +22,7 @@ import org.semanticweb.HermiT.tableau.Node;
 import org.semanticweb.HermiT.tableau.PermanentDependencySet;
 import org.semanticweb.HermiT.tableau.Tableau;
 import org.semanticweb.HermiT.tableau.TupleTable;
+import org.semanticweb.HermiT.tableau.TupleTable.Page;
 
 public abstract class ExtensionTable
 implements Serializable {
@@ -110,11 +111,31 @@ implements Serializable {
     public abstract boolean isCore(Object[] var1);
 
     public boolean propagateDeltaNew() {
+    	System.out.println("this.m_afterExtensionThisTupleIndex "+this.m_afterExtensionThisTupleIndex);
+    	System.out.println("this.m_afterDeltaNewTupleIndex "+this.m_afterDeltaNewTupleIndex);
+    	System.out.println("this.m_afterExtensionOldTupleIndex "+this.m_afterExtensionOldTupleIndex);
+    	System.out.println("this.m_tupleTable.getFirstFreeTupleIndex() "+this.m_tupleTable.getFirstFreeTupleIndex());
+    	System.out.println("Table elements:");
+    	if (this.m_tupleTable.m_pages != null) {
+    		for(Page p : this.m_tupleTable.m_pages) {
+        		if(p != null) {
+        			for (Object o : p.m_objects) {
+            			if(o != null) System.out.println("    "+ o);
+            		}
+        		}
+
+        	}
+    	}
         boolean deltaNewNotEmpty = this.m_afterExtensionThisTupleIndex != this.m_afterDeltaNewTupleIndex;
         this.m_afterExtensionOldTupleIndex = this.m_afterExtensionThisTupleIndex;
         this.m_afterExtensionThisTupleIndex = this.m_afterDeltaNewTupleIndex;
         this.m_afterDeltaNewTupleIndex = this.m_tupleTable.getFirstFreeTupleIndex();
         return deltaNewNotEmpty;
+    }
+    
+    public void resetDeltaNew() {
+    	this.m_afterExtensionOldTupleIndex = 0;
+    	this.m_afterExtensionThisTupleIndex = 0;
     }
 
     public void branchingPointPushed() {

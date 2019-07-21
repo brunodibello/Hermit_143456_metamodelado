@@ -4,11 +4,16 @@
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.fing.metamodelling.MetamodellingAxiomHelper;
 import org.semanticweb.HermiT.model.AnnotatedEquality;
+import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
 import org.semanticweb.HermiT.model.Concept;
@@ -17,10 +22,13 @@ import org.semanticweb.HermiT.model.DLPredicate;
 import org.semanticweb.HermiT.model.DataRange;
 import org.semanticweb.HermiT.model.DescriptionGraph;
 import org.semanticweb.HermiT.model.Equality;
+import org.semanticweb.HermiT.model.Inequality;
 import org.semanticweb.HermiT.model.InternalDatatype;
 import org.semanticweb.HermiT.model.InverseRole;
 import org.semanticweb.HermiT.model.Role;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
+import org.semanticweb.HermiT.structural.OWLNormalization;
+import org.semanticweb.HermiT.tableau.DLClauseEvaluator.GroundDisjunctionHeaderManager;
 import org.semanticweb.HermiT.tableau.DependencySet;
 import org.semanticweb.HermiT.tableau.DependencySetFactory;
 import org.semanticweb.HermiT.tableau.ExtensionTable;
@@ -34,6 +42,7 @@ import org.semanticweb.HermiT.tableau.PermanentDependencySet;
 import org.semanticweb.HermiT.tableau.Tableau;
 import org.semanticweb.HermiT.tableau.TupleIndex;
 import org.semanticweb.HermiT.tableau.TupleTable;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 
 public final class ExtensionManager
 implements Serializable {
@@ -165,11 +174,19 @@ implements Serializable {
 
     public boolean propagateDeltaNew() {
         boolean hasChange = false;
+        System.out.println(" => propagateDeltaNew for "+this.m_allExtensionTablesArray.length+" extension tables <=");
         for (int index = 0; index < this.m_allExtensionTablesArray.length; ++index) {
+        	System.out.println(" Table "+index);
             if (!this.m_allExtensionTablesArray[index].propagateDeltaNew()) continue;
             hasChange = true;
         }
         return hasChange;
+    }
+    
+    public void resetDeltaNew() {
+    	for (int index = 0; index < this.m_allExtensionTablesArray.length; ++index) {
+            this.m_allExtensionTablesArray[index].resetDeltaNew();
+        }
     }
 
     public void clearClash() {
@@ -351,6 +368,7 @@ implements Serializable {
      * WARNING - Removed try catching itself - possible behaviour change.
      */
     public boolean addConceptAssertion(Concept concept, Node node, DependencySet dependencySet, boolean isCore) {
+    	System.out.println("[!] Se agrega ConceptAssertion a la binaryExtensionTable");
         if (this.m_addActive) {
             throw new IllegalStateException("ExtensionManager is not reentrant.");
         }
@@ -358,6 +376,8 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = concept;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
+            System.out.println("	Conecept -> "+concept);
+            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -377,6 +397,9 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = dataRange;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
+            System.out.println("[!] Se agrega DataRangeAssertion a la binaryExtensionTable");
+            System.out.println("	DataRange -> "+dataRange);
+            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -386,9 +409,16 @@ implements Serializable {
     }
 
     public boolean addRoleAssertion(Role role, Node nodeFrom, Node nodeTo, DependencySet dependencySet, boolean isCore) {
+    	System.out.println("[!] Se agrega RoleAssertion");
         if (role instanceof AtomicRole) {
+        	System.out.println("	Role -> "+(AtomicRole)role);
+            System.out.println("	nodeFrom -> "+nodeFrom);
+            System.out.println("	nodeFrom -> "+nodeTo);
             return this.addAssertion((AtomicRole)role, nodeFrom, nodeTo, dependencySet, isCore);
         }
+        System.out.println("	Role -> "+((InverseRole)role).getInverseOf());
+        System.out.println("	nodeFrom -> "+nodeFrom);
+        System.out.println("	nodeFrom -> "+nodeTo);
         return this.addAssertion(((InverseRole)role).getInverseOf(), nodeTo, nodeFrom, dependencySet, isCore);
     }
 
@@ -403,6 +433,9 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = dlPredicate;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
+            System.out.println("[!] Se agrega Assertion a la binaryExtensionTable");
+            System.out.println("	dlPredicate -> "+dlPredicate);
+            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -426,6 +459,10 @@ implements Serializable {
             this.m_ternaryAuxiliaryTupleAdd[0] = dlPredicate;
             this.m_ternaryAuxiliaryTupleAdd[1] = node0;
             this.m_ternaryAuxiliaryTupleAdd[2] = node1;
+            System.out.println("[!] Se agrega Assertion a la m_ternaryExtensionTable");
+            System.out.println("	dlPredicate -> "+dlPredicate);
+            System.out.println("	node0 -> "+node0);
+            System.out.println("	node1 -> "+node1);
             boolean bl = this.m_ternaryExtensionTable.addTuple(this.m_ternaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -434,6 +471,75 @@ implements Serializable {
         }
     }
 
+	public boolean checkEqualMetamodellingRuleIteration(Node node0, Node node1) {
+		//Si ambos nodos que se mergean tienen axioma de metamodelling
+		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node0.m_nodeID), this.m_tableau.m_permanentDLOntology);
+		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node1.m_nodeID), this.m_tableau.m_permanentDLOntology);
+		if (!node0Classes.isEmpty() && !node1Classes.isEmpty()) {	
+			for (OWLClassExpression node0Class : node0Classes) {
+				for (OWLClassExpression node1Class : node1Classes) {
+					//Checkear si existe Axiom A U !B y B U !A
+					// <#B>(X) :- <#A>(X)
+					// <#A>(X) :- <#B>(X)
+					if (node1Class != node0Class && !MetamodellingAxiomHelper.containsSubClassOfAxiom( node0Class, node1Class, this.m_tableau.m_permanentDLOntology) && !MetamodellingAxiomHelper.containsSubClassOfAxiom(node1Class, node0Class, this.m_tableau.m_permanentDLOntology)) {
+						MetamodellingAxiomHelper.addSubClassOfAxioms(node0Class, node1Class, this.m_tableau.m_permanentDLOntology, this.m_tableau);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkInequalityMetamodellingRuleIteration(Node node0, Node node1) {
+		//Si ambos nodos que se mergean tienen axioma de metamodelling
+		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node0.m_nodeID), this.m_tableau.m_permanentDLOntology);
+		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node1.m_nodeID), this.m_tableau.m_permanentDLOntology);
+		if (!node0Classes.isEmpty() && !node1Classes.isEmpty()) {
+			for (OWLClassExpression node0Class : node0Classes) {
+				for (OWLClassExpression node1Class : node1Classes) {
+					//Checkear si existe Axiom (A int not-B) union (not-A int B) 
+					if (node1Class != node0Class && !MetamodellingAxiomHelper.containsInequalityRuleAxiom( node0Class, node1Class, this.m_tableau)) {
+						MetamodellingAxiomHelper.addInequalityMetamodellingRuleAxiom(node0Class, node1Class, this.m_tableau.m_permanentDLOntology, this.m_tableau);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkCloseMetamodellingRuleIteration(Node node0, Node node1) {
+		List<Node> node0Equivalents = this.m_tableau.getEquivalentNodes(node0);
+		List<Node> node1Equivalents = this.m_tableau.getEquivalentNodes(node1);
+		for (Node node0Equivalent : node0Equivalents) {
+			for (Node node1Equivalent : node1Equivalents) {
+				if (!this.m_tableau.areDifferentIndividual(node0Equivalent, node1Equivalent) && !this.m_tableau.areSameIndividual(node0Equivalent, node1Equivalent) && !this.m_tableau.alreadyCreateDisjunction(node0Equivalent, node1Equivalent)) {
+					//create ground disjunction x=y or x!=y
+					Atom eqAtom = Atom.create(Equality.INSTANCE, this.m_tableau.mapNodeIndividual.get(node0Equivalent.m_nodeID), this.m_tableau.mapNodeIndividual.get(node1Equivalent.m_nodeID));
+					DLPredicate equalityPredicate = eqAtom.getDLPredicate();
+					Atom ineqAtom = Atom.create(Inequality.INSTANCE, this.m_tableau.mapNodeIndividual.get(node0Equivalent.m_nodeID), this.m_tableau.mapNodeIndividual.get(node1Equivalent.m_nodeID));
+					DLPredicate inequalityPredicate = ineqAtom.getDLPredicate();
+					DLPredicate[] dlPredicates = new DLPredicate[] {equalityPredicate, inequalityPredicate};
+					
+					int hashCode = 0;
+		            for (int disjunctIndex = 0; disjunctIndex < dlPredicates.length; ++disjunctIndex) {
+		                hashCode = hashCode * 7 + dlPredicates[disjunctIndex].hashCode();
+		            }
+		            
+					GroundDisjunctionHeader gdh = new GroundDisjunctionHeader(dlPredicates, hashCode , null);
+					//isCore[] y dependencySet investigar
+					GroundDisjunction groundDisjunction = new GroundDisjunction(this.m_tableau, gdh, new Node[] {node0Equivalent, node1Equivalent, node0Equivalent, node1Equivalent}, new boolean[] {true, true}, this.m_dependencySetFactory.emptySet());
+					this.m_tableau.addGroundDisjunction(groundDisjunction);
+					this.m_tableau.addCreatedDisjuntcion(node0Equivalent, node1Equivalent);
+					System.out.println("CLOSE RULE add the following disjunction -> "+eqAtom.toString() +" OR "+ineqAtom.toString());
+		            return true;
+				}
+			}
+		}
+		return false;
+	}
+	
     public boolean addAssertion(DLPredicate dlPredicate, Node node0, Node node1, Node node2, DependencySet dependencySet, boolean isCore) {
         if (this.m_addActive) {
             throw new IllegalStateException("ExtensionManager is not reentrant.");
@@ -442,6 +548,12 @@ implements Serializable {
         this.m_fouraryAuxiliaryTupleAdd[1] = node0;
         this.m_fouraryAuxiliaryTupleAdd[2] = node1;
         this.m_fouraryAuxiliaryTupleAdd[3] = node2;
+        System.out.println("[!] Se agrega Assertion a la m_fouraryAuxiliaryTupleAdd");
+        System.out.println("	dlPredicate -> "+dlPredicate);
+        System.out.println("	node0 -> "+node0);
+        System.out.println("	node1 -> "+node1);
+        System.out.println("	node2 -> "+node2);
+        
         return this.addTuple(this.m_fouraryAuxiliaryTupleAdd, dependencySet, isCore);
     }
 

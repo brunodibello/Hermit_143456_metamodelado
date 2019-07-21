@@ -60,7 +60,7 @@ implements Serializable {
         }
     };
 
-    protected DLClause(Atom[] headAtoms, Atom[] bodyAtoms) {
+    public DLClause(Atom[] headAtoms, Atom[] bodyAtoms) {
         this.m_headAtoms = headAtoms;
         this.m_bodyAtoms = bodyAtoms;
     }

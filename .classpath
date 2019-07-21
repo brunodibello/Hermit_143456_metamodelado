@@ -37,14 +37,11 @@
 	<classpathentry kind="var" path="M2_REPO/org/openrdf/sesame/sesame-rio-nquads/2.7.16/sesame-rio-nquads-2.7.16.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/openrdf/sesame/sesame-rio-ntriples/2.7.16/sesame-rio-ntriples-2.7.16.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/openrdf/sesame/sesame-rio-rdfjson/2.7.16/sesame-rio-rdfjson-2.7.16.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-core/2.8.5/jackson-core-2.8.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/openrdf/sesame/sesame-rio-rdfxml/2.7.16/sesame-rio-rdfxml-2.7.16.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/openrdf/sesame/sesame-rio-trix/2.7.16/sesame-rio-trix-2.7.16.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/openrdf/sesame/sesame-rio-trig/2.7.16/sesame-rio-trig-2.7.16.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/github/jsonld-java/jsonld-java-sesame/0.5.1/jsonld-java-sesame-0.5.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/github/jsonld-java/jsonld-java/0.5.1/jsonld-java-0.5.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-databind/2.8.5/jackson-databind-2.8.5.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-annotations/2.8.5/jackson-annotations-2.8.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpclient-cache/4.2.5/httpclient-cache-4.2.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpclient/4.2.5/httpclient-4.2.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpcore/4.2.4/httpcore-4.2.4.jar"/>
@@ -95,18 +92,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-api"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-apibinding"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-compatibility"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-contract"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-distribution"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-fixers"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-impl"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-oboformat"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-osgidistribution"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-parsers"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-rio"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-tools"/>
 	<classpathentry kind="src" path="target/generated-sources/annotations">
 		<attributes>
 			<attribute name="optional" value="true"/>
