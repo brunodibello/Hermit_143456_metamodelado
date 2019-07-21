@@ -22,6 +22,7 @@ import org.semanticweb.HermiT.tableau.Node;
 import org.semanticweb.HermiT.tableau.PermanentDependencySet;
 import org.semanticweb.HermiT.tableau.Tableau;
 import org.semanticweb.HermiT.tableau.TupleTable;
+import org.semanticweb.HermiT.tableau.TupleTable.Page;
 
 public abstract class ExtensionTable
 implements Serializable {
@@ -91,6 +92,11 @@ implements Serializable {
             this.m_tableau.m_descriptionGraphManager.descriptionGraphTupleAdded(tupleIndex, tuple);
         }
         this.m_tableau.m_clashManager.tupleAdded(this, tuple, dependencySet);
+        System.out.print("TUPLE ADDED: ");
+    	for (Object obj : tuple) {
+    		System.out.println(obj+" ");
+    	}
+    	System.out.println();
     }
 
     public abstract boolean containsTuple(Object[] var1);
@@ -110,11 +116,35 @@ implements Serializable {
     public abstract boolean isCore(Object[] var1);
 
     public boolean propagateDeltaNew() {
+//    	System.out.println("Table elements:");
+    	if (this.m_tupleTable.m_pages != null) {
+//    		for(Page p : this.m_tupleTable.m_pages) {
+//        		if(p != null) {
+//        			for (Object o : p.m_objects) {
+//        				if(o != null && (o.toString().startsWith("<") || o.toString().startsWith("!="))) System.out.println();
+//            			if(o != null) System.out.print("    "+ o);
+//            			if(o == null) break;
+//            		}
+//        			
+//        		}
+//
+//        	}
+    	}
+    	System.out.println();
         boolean deltaNewNotEmpty = this.m_afterExtensionThisTupleIndex != this.m_afterDeltaNewTupleIndex;
         this.m_afterExtensionOldTupleIndex = this.m_afterExtensionThisTupleIndex;
         this.m_afterExtensionThisTupleIndex = this.m_afterDeltaNewTupleIndex;
         this.m_afterDeltaNewTupleIndex = this.m_tupleTable.getFirstFreeTupleIndex();
         return deltaNewNotEmpty;
+    }
+    
+    public boolean checkDeltaNewPropagation() {
+        return this.m_afterExtensionThisTupleIndex != this.m_afterDeltaNewTupleIndex;
+    }
+    
+    public void resetDeltaNew() {
+    	this.m_afterExtensionOldTupleIndex = 0;
+    	this.m_afterExtensionThisTupleIndex = 0;
     }
 
     public void branchingPointPushed() {

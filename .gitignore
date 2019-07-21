@@ -10,5 +10,4 @@ target/
 .eclipse
 *.DS_Store
 *.classpath
-*.owl
 *.prefs

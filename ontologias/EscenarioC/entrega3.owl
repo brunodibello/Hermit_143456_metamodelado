@@ -1,0 +1,270 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://webprotege.stanford.edu/project/DxAz9HG7IScctaTXv0ZKs9#"
+     xml:base="http://webprotege.stanford.edu/project/DxAz9HG7IScctaTXv0ZKs9"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://webprotege.stanford.edu/project/DxAz9HG7IScctaTXv0ZKs9"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://webprotege.stanford.edu/contiene -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/contiene">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Carrera"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Curso"/>
+        <rdfs:range rdf:resource="http://webprotege.stanford.edu/Asignatura"/>
+        <rdfs:label>contiene</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/inscriptoEn -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/inscriptoEn">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Estudiante"/>
+        <rdfs:range rdf:resource="http://webprotege.stanford.edu/Curso"/>
+        <rdfs:label>inscriptoEn</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/registra -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/registra">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Curso"/>
+        <rdfs:range rdf:resource="http://webprotege.stanford.edu/Participacion"/>
+        <rdfs:label>registra</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/sucedeEn -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/sucedeEn">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Participacion"/>
+        <rdfs:range rdf:resource="http://webprotege.stanford.edu/Ambiente"/>
+        <rdfs:label>sucedeEn</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/DxAz9HG7IScctaTXv0ZKs9#realiza -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/DxAz9HG7IScctaTXv0ZKs9#realiza">
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Estudiante"/>
+        <rdfs:range rdf:resource="http://webprotege.stanford.edu/Participacion"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://webprotege.stanford.edu/Denominacion -->
+
+    <owl:DatatypeProperty rdf:about="http://webprotege.stanford.edu/Denominacion">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Ambiente"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Asignatura"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Carrera"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label>Denominacion</rdfs:label>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denominación</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/anio -->
+
+    <owl:DatatypeProperty rdf:about="http://webprotege.stanford.edu/anio">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Curso"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label>Año</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/descripcion -->
+
+    <owl:DatatypeProperty rdf:about="http://webprotege.stanford.edu/descripcion">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Participacion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label>Descripción</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/email -->
+
+    <owl:DatatypeProperty rdf:about="http://webprotege.stanford.edu/email">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Estudiante"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label>Email</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/fNacimiento -->
+
+    <owl:DatatypeProperty rdf:about="http://webprotege.stanford.edu/fNacimiento">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Estudiante"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label>FNacimiento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/fecha -->
+
+    <owl:DatatypeProperty rdf:about="http://webprotege.stanford.edu/fecha">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Participacion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label>Fecha</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/nombre -->
+
+    <owl:DatatypeProperty rdf:about="http://webprotege.stanford.edu/nombre">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/Estudiante"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label>Nombre</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://webprotege.stanford.edu/Ambiente -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/Ambiente">
+        <rdfs:label>Ambiente</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/Asignatura -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/Asignatura">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://webprotege.stanford.edu/contiene"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://webprotege.stanford.edu/Carrera"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label>Asignatura</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/Carrera -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/Carrera">
+        <rdfs:label>Carrera</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/Curso -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/Curso">
+        <rdfs:label>Curso</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/Estudiante -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/Estudiante">
+        <rdfs:label>Estudiante</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/Participacion -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/Participacion">
+        <rdfs:label>Participación</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9xOZ3oqnzViPNyxfl5fqij -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9xOZ3oqnzViPNyxfl5fqij">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/Ambiente"/>
+        <rdfs:label>Clase</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCbAlVFvNi4gatbJZ08cUUk -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RCbAlVFvNi4gatbJZ08cUUk">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/Ambiente"/>
+        <rdfs:label>Laboratorio</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDDrOAd5ZTbhMVRELbAvWpK -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDDrOAd5ZTbhMVRELbAvWpK">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/Ambiente"/>
+        <rdfs:label>Web</rdfs:label>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.6.2018-09-06T00:27:41Z) https://github.com/owlcs/owlapi -->
+

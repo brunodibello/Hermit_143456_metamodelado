@@ -22,6 +22,7 @@ implements Serializable {
     protected PermanentDependencySet[] m_entries;
     protected int m_size;
     protected int m_resizeThreshold;
+    int lastEntryAddedIndex;
 
     public DependencySetFactory() {
         this.clear();
@@ -46,6 +47,7 @@ implements Serializable {
         this.m_entries = new PermanentDependencySet[16];
         this.m_resizeThreshold = (int)((double)this.m_entries.length * 0.75);
         this.m_size = 0;
+        this.lastEntryAddedIndex = -1;
     }
 
     public PermanentDependencySet emptySet() {
@@ -113,6 +115,7 @@ implements Serializable {
         dependencySet = this.createDependencySet(rest, branchingPoint);
         dependencySet.m_nextEntry = this.m_entries[index];
         this.m_entries[index] = dependencySet;
+        this.lastEntryAddedIndex = index;
         if (this.m_size >= this.m_resizeThreshold) {
             this.resizeEntries();
         }
@@ -164,6 +167,7 @@ implements Serializable {
                 return;
             }
             lastEntry = entry;
+            this.lastEntryAddedIndex = index;
             entry = entry.m_nextEntry;
         }
         throw new IllegalStateException("Internal error: dependency set not in the entries table. Please inform HermiT authors about this.");
@@ -203,6 +207,7 @@ implements Serializable {
                 entry.m_nextEntry = newEntries[newIndex];
                 newEntries[newIndex] = entry;
                 entry = nextEntry;
+                this.lastEntryAddedIndex = newIndex;
             }
         }
         this.m_entries = newEntries;
@@ -354,6 +359,10 @@ implements Serializable {
             this.m_elements[this.m_size++] = element;
         }
     }
+    
+    protected DependencySet getActualDependencySet() {
+		return lastEntryAddedIndex == -1 || m_entries[lastEntryAddedIndex] == null ? emptySet() : m_entries[lastEntryAddedIndex];
+	}
 
 }
 

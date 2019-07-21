@@ -31,6 +31,8 @@ import org.semanticweb.HermiT.model.Individual;
 import org.semanticweb.HermiT.model.LiteralConcept;
 import org.semanticweb.HermiT.model.Role;
 import org.semanticweb.HermiT.model.Term;
+import org.semanticweb.owlapi.model.OWLMetaRuleAxiom;
+import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
 
 public class DLOntology
 implements Serializable {
@@ -40,6 +42,8 @@ implements Serializable {
     protected final Set<DLClause> m_dlClauses;
     protected final Set<Atom> m_positiveFacts;
     protected final Set<Atom> m_negativeFacts;
+    protected final Set<OWLMetamodellingAxiom> m_metamodellingAxioms;
+    protected final Set<OWLMetaRuleAxiom> m_metaRuleAxioms;
     protected final boolean m_hasInverseRoles;
     protected final boolean m_hasAtMostRestrictions;
     protected final boolean m_hasNominals;
@@ -56,13 +60,15 @@ implements Serializable {
     protected final Set<DescriptionGraph> m_allDescriptionGraphs;
     protected final Map<AtomicRole, Map<Individual, Set<Constant>>> m_dataPropertyAssertions;
 
-    public DLOntology(String ontologyIRI, Set<DLClause> dlClauses, Set<Atom> positiveFacts, Set<Atom> negativeFacts, Set<AtomicConcept> atomicConcepts, Set<AtomicRole> atomicObjectRoles, Set<Role> allComplexObjectRoles, Set<AtomicRole> atomicDataRoles, Set<DatatypeRestriction> allUnknownDatatypeRestrictions, Set<String> definedDatatypeIRIs, Set<Individual> individuals, boolean hasInverseRoles, boolean hasAtMostRestrictions, boolean hasNominals, boolean hasDatatypes) {
+    public DLOntology(String ontologyIRI, Set<DLClause> dlClauses, Set<Atom> positiveFacts, Set<Atom> negativeFacts, Set<AtomicConcept> atomicConcepts, Set<AtomicRole> atomicObjectRoles, Set<Role> allComplexObjectRoles, Set<AtomicRole> atomicDataRoles, Set<DatatypeRestriction> allUnknownDatatypeRestrictions, Set<String> definedDatatypeIRIs, Set<Individual> individuals, boolean hasInverseRoles, boolean hasAtMostRestrictions, boolean hasNominals, boolean hasDatatypes, Set<OWLMetamodellingAxiom> m_metamodellingAxioms, Set<OWLMetaRuleAxiom> m_metaRuleAxioms) {
         int i;
         Term argument;
         this.m_ontologyIRI = ontologyIRI;
         this.m_dlClauses = dlClauses;
         this.m_positiveFacts = positiveFacts;
         this.m_negativeFacts = negativeFacts;
+        this.m_metamodellingAxioms = m_metamodellingAxioms;
+        this.m_metaRuleAxioms = m_metaRuleAxioms;
         this.m_hasInverseRoles = hasInverseRoles;
         this.m_hasAtMostRestrictions = hasAtMostRestrictions;
         this.m_hasNominals = hasNominals;
@@ -132,6 +138,9 @@ implements Serializable {
                 if (!(argument instanceof Individual)) continue;
                 this.m_allIndividuals.add((Individual)argument);
             }
+        }
+        for (OWLMetamodellingAxiom metamodellingAxiom : m_metamodellingAxioms) {
+        	this.m_allIndividuals.add(Individual.create(metamodellingAxiom.getMetamodelIndividual().toStringID()));
         }
     }
 
@@ -220,6 +229,14 @@ implements Serializable {
 
     public Set<Atom> getNegativeFacts() {
         return this.m_negativeFacts;
+    }
+    
+    public Set<OWLMetamodellingAxiom> getMetamodellingAxioms() {
+    	return this.m_metamodellingAxioms;
+    }
+    
+    public Set<OWLMetaRuleAxiom> getMetaRuleAxioms() {
+    	return this.m_metaRuleAxioms;
     }
 
     public boolean hasInverseRoles() {
@@ -342,6 +359,9 @@ implements Serializable {
         }
         for (Atom atom : this.m_negativeFacts) {
             stringBuffer.append("  !").append(atom.toString(prefixes)).append(CRLF);
+        }
+        for (OWLMetamodellingAxiom metamodellingAxiom : this.m_metamodellingAxioms) {
+            stringBuffer.append("  ").append("<"+metamodellingAxiom.getModelClass().toString()+", "+metamodellingAxiom.getMetamodelIndividual().toString()+">").append(CRLF);
         }
         stringBuffer.append("]").append(CRLF).append("Statistics: [").append(CRLF).append("  Number of deterministic clauses: " + numDeterministicClauses).append(CRLF).append("  Number of nondeterministic clauses: " + (int)numNondeterministicClauses).append(CRLF).append("  Number of disjunctions: " + numDisjunctions).append(CRLF).append("  Number of positive facts: " + this.m_positiveFacts.size()).append(CRLF).append("  Number of negative facts: " + this.m_negativeFacts.size()).append(CRLF).append("]");
         return stringBuffer.toString();

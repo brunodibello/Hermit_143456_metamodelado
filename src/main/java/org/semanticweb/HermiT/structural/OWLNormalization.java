@@ -142,6 +142,7 @@ public class OWLNormalization {
     }
 
     public void processOntology(OWLOntology ontology) {
+    	System.out.println("** OWLNormalization -> processOntology **");
         this.m_axioms.m_classes.addAll(ontology.getClassesInSignature(Imports.INCLUDED));
         this.m_axioms.m_objectProperties.addAll(ontology.getObjectPropertiesInSignature(Imports.INCLUDED));
         this.m_axioms.m_dataProperties.addAll(ontology.getDataPropertiesInSignature(Imports.INCLUDED));
@@ -152,7 +153,6 @@ public class OWLNormalization {
     public void processAxioms(Collection<? extends OWLAxiom> axioms) {
         AxiomVisitor axiomVisitor = new AxiomVisitor();
         for (OWLAxiom axiom : axioms) {
-        	// Bruno -> Aca se normaliza cada axioma, uno por uno llama al visit de OWLNormalization
             axiom.accept((OWLAxiomVisitor)axiomVisitor);
         }
         RuleNormalizer ruleNormalizer = new RuleNormalizer(this.m_axioms.m_rules, axiomVisitor.m_classExpressionInclusionsAsDisjunctions, axiomVisitor.m_dataRangeInclusionsAsDisjunctions);
@@ -1476,7 +1476,13 @@ public class OWLNormalization {
         @Override
 		public void visit(OWLMetamodellingAxiom axiom) {
 			// TODO Auto-generated method stub
-			
+        	OWLNormalization.this.m_axioms.m_metamodellingAxioms.add(axiom);
+		}
+        
+        @Override
+		public void visit(OWLMetaRuleAxiom axiom) {
+			// TODO Auto-generated method stub
+        	OWLNormalization.this.m_axioms.m_metaRuleAxioms.add(axiom);
 		}
 
         public void visit(SWRLRule rule) {

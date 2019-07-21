@@ -4,8 +4,12 @@
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
+
+import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.DescriptionGraph;
+import org.semanticweb.HermiT.model.Equality;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
+import org.semanticweb.HermiT.structural.OWLClausification;
 import org.semanticweb.HermiT.tableau.DependencySet;
 import org.semanticweb.HermiT.tableau.DescriptionGraphManager;
 import org.semanticweb.HermiT.tableau.ExtensionManager;
@@ -90,6 +94,9 @@ implements Serializable {
                 throw new IllegalStateException("Internal error: unsupported merge type.");
             }
         }
+        System.out.println("---- Merge de Nodos ----");
+        System.out.println("	mergeFrom -> "+mergeFrom);
+    	System.out.println("	mergeInto -> "+mergeInto);
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.mergeStarted(mergeFrom, mergeInto);
         }

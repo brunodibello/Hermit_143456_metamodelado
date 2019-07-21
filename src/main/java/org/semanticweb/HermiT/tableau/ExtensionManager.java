@@ -4,11 +4,16 @@
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.semanticweb.HermiT.model.AnnotatedEquality;
+import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
 import org.semanticweb.HermiT.model.Concept;
@@ -17,10 +22,13 @@ import org.semanticweb.HermiT.model.DLPredicate;
 import org.semanticweb.HermiT.model.DataRange;
 import org.semanticweb.HermiT.model.DescriptionGraph;
 import org.semanticweb.HermiT.model.Equality;
+import org.semanticweb.HermiT.model.Inequality;
 import org.semanticweb.HermiT.model.InternalDatatype;
 import org.semanticweb.HermiT.model.InverseRole;
 import org.semanticweb.HermiT.model.Role;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
+import org.semanticweb.HermiT.structural.OWLNormalization;
+import org.semanticweb.HermiT.tableau.DLClauseEvaluator.GroundDisjunctionHeaderManager;
 import org.semanticweb.HermiT.tableau.DependencySet;
 import org.semanticweb.HermiT.tableau.DependencySetFactory;
 import org.semanticweb.HermiT.tableau.ExtensionTable;
@@ -34,6 +42,7 @@ import org.semanticweb.HermiT.tableau.PermanentDependencySet;
 import org.semanticweb.HermiT.tableau.Tableau;
 import org.semanticweb.HermiT.tableau.TupleIndex;
 import org.semanticweb.HermiT.tableau.TupleTable;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 
 public final class ExtensionManager
 implements Serializable {
@@ -165,11 +174,28 @@ implements Serializable {
 
     public boolean propagateDeltaNew() {
         boolean hasChange = false;
+        //System.out.println(" => propagateDeltaNew for "+this.m_allExtensionTablesArray.length+" extension tables <=");
         for (int index = 0; index < this.m_allExtensionTablesArray.length; ++index) {
+        	//System.out.println(" Table "+index);
             if (!this.m_allExtensionTablesArray[index].propagateDeltaNew()) continue;
             hasChange = true;
         }
         return hasChange;
+    }
+    
+    public boolean checkDeltaNewPropagation() {
+    	boolean hasChange = false;
+        for (int index = 0; index < this.m_allExtensionTablesArray.length; ++index) {
+            if (!this.m_allExtensionTablesArray[index].checkDeltaNewPropagation()) continue;
+            hasChange = true;
+        }
+        return hasChange;
+    }
+    
+    public void resetDeltaNew() {
+    	for (int index = 0; index < this.m_allExtensionTablesArray.length; ++index) {
+            this.m_allExtensionTablesArray[index].resetDeltaNew();
+        }
     }
 
     public void clearClash() {
@@ -351,6 +377,7 @@ implements Serializable {
      * WARNING - Removed try catching itself - possible behaviour change.
      */
     public boolean addConceptAssertion(Concept concept, Node node, DependencySet dependencySet, boolean isCore) {
+    	System.out.println("[!] Se agrega ConceptAssertion a la binaryExtensionTable");
         if (this.m_addActive) {
             throw new IllegalStateException("ExtensionManager is not reentrant.");
         }
@@ -358,6 +385,8 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = concept;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
+            System.out.println("	Conecept -> "+concept);
+            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -377,6 +406,9 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = dataRange;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
+            System.out.println("[!] Se agrega DataRangeAssertion a la binaryExtensionTable");
+            System.out.println("	DataRange -> "+dataRange);
+            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -386,9 +418,16 @@ implements Serializable {
     }
 
     public boolean addRoleAssertion(Role role, Node nodeFrom, Node nodeTo, DependencySet dependencySet, boolean isCore) {
+    	System.out.println("[!] Se agrega RoleAssertion");
         if (role instanceof AtomicRole) {
+        	System.out.println("	Role -> "+(AtomicRole)role);
+            System.out.println("	nodeFrom -> "+nodeFrom);
+            System.out.println("	nodeFrom -> "+nodeTo);
             return this.addAssertion((AtomicRole)role, nodeFrom, nodeTo, dependencySet, isCore);
         }
+        System.out.println("	Role -> "+((InverseRole)role).getInverseOf());
+        System.out.println("	nodeFrom -> "+nodeFrom);
+        System.out.println("	nodeFrom -> "+nodeTo);
         return this.addAssertion(((InverseRole)role).getInverseOf(), nodeTo, nodeFrom, dependencySet, isCore);
     }
 
@@ -403,6 +442,9 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = dlPredicate;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
+//            System.out.println("[!] Se agrega Assertion a la binaryExtensionTable");
+//            System.out.println("	dlPredicate -> "+dlPredicate);
+//            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -426,6 +468,10 @@ implements Serializable {
             this.m_ternaryAuxiliaryTupleAdd[0] = dlPredicate;
             this.m_ternaryAuxiliaryTupleAdd[1] = node0;
             this.m_ternaryAuxiliaryTupleAdd[2] = node1;
+//            System.out.println("[!] Se agrega Assertion a la m_ternaryExtensionTable");
+//            System.out.println("	dlPredicate -> "+dlPredicate);
+//            System.out.println("	node0 -> "+node0);
+//            System.out.println("	node1 -> "+node1);
             boolean bl = this.m_ternaryExtensionTable.addTuple(this.m_ternaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -433,7 +479,7 @@ implements Serializable {
             this.m_addActive = false;
         }
     }
-
+	
     public boolean addAssertion(DLPredicate dlPredicate, Node node0, Node node1, Node node2, DependencySet dependencySet, boolean isCore) {
         if (this.m_addActive) {
             throw new IllegalStateException("ExtensionManager is not reentrant.");
@@ -442,6 +488,12 @@ implements Serializable {
         this.m_fouraryAuxiliaryTupleAdd[1] = node0;
         this.m_fouraryAuxiliaryTupleAdd[2] = node1;
         this.m_fouraryAuxiliaryTupleAdd[3] = node2;
+//        System.out.println("[!] Se agrega Assertion a la m_fouraryAuxiliaryTupleAdd");
+//        System.out.println("	dlPredicate -> "+dlPredicate);
+//        System.out.println("	node0 -> "+node0);
+//        System.out.println("	node1 -> "+node1);
+//        System.out.println("	node2 -> "+node2);
+        
         return this.addTuple(this.m_fouraryAuxiliaryTupleAdd, dependencySet, isCore);
     }
 
@@ -470,6 +522,13 @@ implements Serializable {
         this.m_addActive = true;
         try {
             boolean result = this.getExtensionTable(tuple.length).addTuple(tuple, dependencySet, isCore);
+            if(result) {
+            	System.out.print("TUPLE ADDED: ");
+            	for (Object obj : tuple) {
+            		System.out.println(obj+" ");
+            	}
+            	System.out.println();
+            }
             return result;
         }
         finally {

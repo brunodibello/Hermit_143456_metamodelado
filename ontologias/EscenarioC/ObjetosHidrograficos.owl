@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE Ontology [
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/usuario/ontologies/2015/10/untitled-ontology-117"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     ontologyIRI="http://www.semanticweb.org/usuario/ontologies/2015/10/untitled-ontology-117">
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Declaration>
+        <Class IRI="#ObjetoHidrografico"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#acequia"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#acueducto"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#acuifero"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#aljibe"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#ancladero"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#arroyo"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#arrozal"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#bahia"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#bañado"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#boya"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#canal"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#cascada"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#cañada"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#curvaBatimetrica"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#diqueSeco"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#esclusa"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#escollera"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#evaporadorDeSal"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#faro"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#isla"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#lago"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#lineaCostera"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#lineaDeCosta"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#manantial"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#masaDeAgua"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#muelle"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#pantano"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#paso"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#playa"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#puerto"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#rambla"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#rapido"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#represa"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#rio"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#roca"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#salina"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#tajamar"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#viveroDePeces"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#zonaInundable"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#acequia"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#acueducto"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#acuifero"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#aljibe"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#ancladero"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#arroyo"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#arrozal"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#bahia"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#bañado"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#boya"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#canal"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#cascada"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#cañada"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#curvaBatimetrica"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#diqueSeco"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#esclusa"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#escollera"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#evaporadorDeSal"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#faro"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#isla"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#lago"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#lineaCostera"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#lineaDeCosta"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#manantial"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#masaDeAgua"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#muelle"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#pantano"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#paso"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#playa"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#puerto"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#rambla"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#rapido"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#represa"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#rio"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#roca"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#salina"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#tajamar"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#viveroDePeces"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ObjetoHidrografico"/>
+        <NamedIndividual IRI="#zonaInundable"/>
+    </ClassAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 3.4.5-SNAPSHOT) http://owlapi.sourceforge.net -->
+

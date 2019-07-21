@@ -145,7 +145,9 @@ public abstract class AbstractReasonerInternalsTest extends AbstractReasonerTest
                 true, // hasInverseRoles
                 false, // hasAtMostRestrictions
                 false, // hasNominals
-                false // hasDatatypes
+                false, // hasDatatypes
+                null,
+                null
             );
     }
 }
