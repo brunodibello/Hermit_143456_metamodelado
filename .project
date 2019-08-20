@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-  <name>org.semanticweb.hermit</name>
-  <comment>HermiT is reasoner for ontologies written using the Web Ontology Language (OWL). Given an OWL file, HermiT can determine whether or not the ontology is consistent, identify subsumption relationships between classes, and much more.
+	<name>org.semanticweb.hermit</name>
+	<comment>HermiT is reasoner for ontologies written using the Web Ontology Language (OWL). Given an OWL file, HermiT can determine whether or not the ontology is consistent, identify subsumption relationships between classes, and much more.
     This is the maven build of HermiT and is designed for people who wish to use HermiT from within the OWL API. It is now versioned in the main HermiT version repository, although not officially supported by the HermiT developers.
     The version number of this package is a composite of the HermiT version and a value representing the OWLAPI release it is compatible with. Note that the group id for the upstream HermiT is com.hermit-reasoner, while this fork is released under net.sourceforge.owlapi.
     This fork exists to allow HermiT users to use newer OWLAPI versions than the ones supported by the original HermiT codebase.
     This package includes the Jautomata library (http://jautomata.sourceforge.net/), and builds with it directly. This library appears to be no longer under active development, and so a &quot;fork&quot; seems appropriate. No development is intended or anticipated on this code base. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
-  <projects/>
-  <buildSpec>
-    <buildCommand>
-      <name>org.eclipse.jdt.core.javabuilder</name>
-    </buildCommand>
-  </buildSpec>
-  <natures>
-    <nature>org.eclipse.jdt.core.javanature</nature>
-  </natures>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.m2e.core.maven2Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.m2e.core.maven2Nature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
 </projectDescription>
