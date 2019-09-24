@@ -146,6 +146,7 @@ import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
@@ -518,6 +519,11 @@ implements OWLAxiomVisitorEx<Boolean> {
         }
         return false;
     }
+    
+	public Boolean visit(OWLMetamodellingAxiom axiom) {
+		//TODO 
+		return true;
+	}
 
     public Boolean visit(SWRLRule rule) {
         throw new UnsupportedOperationException();
@@ -932,6 +938,9 @@ implements OWLAxiomVisitorEx<Boolean> {
 
         public void visit(OWLAnnotationPropertyRangeAxiom axiom) {
         }
+
+		public void visit(OWLMetamodellingAxiom axiom) {
+		}
     }
 
 }

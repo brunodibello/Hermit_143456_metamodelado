@@ -394,6 +394,7 @@ implements Serializable {
         }
     }
 
+    //Crea nodos en el grafo
     protected Node getNodeForTerm(Map<Term, Node> termsToNodes, Term term, DependencySet dependencySet) {
         Node node = termsToNodes.get(term);
         if (node == null) {
