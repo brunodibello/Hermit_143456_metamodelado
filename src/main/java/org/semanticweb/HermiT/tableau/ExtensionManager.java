@@ -351,6 +351,7 @@ implements Serializable {
      * WARNING - Removed try catching itself - possible behaviour change.
      */
     public boolean addConceptAssertion(Concept concept, Node node, DependencySet dependencySet, boolean isCore) {
+    	System.out.println("[!] Se agrega ConceptAssertion a la binaryExtensionTable");
         if (this.m_addActive) {
             throw new IllegalStateException("ExtensionManager is not reentrant.");
         }
@@ -358,6 +359,8 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = concept;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
+            System.out.println("	Conecept -> "+concept);
+            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -377,6 +380,9 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = dataRange;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
+            System.out.println("[!] Se agrega DataRangeAssertion a la binaryExtensionTable");
+            System.out.println("	DataRange -> "+dataRange);
+            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -386,9 +392,16 @@ implements Serializable {
     }
 
     public boolean addRoleAssertion(Role role, Node nodeFrom, Node nodeTo, DependencySet dependencySet, boolean isCore) {
+    	System.out.println("[!] Se agrega RoleAssertion");
         if (role instanceof AtomicRole) {
+        	System.out.println("	Role -> "+(AtomicRole)role);
+            System.out.println("	nodeFrom -> "+nodeFrom);
+            System.out.println("	nodeFrom -> "+nodeTo);
             return this.addAssertion((AtomicRole)role, nodeFrom, nodeTo, dependencySet, isCore);
         }
+        System.out.println("	Role -> "+((InverseRole)role).getInverseOf());
+        System.out.println("	nodeFrom -> "+nodeFrom);
+        System.out.println("	nodeFrom -> "+nodeTo);
         return this.addAssertion(((InverseRole)role).getInverseOf(), nodeTo, nodeFrom, dependencySet, isCore);
     }
 
@@ -403,6 +416,9 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = dlPredicate;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
+            System.out.println("[!] Se agrega Assertion a la binaryExtensionTable");
+            System.out.println("	dlPredicate -> "+dlPredicate);
+            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -426,6 +442,10 @@ implements Serializable {
             this.m_ternaryAuxiliaryTupleAdd[0] = dlPredicate;
             this.m_ternaryAuxiliaryTupleAdd[1] = node0;
             this.m_ternaryAuxiliaryTupleAdd[2] = node1;
+            System.out.println("[!] Se agrega Assertion a la m_ternaryExtensionTable");
+            System.out.println("	dlPredicate -> "+dlPredicate);
+            System.out.println("	node0 -> "+node0);
+            System.out.println("	node1 -> "+node1);
             boolean bl = this.m_ternaryExtensionTable.addTuple(this.m_ternaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -442,6 +462,11 @@ implements Serializable {
         this.m_fouraryAuxiliaryTupleAdd[1] = node0;
         this.m_fouraryAuxiliaryTupleAdd[2] = node1;
         this.m_fouraryAuxiliaryTupleAdd[3] = node2;
+        System.out.println("[!] Se agrega Assertion a la m_fouraryAuxiliaryTupleAdd");
+        System.out.println("	dlPredicate -> "+dlPredicate);
+        System.out.println("	node0 -> "+node0);
+        System.out.println("	node1 -> "+node1);
+        System.out.println("	node2 -> "+node2);
         return this.addTuple(this.m_fouraryAuxiliaryTupleAdd, dependencySet, isCore);
     }
 

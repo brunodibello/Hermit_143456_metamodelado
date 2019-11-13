@@ -161,6 +161,7 @@ import org.semanticweb.owlapi.model.OWLHasKeyAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
@@ -216,6 +217,7 @@ public class OWLClausification {
     }
 
     public Object[] preprocessAndClausify(OWLOntology rootOntology, Collection<DescriptionGraph> descriptionGraphs) {
+    	System.out.println("** OWLClausification -> preprocessAndClausify **");
         OWLDataFactory factory = rootOntology.getOWLOntologyManager().getOWLDataFactory();
         Optional defaultDocumentIRI = rootOntology.getOntologyID().getDefaultDocumentIRI();
         String ontologyIRI = defaultDocumentIRI.isPresent() ? ((IRI)defaultDocumentIRI.get()).toString() : "urn:hermit:kb";
@@ -235,6 +237,10 @@ public class OWLClausification {
         }
         OWLAxiomsExpressivity axiomsExpressivity = new OWLAxiomsExpressivity(axioms);
         DLOntology dlOntology = this.clausify(factory, ontologyIRI, axioms, axiomsExpressivity, descriptionGraphs);
+        System.out.println("Se crea dlOntology, dlClauses:");
+        for (DLClause dlClause : dlOntology.getDLClauses()) {
+        	System.out.println(dlClause.toString());
+        }
         return new Object[]{objectPropertyInclusionManager, dlOntology};
     }
 
@@ -353,7 +359,7 @@ public class OWLClausification {
         if (!axioms.m_rules.isEmpty()) {
             new NormalizedRuleClausifier(axioms.m_objectPropertiesOccurringInOWLAxioms, descriptionGraphs, dataRangeConverter, dlClauses).processRules(axioms.m_rules);
         }
-        return new DLOntology(ontologyIRI, dlClauses, positiveFacts, negativeFacts, atomicConcepts, atomicObjectRoles, complexObjectRoles, atomicDataRoles, allUnknownDatatypeRestrictions, axioms.m_definedDatatypesIRIs, individuals, axiomsExpressivity.m_hasInverseRoles, axiomsExpressivity.m_hasAtMostRestrictions, axiomsExpressivity.m_hasNominals, axiomsExpressivity.m_hasDatatypes);
+        return new DLOntology(ontologyIRI, dlClauses, positiveFacts, negativeFacts, atomicConcepts, atomicObjectRoles, complexObjectRoles, atomicDataRoles, allUnknownDatatypeRestrictions, axioms.m_definedDatatypesIRIs, individuals, axiomsExpressivity.m_hasInverseRoles, axiomsExpressivity.m_hasAtMostRestrictions, axiomsExpressivity.m_hasNominals, axiomsExpressivity.m_hasDatatypes, axioms.m_metamodellingAxioms);
     }
 
     /*

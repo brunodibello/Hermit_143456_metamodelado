@@ -52,6 +52,9 @@ implements Serializable {
     }
 
     public boolean mergeNodes(Node node0, Node node1, DependencySet dependencySet) {
+    	System.out.println("---- Merge de Nodos ----");
+    	System.out.println("	node0 -> "+node0);
+    	System.out.println("	node1 -> "+node1);
         Node mergeInto;
         Node mergeFrom;
         int node1Precedence;
@@ -90,6 +93,8 @@ implements Serializable {
                 throw new IllegalStateException("Internal error: unsupported merge type.");
             }
         }
+        System.out.println("	mergeFrom -> "+mergeFrom);
+    	System.out.println("	mergeInto -> "+mergeInto);
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.mergeStarted(mergeFrom, mergeInto);
         }
