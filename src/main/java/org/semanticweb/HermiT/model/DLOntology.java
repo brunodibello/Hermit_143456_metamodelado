@@ -136,6 +136,9 @@ implements Serializable {
                 this.m_allIndividuals.add((Individual)argument);
             }
         }
+        for (OWLMetamodellingAxiom metamodellingAxiom : m_metamodellingAxioms) {
+        	this.m_allIndividuals.add(Individual.create(metamodellingAxiom.getMetamodelIndividual().toStringID()));
+        }
     }
 
     protected void addDLPredicate(DLPredicate dlPredicate) {
@@ -223,6 +226,10 @@ implements Serializable {
 
     public Set<Atom> getNegativeFacts() {
         return this.m_negativeFacts;
+    }
+    
+    public Set<OWLMetamodellingAxiom> getMetamodellingAxioms() {
+    	return this.m_metamodellingAxioms;
     }
 
     public boolean hasInverseRoles() {

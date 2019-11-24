@@ -49,6 +49,8 @@ import org.semanticweb.HermiT.tableau.NodeType;
 import org.semanticweb.HermiT.tableau.NominalIntroductionManager;
 import org.semanticweb.HermiT.tableau.PermanentDependencySet;
 import org.semanticweb.HermiT.tableau.ReasoningTaskDescription;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
 
 public final class Tableau
 implements Serializable {
@@ -296,6 +298,14 @@ implements Serializable {
         }
         this.clear();
         System.out.println("[!] isSatisfiable Started");
+        //Agregar individuos del MBox a los nodos
+        for (OWLMetamodellingAxiom metamodellingAxiom : this.m_permanentDLOntology.getMetamodellingAxioms()) {
+        	Individual ind = Individual.create(metamodellingAxiom.getMetamodelIndividual().toStringID());
+        	if (!termsToNodes.containsKey(ind)) {
+        		Node node = this.createNewNamedNode(this.m_dependencySetFactory.emptySet());
+            	termsToNodes.put(ind, node);
+        	}
+        }
         if (loadPermanentABox) {
         	System.out.println("loadPermanentABox");
         	System.out.println("	positiveFacts:");
