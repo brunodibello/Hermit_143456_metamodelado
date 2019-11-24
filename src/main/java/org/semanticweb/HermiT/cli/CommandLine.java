@@ -375,11 +375,17 @@ public class CommandLine {
                         AutoIRIMapper mapper = new AutoIRIMapper(file, false);
                         ontologyManager.getIRIMappers().add(mapper);
                     }
+                    System.out.println("Start load Ontology");
                     OWLOntology ontology = ontologyManager.loadOntology(ont);
+                    System.out.println("End load Ontology");
+                    System.out.println("*************************");
                     long parseTime = System.currentTimeMillis() - startTime;
                     status.log(2, "Ontology parsed in " + String.valueOf(parseTime) + " msec.");
                     startTime = System.currentTimeMillis();
+                    System.out.println("Start Crear Hermit Reasoner");
                     Reasoner hermit = new Reasoner(config, ontology);
+                    System.out.println("End Crear Hermit Reasoner");
+                    System.out.println("*************************");
                     Prefixes prefixes = hermit.getPrefixes();
                     if (defaultPrefix != null) {
                         try {
@@ -402,7 +408,10 @@ public class CommandLine {
                     for (Action action : actions) {
                         status.log(2, "Doing action...");
                         startTime = System.currentTimeMillis();
+                        System.out.println("Start action -> "+action.toString());
                         action.run(hermit, status, output, ignoreOntologyPrefixes);
+                        System.out.println("End Action -> "+action.toString());
+                        System.out.println("*************************");
                         long actionTime = System.currentTimeMillis() - startTime;
                         status.log(2, "...action completed in " + String.valueOf(actionTime) + " msec.");
                     }

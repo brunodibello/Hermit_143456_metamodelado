@@ -262,6 +262,23 @@ implements OWLReasoner {
 
     protected void loadOntology() {
         this.clearState();
+        System.out.println("** REASONER -> loadOntology **");
+        System.out.println("*************");
+        System.out.println("ABox Axioms de la ontologia:");
+        for (OWLAxiom axiom : this.m_rootOntology.getABoxAxioms(null)) {
+        	System.out.println("- "+axiom.toString());
+        }
+        System.out.println("*************");
+        System.out.println("TBox Axioms de la ontologia:");
+        for (OWLAxiom axiom : this.m_rootOntology.getTBoxAxioms(null)) {
+        	System.out.println("- "+axiom.toString());
+        }
+        System.out.println("*************");
+        System.out.println("MBox Axioms de la ontologia:");
+        for (OWLAxiom axiom : this.m_rootOntology.getMBoxAxioms(null)) {
+        	System.out.println("- "+axiom.toString());
+        }
+        System.out.println("*************");
         OWLClausification clausifier = new OWLClausification(this.m_configuration);
         Object[] result = clausifier.preprocessAndClausify(this.m_rootOntology, this.m_descriptionGraphs);
         this.m_objectPropertyInclusionManager = (ObjectPropertyInclusionManager)result[0];
@@ -432,7 +449,7 @@ implements OWLReasoner {
                 for (Atom atom : negativeFacts) {
                     atom.getIndividuals(allIndividuals);
                 }
-                this.m_dlOntology = new DLOntology(this.m_dlOntology.getOntologyIRI(), this.m_dlOntology.getDLClauses(), positiveFacts, negativeFacts, allAtomicConcepts, allAtomicObjectRoles, this.m_dlOntology.getAllComplexObjectRoles(), allAtomicDataRoles, this.m_dlOntology.getAllUnknownDatatypeRestrictions(), this.m_dlOntology.getDefinedDatatypeIRIs(), allIndividuals, this.m_dlOntology.hasInverseRoles(), this.m_dlOntology.hasAtMostRestrictions(), this.m_dlOntology.hasNominals(), this.m_dlOntology.hasDatatypes());
+                this.m_dlOntology = new DLOntology(this.m_dlOntology.getOntologyIRI(), this.m_dlOntology.getDLClauses(), positiveFacts, negativeFacts, allAtomicConcepts, allAtomicObjectRoles, this.m_dlOntology.getAllComplexObjectRoles(), allAtomicDataRoles, this.m_dlOntology.getAllUnknownDatatypeRestrictions(), this.m_dlOntology.getDefinedDatatypeIRIs(), allIndividuals, this.m_dlOntology.hasInverseRoles(), this.m_dlOntology.hasAtMostRestrictions(), this.m_dlOntology.hasNominals(), this.m_dlOntology.hasDatatypes(), null);
                 this.m_tableau = new Tableau(this.m_interruptFlag, this.m_tableau.getTableauMonitor(), this.m_tableau.getExistentialsExpansionStrategy(), this.m_configuration.useDisjunctionLearning, this.m_dlOntology, null, this.m_configuration.parameters);
                 this.m_instanceManager = null;
                 this.m_isConsistent = null;
@@ -789,8 +806,10 @@ implements OWLReasoner {
     }
 
     public boolean isSatisfiable(OWLClassExpression classExpression) {
+    	System.out.println("*** isSatisfiable? -> "+classExpression);
         this.checkPreConditions(new OWLObject[]{classExpression});
         if (!this.isConsistent()) {
+        	System.out.println("	Not Consistent");
             return false;
         }
         if (classExpression instanceof OWLClass && this.m_atomicConceptHierarchy != null) {
