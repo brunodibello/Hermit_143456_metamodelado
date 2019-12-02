@@ -212,8 +212,6 @@ implements Serializable {
         	System.out.println("----| deltaOldRetrieval "+(index+1));
             ExtensionTable.Retrieval deltaOldRetrieval = this.m_deltaOldRetrievals[index];
             deltaOldRetrieval.open();
-            if (index == 0)
-            	System.out.println("----| Ontology: "+deltaOldRetrieval.getExtensionTable().m_tableau.m_permanentDLOntology.toString());
             Object[] deltaOldTupleBuffer = deltaOldRetrieval.getTupleBuffer();
             System.out.println("----| deltaOldTupleBuffer: "+deltaOldTupleBuffer[0]+ ", "+deltaOldTupleBuffer[1]);
             while (!deltaOldRetrieval.afterLast() && !this.m_extensionManager.containsClash()) {
