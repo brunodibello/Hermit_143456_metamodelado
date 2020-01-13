@@ -64,7 +64,7 @@ implements Serializable {
     protected final DependencySetFactory m_dependencySetFactory;
     protected final ExtensionManager m_extensionManager;
     protected final ClashManager m_clashManager;
-    protected final HyperresolutionManager m_permanentHyperresolutionManager;
+    protected HyperresolutionManager m_permanentHyperresolutionManager;
     protected HyperresolutionManager m_additionalHyperresolutionManager;
     protected final MergingManager m_mergingManager;
     protected final ExistentialExpansionManager m_existentialExpasionManager;
@@ -93,6 +93,7 @@ implements Serializable {
     protected Node m_lastMergedOrPrunedNode;
     protected GroundDisjunction m_firstGroundDisjunction;
     protected GroundDisjunction m_firstUnprocessedGroundDisjunction;
+    protected Map<Integer, Individual> nodeToMetaIndividual;
 
     /*
      * WARNING - Removed try catching itself - possible behaviour change.
@@ -126,6 +127,7 @@ implements Serializable {
             this.m_branchingPoints = new BranchingPoint[2];
             this.m_currentBranchingPoint = -1;
             this.m_nonbacktrackableBranchingPoint = -1;
+            this.nodeToMetaIndividual = new HashMap<Integer, Individual>();
             this.updateFlagsDependentOnAdditionalOntology();
             if (this.m_tableauMonitor != null) {
                 this.m_tableauMonitor.setTableau(this);
@@ -174,6 +176,10 @@ implements Serializable {
 
     public HyperresolutionManager getPermanentHyperresolutionManager() {
         return this.m_permanentHyperresolutionManager;
+    }
+    
+    public void setPermanentHyperresolutionManager() {
+    	this.m_permanentHyperresolutionManager = new HyperresolutionManager(this, this.m_permanentDLOntology.getDLClauses());
     }
 
     public HyperresolutionManager getAdditionalHyperresolutionManager() {
@@ -305,6 +311,9 @@ implements Serializable {
         		Node node = this.createNewNamedNode(this.m_dependencySetFactory.emptySet());
             	termsToNodes.put(ind, node);
         	}
+        	this.nodeToMetaIndividual.put(termsToNodes.get(ind).m_nodeID, ind);
+        	//Check Equal rule when a = a
+        	this.m_extensionManager.checkEqualMetamodellingRule(termsToNodes.get(ind), termsToNodes.get(ind));
         }
         if (loadPermanentABox) {
         	System.out.println("loadPermanentABox");

@@ -6,8 +6,11 @@ package org.semanticweb.HermiT.tableau;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.fing.metamodelling.MetamodellingAxiomHelper;
 import org.semanticweb.HermiT.model.AnnotatedEquality;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
@@ -34,6 +37,7 @@ import org.semanticweb.HermiT.tableau.PermanentDependencySet;
 import org.semanticweb.HermiT.tableau.Tableau;
 import org.semanticweb.HermiT.tableau.TupleIndex;
 import org.semanticweb.HermiT.tableau.TupleTable;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 
 public final class ExtensionManager
 implements Serializable {
@@ -432,6 +436,7 @@ implements Serializable {
      */
     public boolean addAssertion(DLPredicate dlPredicate, Node node0, Node node1, DependencySet dependencySet, boolean isCore) {
         if (Equality.INSTANCE.equals(dlPredicate)) {
+        	checkEqualMetamodellingRule(node0, node1);
             return this.m_tableau.m_mergingManager.mergeNodes(node0, node1, dependencySet);
         }
         if (this.m_addActive) {
@@ -454,6 +459,25 @@ implements Serializable {
         }
     }
 
+	public void checkEqualMetamodellingRule(Node node0, Node node1) {
+		//Si ambos nodos que se mergean tienen axioma de metamodelling
+		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node0.m_nodeID), this.m_tableau.m_permanentDLOntology);
+		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node1.m_nodeID), this.m_tableau.m_permanentDLOntology);
+		if (!node0Classes.isEmpty() && !node1Classes.isEmpty()) {	
+			for (OWLClassExpression node0Class : node0Classes) {
+				for (OWLClassExpression node1Class : node1Classes) {
+					//Checkear si existe Axiom A U !B y B U !A
+					// <#B>(X) :- <#A>(X)
+					// <#A>(X) :- <#B>(X)
+					if (node1Class != node0Class && !MetamodellingAxiomHelper.containsSubClassOfAxiom( node0Class, node1Class, this.m_tableau.m_permanentDLOntology) && !MetamodellingAxiomHelper.containsSubClassOfAxiom(node1Class, node0Class, this.m_tableau.m_permanentDLOntology)) {
+						MetamodellingAxiomHelper.addSubClassOfAxioms(node0Class, node1Class, this.m_tableau.m_permanentDLOntology, this.m_tableau);
+					}
+				}
+			}
+			
+		}
+	}
+
     public boolean addAssertion(DLPredicate dlPredicate, Node node0, Node node1, Node node2, DependencySet dependencySet, boolean isCore) {
         if (this.m_addActive) {
             throw new IllegalStateException("ExtensionManager is not reentrant.");
@@ -467,6 +491,7 @@ implements Serializable {
         System.out.println("	node0 -> "+node0);
         System.out.println("	node1 -> "+node1);
         System.out.println("	node2 -> "+node2);
+        
         return this.addTuple(this.m_fouraryAuxiliaryTupleAdd, dependencySet, isCore);
     }
 

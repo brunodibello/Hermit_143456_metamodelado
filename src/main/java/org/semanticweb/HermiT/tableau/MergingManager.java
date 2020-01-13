@@ -4,6 +4,8 @@
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
+
+import org.fing.metamodelling.MetamodellingAxiomHelper;
 import org.semanticweb.HermiT.model.DescriptionGraph;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
 import org.semanticweb.HermiT.tableau.DependencySet;
@@ -170,6 +172,7 @@ implements Serializable {
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.mergeFinished(mergeFrom, mergeInto);
         }
+        this.m_extensionManager.checkEqualMetamodellingRule(mergeFrom, mergeInto);
         return true;
     }
 
