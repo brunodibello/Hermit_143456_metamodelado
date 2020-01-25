@@ -94,6 +94,7 @@ implements Serializable {
     protected GroundDisjunction m_firstGroundDisjunction;
     protected GroundDisjunction m_firstUnprocessedGroundDisjunction;
     protected Map<Integer, Individual> nodeToMetaIndividual;
+    protected List<Node> metamodellingNodes;
 
     /*
      * WARNING - Removed try catching itself - possible behaviour change.
@@ -128,6 +129,7 @@ implements Serializable {
             this.m_currentBranchingPoint = -1;
             this.m_nonbacktrackableBranchingPoint = -1;
             this.nodeToMetaIndividual = new HashMap<Integer, Individual>();
+            this.metamodellingNodes = new ArrayList<Node>();
             this.updateFlagsDependentOnAdditionalOntology();
             if (this.m_tableauMonitor != null) {
                 this.m_tableauMonitor.setTableau(this);
@@ -312,8 +314,7 @@ implements Serializable {
             	termsToNodes.put(ind, node);
         	}
         	this.nodeToMetaIndividual.put(termsToNodes.get(ind).m_nodeID, ind);
-        	//Check Equal rule when a = a
-        	this.m_extensionManager.checkEqualMetamodellingRule(termsToNodes.get(ind), termsToNodes.get(ind));
+        	this.metamodellingNodes.add(termsToNodes.get(ind));
         }
         if (loadPermanentABox) {
         	System.out.println("loadPermanentABox");
@@ -538,6 +539,10 @@ implements Serializable {
                 if (!this.m_extensionManager.containsClash()) {
                     this.m_nominalIntroductionManager.processAnnotatedEqualities();
                 }
+                if (checkEqualMetamodellingRuleIteration()) {
+                	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager, reiniciar el delta new
+                	this.m_extensionManager.resetDeltaNew();
+                }
                 hasChange = true;
             }
             if (hasChange) {
@@ -598,7 +603,37 @@ implements Serializable {
         }
         return false;
     }
+    
+    public boolean checkEqualMetamodellingRuleIteration() {
+    	for (Node node1 : this.metamodellingNodes) {
+    		for (Node node2 : this.metamodellingNodes) {
+    			if (areSameIndividual(node1, node2)) {
+    				if (this.m_extensionManager.checkEqualMetamodellingRule(node1, node2)) return true;
+    			}
+    		}
+    	}
+    	return false;
+    }
 
+    private boolean areSameIndividual(Node node1, Node node2) {
+    	if (node1.m_nodeID == node2.m_nodeID) return true;
+    	Individual paramIndividual1 = this.nodeToMetaIndividual.get(node1.m_nodeID);
+    	Individual paramIndividual2 = this.nodeToMetaIndividual.get(node2.m_nodeID);
+    	//chequeo en axiomas de la ontologia
+    	for (Atom positiveFact : this.m_permanentDLOntology.getPositiveFacts()) {
+    		if (Equality.INSTANCE.equals(positiveFact.getDLPredicate())) {
+    			Individual ind1 = (Individual) positiveFact.getArgument(0);
+    			Individual ind2 = (Individual) positiveFact.getArgument(1);
+    			//chequear que los nodos coincidan con los individuos del axioma o si son el mismo individuo
+    			if ((paramIndividual1 == ind1 && paramIndividual2 == ind2 ) || (paramIndividual2 == ind1 && paramIndividual1 == ind2 )) {
+    				return true;
+    			}
+    		}
+    	}
+    	//chequeo en axiomas inferidos -> Cuando mergea agregar el ABox axiom a la permanentDLOntology y listo.
+    	return false;
+    }
+    
     public boolean isCurrentModelDeterministic() {
         return this.m_isCurrentModelDeterministic;
     }

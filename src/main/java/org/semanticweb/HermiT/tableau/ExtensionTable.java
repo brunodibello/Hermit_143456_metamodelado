@@ -116,6 +116,12 @@ implements Serializable {
         this.m_afterDeltaNewTupleIndex = this.m_tupleTable.getFirstFreeTupleIndex();
         return deltaNewNotEmpty;
     }
+    
+    public void resetDeltaNew() {
+    	this.m_tupleTable.m_firstFreeTupleIndex = this.m_afterDeltaNewTupleIndex;
+    	this.m_afterDeltaNewTupleIndex = this.m_afterExtensionThisTupleIndex;
+    	this.m_afterExtensionThisTupleIndex = this.m_afterExtensionOldTupleIndex;
+    }
 
     public void branchingPointPushed() {
         int start = this.m_tableau.getCurrentBranchingPoint().m_level * 3;

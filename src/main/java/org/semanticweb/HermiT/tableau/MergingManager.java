@@ -6,8 +6,11 @@ package org.semanticweb.HermiT.tableau;
 import java.io.Serializable;
 
 import org.fing.metamodelling.MetamodellingAxiomHelper;
+import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.DescriptionGraph;
+import org.semanticweb.HermiT.model.Equality;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
+import org.semanticweb.HermiT.structural.OWLClausification;
 import org.semanticweb.HermiT.tableau.DependencySet;
 import org.semanticweb.HermiT.tableau.DescriptionGraphManager;
 import org.semanticweb.HermiT.tableau.ExtensionManager;
@@ -172,9 +175,14 @@ implements Serializable {
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.mergeFinished(mergeFrom, mergeInto);
         }
-        this.m_extensionManager.checkEqualMetamodellingRule(mergeFrom, mergeInto);
+        //Agregar axioma a permanent ontology
+        this.m_tableau.m_permanentDLOntology.getPositiveFacts().add(Atom.create(Equality.create(), this.m_tableau.nodeToMetaIndividual.get(mergeFrom.m_nodeID), this.m_tableau.nodeToMetaIndividual.get(mergeInto.m_nodeID)));
         return true;
     }
+    
+//    protected static Atom createEqualityAxiom() {
+//    	return new Atom();
+//    }
 
     protected static boolean isDescendantOfAtMostThreeLevels(Node descendant, Node ancestor) {
         if (descendant != null) {

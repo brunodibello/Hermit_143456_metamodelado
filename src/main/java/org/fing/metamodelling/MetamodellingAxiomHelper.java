@@ -24,9 +24,11 @@ public class MetamodellingAxiomHelper {
 	
 	public static List<OWLClassExpression> getMetamodellingClassesByIndividual(Individual ind, DLOntology ontology) {
 		List<OWLClassExpression> classes = new ArrayList<OWLClassExpression>();
-		for (OWLMetamodellingAxiom metamodellingAxiom : ontology.getMetamodellingAxioms()) {
-			if (ind.toString().equals(metamodellingAxiom.getMetamodelIndividual().toString())) {
-				classes.add(metamodellingAxiom.getModelClass());
+		if (ind != null) {
+			for (OWLMetamodellingAxiom metamodellingAxiom : ontology.getMetamodellingAxioms()) {
+				if (ind.toString().equals(metamodellingAxiom.getMetamodelIndividual().toString())) {
+					classes.add(metamodellingAxiom.getModelClass());
+				}
 			}
 		}
 		return classes;
@@ -43,7 +45,7 @@ public class MetamodellingAxiomHelper {
 		return false;
 	}
 	
-	public static void addSubClassOfAxioms(OWLClassExpression classA, OWLClassExpression classB, DLOntology ontology, Tableau tableau) {
+	public static boolean addSubClassOfAxioms(OWLClassExpression classA, OWLClassExpression classB, DLOntology ontology, Tableau tableau) {
 		Atom[] headAtoms1 = {Atom.create(AtomicConcept.create(classA.toString().substring(1, classA.toString().length()-1)), Variable.create("X"))};
 		Atom[] bodyAtoms1 = {Atom.create(AtomicConcept.create(classB.toString().substring(1, classB.toString().length()-1)), Variable.create("X"))};
 		
@@ -63,6 +65,10 @@ public class MetamodellingAxiomHelper {
 			System.out.println("-> "+dlClause2);
 
 			tableau.setPermanentHyperresolutionManager();
+			
+			return true;
 		}
+		
+		return false;
 	}
 }

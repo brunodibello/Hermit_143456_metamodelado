@@ -175,6 +175,12 @@ implements Serializable {
         }
         return hasChange;
     }
+    
+    public void resetDeltaNew() {
+    	for (int index = 0; index < this.m_allExtensionTablesArray.length; ++index) {
+            this.m_allExtensionTablesArray[index].resetDeltaNew();
+        }
+    }
 
     public void clearClash() {
         if (this.m_clashDependencySet != null) {
@@ -436,7 +442,6 @@ implements Serializable {
      */
     public boolean addAssertion(DLPredicate dlPredicate, Node node0, Node node1, DependencySet dependencySet, boolean isCore) {
         if (Equality.INSTANCE.equals(dlPredicate)) {
-        	checkEqualMetamodellingRule(node0, node1);
             return this.m_tableau.m_mergingManager.mergeNodes(node0, node1, dependencySet);
         }
         if (this.m_addActive) {
@@ -459,7 +464,7 @@ implements Serializable {
         }
     }
 
-	public void checkEqualMetamodellingRule(Node node0, Node node1) {
+	public boolean checkEqualMetamodellingRule(Node node0, Node node1) {
 		//Si ambos nodos que se mergean tienen axioma de metamodelling
 		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node0.m_nodeID), this.m_tableau.m_permanentDLOntology);
 		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node1.m_nodeID), this.m_tableau.m_permanentDLOntology);
@@ -471,11 +476,12 @@ implements Serializable {
 					// <#A>(X) :- <#B>(X)
 					if (node1Class != node0Class && !MetamodellingAxiomHelper.containsSubClassOfAxiom( node0Class, node1Class, this.m_tableau.m_permanentDLOntology) && !MetamodellingAxiomHelper.containsSubClassOfAxiom(node1Class, node0Class, this.m_tableau.m_permanentDLOntology)) {
 						MetamodellingAxiomHelper.addSubClassOfAxioms(node0Class, node1Class, this.m_tableau.m_permanentDLOntology, this.m_tableau);
+						return true;
 					}
 				}
 			}
-			
 		}
+		return false;
 	}
 
     public boolean addAssertion(DLPredicate dlPredicate, Node node0, Node node1, Node node2, DependencySet dependencySet, boolean isCore) {
