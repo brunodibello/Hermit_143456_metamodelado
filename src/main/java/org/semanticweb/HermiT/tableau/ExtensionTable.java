@@ -118,9 +118,8 @@ implements Serializable {
     }
     
     public void resetDeltaNew() {
-    	this.m_tupleTable.m_firstFreeTupleIndex = this.m_afterDeltaNewTupleIndex;
-    	this.m_afterDeltaNewTupleIndex = this.m_afterExtensionThisTupleIndex;
-    	this.m_afterExtensionThisTupleIndex = this.m_afterExtensionOldTupleIndex;
+    	this.m_afterExtensionOldTupleIndex = 0;
+    	this.m_afterExtensionThisTupleIndex = 0;
     }
 
     public void branchingPointPushed() {
