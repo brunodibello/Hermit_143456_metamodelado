@@ -176,13 +176,11 @@ implements Serializable {
             this.m_tableauMonitor.mergeFinished(mergeFrom, mergeInto);
         }
         //Agregar axioma a permanent ontology
-        this.m_tableau.m_permanentDLOntology.getPositiveFacts().add(Atom.create(Equality.create(), this.m_tableau.nodeToMetaIndividual.get(mergeFrom.m_nodeID), this.m_tableau.nodeToMetaIndividual.get(mergeInto.m_nodeID)));
+        if (this.m_tableau.nodeToMetaIndividual.containsKey(mergeFrom.m_nodeID) && this.m_tableau.nodeToMetaIndividual.containsKey(mergeInto.m_nodeID)) {
+            this.m_tableau.m_permanentDLOntology.getPositiveFacts().add(Atom.create(Equality.create(), this.m_tableau.nodeToMetaIndividual.get(mergeFrom.m_nodeID), this.m_tableau.nodeToMetaIndividual.get(mergeInto.m_nodeID)));
+        }
         return true;
     }
-    
-//    protected static Atom createEqualityAxiom() {
-//    	return new Atom();
-//    }
 
     protected static boolean isDescendantOfAtMostThreeLevels(Node descendant, Node ancestor) {
         if (descendant != null) {
