@@ -175,10 +175,6 @@ implements Serializable {
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.mergeFinished(mergeFrom, mergeInto);
         }
-        //Agregar axioma a permanent ontology
-        if (this.m_tableau.nodeToMetaIndividual.containsKey(mergeFrom.m_nodeID) && this.m_tableau.nodeToMetaIndividual.containsKey(mergeInto.m_nodeID)) {
-            this.m_tableau.m_permanentDLOntology.getPositiveFacts().add(Atom.create(Equality.create(), this.m_tableau.nodeToMetaIndividual.get(mergeFrom.m_nodeID), this.m_tableau.nodeToMetaIndividual.get(mergeInto.m_nodeID)));
-        }
         return true;
     }
 

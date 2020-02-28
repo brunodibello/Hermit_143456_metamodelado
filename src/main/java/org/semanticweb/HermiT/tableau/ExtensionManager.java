@@ -169,7 +169,9 @@ implements Serializable {
 
     public boolean propagateDeltaNew() {
         boolean hasChange = false;
+        System.out.println(" => propagateDeltaNew for "+this.m_allExtensionTablesArray.length+" extension tables <=");
         for (int index = 0; index < this.m_allExtensionTablesArray.length; ++index) {
+        	System.out.println(" Table "+index);
             if (!this.m_allExtensionTablesArray[index].propagateDeltaNew()) continue;
             hasChange = true;
         }
