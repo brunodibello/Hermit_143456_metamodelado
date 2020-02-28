@@ -15,6 +15,7 @@ import org.semanticweb.HermiT.model.Variable;
 import org.semanticweb.HermiT.structural.OWLClausification;
 import org.semanticweb.HermiT.tableau.DLClauseEvaluator;
 import org.semanticweb.HermiT.tableau.ExtensionTable;
+import org.semanticweb.HermiT.tableau.HyperresolutionManager;
 import org.semanticweb.HermiT.tableau.HyperresolutionManager.BodyAtomsSwapper;
 import org.semanticweb.HermiT.tableau.Tableau;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -56,6 +57,15 @@ public class MetamodellingAxiomHelper {
 		
 		DLClause dlClause2 = new DLClause( headAtoms2, bodyAtoms2);
 		
+//		boolean hrmAlreadyCreated = false;
+//		
+//		for (BranchedHyperresolutionManager bhm :  tableau.getBranchedHyperresolutionManagers()) {
+//			if (bhm.getBranchingIndex() == tableau.getCurrentBranchingPointLevel() && bhm.getBranchingPoint() == tableau.m_currentBranchingPoint) {
+//				hrmAlreadyCreated = true;
+//			}
+//		}
+		
+//		if (!ontology.getDLClauses().contains(dlClause1) && !ontology.getDLClauses().contains(dlClause2) && !hrmAlreadyCreated) {
 		if (!ontology.getDLClauses().contains(dlClause1) && !ontology.getDLClauses().contains(dlClause2)) {
 			ontology.getDLClauses().add(dlClause1);
 			ontology.getDLClauses().add(dlClause2);
@@ -64,11 +74,29 @@ public class MetamodellingAxiomHelper {
 			System.out.println("-> "+dlClause1);
 			System.out.println("-> "+dlClause2);
 
-			tableau.setPermanentHyperresolutionManager();
+			createHyperResolutionManager(tableau, dlClause1, dlClause2);
 			
 			return true;
 		}
 		
 		return false;
+	}
+	
+	private static void createHyperResolutionManager(Tableau tableau, DLClause dlClause1, DLClause dlClause2) {
+		
+		HyperresolutionManager hypM =  new HyperresolutionManager(tableau, tableau.getPermanentDLOntology().getDLClauses());
+		
+		BranchedHyperresolutionManager branchedHypM = new BranchedHyperresolutionManager();
+		branchedHypM.setHyperresolutionManager(hypM);
+		branchedHypM.setBranchingIndex(tableau.getCurrentBranchingPointLevel());
+		branchedHypM.setBranchingPoint(tableau.m_currentBranchingPoint);
+		branchedHypM.getDlClausesAdded().add(dlClause1);
+		branchedHypM.getDlClausesAdded().add(dlClause2);
+		
+		tableau.getBranchedHyperresolutionManagers().add(branchedHypM);	
+
+		
+		tableau.setPermanentHyperresolutionManager(hypM);
+
 	}
 }

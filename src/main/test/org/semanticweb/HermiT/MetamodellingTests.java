@@ -42,23 +42,39 @@ public class MetamodellingTests extends TestCase {
 		flagsCount = 1;
 	}
 	
-	//rule1 inconsistentes
-	public void testF() {
-		String[] escenarios = new String[] {"1", "3", "5", "7", "11", "13", "17", "19"};
+	public void testAccountingConsistente1() {
 		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"otras/AccountingConsistente1.owl");
 		
-		for (String escenario : escenarios) {
-			flags.add(testCasesPath+"EscenarioF/TestEquality"+escenario+".owl");
-			try {
-				cl.main(flags.toArray(new String[flagsCount+1]));
-			}catch (InconsistentOntologyException e) {
-				System.out.println("Escenario "+escenario+" es inconsistente");
-			}
-			
-			//remover la flag del escenario
-			flags.remove(flagsCount);
+		cl.main(flags.toArray(new String[flagsCount+1]));
+		System.out.println("AccountingConsistente1 es consistente");
+		
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+	}
+	
+	public void testAccountingConsistente2() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"otras/AccountingConsistente2.owl");
+		
+		cl.main(flags.toArray(new String[flagsCount+1]));
+		System.out.println("AccountingConsistente2 es consistente");
+		
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+	}
+	
+	public void testAccountingInconsistente1() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"otras/AccountingInconsistente1.owl");
+		try {
+			cl.main(flags.toArray(new String[flagsCount+1]));
+		}catch (InconsistentOntologyException e) {
+			System.out.println("AccountingInconsistente1 es inconsistente");
 		}
 		
+		//remover la flag del escenario
+		flags.remove(flagsCount);
 	}
 	
 	public void testF1() {
