@@ -561,44 +561,24 @@ implements Serializable {
                 if (!this.m_extensionManager.containsClash()) {
                     this.m_nominalIntroductionManager.processAnnotatedEqualities();
                 }
+                //Acciones de Metamodeling 
+                //Si encontramos clash y hay mas de 1 elemento en branchedHyperresolutionManagers y el tableau se encuentra en estado de backtracking
                 if (this.m_extensionManager.containsClash() && this.branchedHyperresolutionManagers.size() > 1 && this.m_branchingPoints[0] != null) {
+                	//Si el branching point y el branching point level coinciden con el ultimo elemento almacenado en branchedHyperresolutionManagers
                 	if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() == this.m_currentBranchingPoint && this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() == this.getCurrentBranchingPointLevel()) {
-                		for (DLClause dlClauseAdded : this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getDlClausesAdded()) {
-                    		this.getPermanentDLOntology().getDLClauses().remove(dlClauseAdded);
-                    	}
-                        this.setPermanentHyperresolutionManager(new HyperresolutionManager(this, this.getPermanentDLOntology().getDLClauses()));
-//                        this.m_extensionManager.resetDeltaNew();
-//                        this.m_dependencySetFactory.removeUnusedSets();
-//                        //this.m_extensionManager.clearClash();
-//                        this.m_extensionManager.backtrack();
-//                        this.backtrackLastMergedOrPrunedNode();
-//                        this.backtrackLastMergedOrPrunedNode();
-//                        this.m_branchingPoints[this.m_currentBranchingPoint].startNextChoice(this, this.m_extensionManager.getClashDependencySet());
-//                        this.m_extensionManager.clearClash();
-                        //return true;
+                		//Al entrar aca se supone que el tableau encontro un clash, se encuentra haciendo backtracking y se agregaron axiomas de metamodelling a partir del backtracking
+                		 // Por lo que se remueven esos axiomas y se pasa a la siguiente opcions
+                		
+                		
+                		//Se remueven las dlclauses agregadas y se vuelve el hyperresolutionManager al estado anterior
+                		backtrackHyperresolutionManager();
      
-                        this.m_existentialExpansionStrategy.backtrack();
-                        this.m_existentialExpasionManager.backtrack();
-                        this.m_nominalIntroductionManager.backtrack();
-                        this.m_extensionManager.backtrack();
-                        Node lastMergedOrPrunedNodeShouldBe = this.m_branchingPoints[this.m_currentBranchingPoint].m_lastMergedOrPrunedNode;
-                        while (this.m_lastMergedOrPrunedNode != lastMergedOrPrunedNodeShouldBe) {
-                            this.backtrackLastMergedOrPrunedNode();
-                        }
-                        Node lastTableauNodeShouldBe = this.m_branchingPoints[this.m_currentBranchingPoint].m_lastTableauNode;
-                        while (lastTableauNodeShouldBe != this.m_lastTableauNode) {
-                            this.destroyLastTableauNode();
-                        }
-                        try {
-                        	this.m_branchingPoints[this.m_currentBranchingPoint].startNextChoice(this, this.m_extensionManager.getClashDependencySet());
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                        	return false;
-                        }                
-                        this.m_extensionManager.clearClash();
+                        //Backtracking manual: false - inconsistente | true - sigue corriendo
+                        return backtrackMetamodellingClash();
                 	}
                 	
                 } else if (checkEqualMetamodellingRuleIteration()) {
-                	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager, reiniciar el delta new
+                	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
                 	this.m_extensionManager.resetDeltaNew();
                 }
                 hasChange = true;
@@ -663,7 +643,48 @@ implements Serializable {
         }
         return false;
     }
+
+	private void backtrackHyperresolutionManager() {
+		//Remover axiomas agregados por rule =
+		for (DLClause dlClauseAdded : this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getDlClausesAdded()) {
+			this.getPermanentDLOntology().getDLClauses().remove(dlClauseAdded);
+		}
+		//Volver el HyperresolutionManager a su estado anterior
+		this.setPermanentHyperresolutionManager(new HyperresolutionManager(this, this.getPermanentDLOntology().getDLClauses()));
+	}
+
+	private boolean backtrackMetamodellingClash() {
+		//Backtracking de distintas estructuras
+		this.m_existentialExpansionStrategy.backtrack();
+		this.m_existentialExpasionManager.backtrack();
+		this.m_nominalIntroductionManager.backtrack();
+		this.m_extensionManager.backtrack();
+		
+		//Backtracking de merge de nodos
+		Node lastMergedOrPrunedNodeShouldBe = this.m_branchingPoints[this.m_currentBranchingPoint].m_lastMergedOrPrunedNode;
+		while (this.m_lastMergedOrPrunedNode != lastMergedOrPrunedNodeShouldBe) {
+		    this.backtrackLastMergedOrPrunedNode();
+		}
+		//Backtracking de creacion de nodos
+		Node lastTableauNodeShouldBe = this.m_branchingPoints[this.m_currentBranchingPoint].m_lastTableauNode;
+		while (lastTableauNodeShouldBe != this.m_lastTableauNode) {
+		    this.destroyLastTableauNode();
+		}
+		
+		//Pasar a la siguiete opcion, de lo contrario se retorna una exception y Hermit determina inconsistencia
+		try {
+			this.m_branchingPoints[this.m_currentBranchingPoint].startNextChoice(this, this.m_extensionManager.getClashDependencySet());
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return false;
+		}                
+		this.m_extensionManager.clearClash();
+		return true;
+	}
     
+    /*
+     	Para cada par de nodos del conjunto de nodos que participan de un axioma de metamodelling, se checkea que sean iguales 
+     	y de ser asi y de no existir el axioma que iguala a las clases relacionadas con esos individuos: se agrega dicho axioma
+    */
     public boolean checkEqualMetamodellingRuleIteration() {
     	for (Node node1 : this.metamodellingNodes) {
     		for (Node node2 : this.metamodellingNodes) {
@@ -675,12 +696,18 @@ implements Serializable {
     	return false;
     }
 
+    /*
+    	Devuelve true si los 2 nodos son iguales, ya sea porque sean el mismo nodo, igualados por un axioma o si fueron mergeados
+    */
     private boolean areSameIndividual(Node node1, Node node2) {
+    	//Checkeo si es el mismo nodo
     	if (node1.m_nodeID == node2.m_nodeID) return true;
+    	//Obtengo los individuos a partir de los nodos
     	Individual paramIndividual1 = this.nodeToMetaIndividual.get(node1.m_nodeID);
     	Individual paramIndividual2 = this.nodeToMetaIndividual.get(node2.m_nodeID);
     	//chequeo en axiomas de la ontologia
     	for (Atom positiveFact : this.m_permanentDLOntology.getPositiveFacts()) {
+    		//Si es un axioma de igualdad de individuos
     		if (Equality.INSTANCE.equals(positiveFact.getDLPredicate())) {
     			Individual ind1 = (Individual) positiveFact.getArgument(0);
     			Individual ind2 = (Individual) positiveFact.getArgument(1);
@@ -690,8 +717,7 @@ implements Serializable {
     			}
     		}
     	}
-    	//chequeo en axiomas inferidos -> Cuando mergea agregar el ABox axiom a la permanentDLOntology y listo. (NO FUNCIONA PARA BACKTRACKING)
-    	//PRUEBA CHECKEANDO EL ESTADO DEL NODO ( SI SE MERGEA CAMBIA A MERGED Y GUARDA AL NODO QUE SE MERGEO )
+    	//Checkear si los nodos fueron mergeados (Igualdad inferida)
     	return ((node1.isMerged() && node1.m_mergedInto == node2) || (node2.isMerged() && node2.m_mergedInto == node1)) ;
     }
     
