@@ -577,7 +577,7 @@ implements Serializable {
                         return backtrackMetamodellingClash();
                 	}
                 	
-                } else if (checkEqualMetamodellingRuleIteration()) {
+                } else if (checkEqualMetamodellingRuleIteration() || checkInequalityMetamodellingRule()) {
                 	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
                 	this.m_extensionManager.resetDeltaNew();
                 }
@@ -685,11 +685,55 @@ implements Serializable {
      	Para cada par de nodos del conjunto de nodos que participan de un axioma de metamodelling, se checkea que sean iguales 
      	y de ser asi y de no existir el axioma que iguala a las clases relacionadas con esos individuos: se agrega dicho axioma
     */
-    public boolean checkEqualMetamodellingRuleIteration() {
+    private boolean checkEqualMetamodellingRuleIteration() {
     	for (Node node1 : this.metamodellingNodes) {
     		for (Node node2 : this.metamodellingNodes) {
     			if (areSameIndividual(node1, node2)) {
     				if (this.m_extensionManager.checkEqualMetamodellingRule(node1, node2)) return true;
+    			}
+    		}
+    	}
+    	return false;
+    }
+    
+    /*
+	 	Para cada par de nodos del conjunto de nodos que participan de un axioma de metamodelling, se checkea que sean diferentes 
+	 	y de ser asi y de cumplirse las reglas de Rule != de metamodelling, se agerga nodo Z
+	*/
+    private boolean checkInequalityMetamodellingRule() {
+    	for (Node node1 : this.metamodellingNodes) {
+    		for (Node node2 : this.metamodellingNodes) {
+    			if (areDifferentIndividual(node1, node2)) {
+    				if (this.m_extensionManager.checkInequalityMetamodellingRule(node1, node2)) return true;
+    			}
+    		}
+    	}
+    	return false;
+    }
+    
+    public boolean containsClassAssertion(String def) {
+    	for (int i=0; i < m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length ;i++) {
+    		Object object = this.m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i];
+    		if (object != null && object.toString().equals(def)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    /*
+		Devuelve true si los 2 nodos son diferentes
+    */
+    private boolean areDifferentIndividual(Node node1, Node node2) {
+    	//buscar si existe el axioma de node1 != node2
+    	//Recorrer la ternaryTable del etension manager en busca de axiomas de !=
+    	for (int i=0; i < this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length-2 ;i++) {
+    		Object object = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i];
+    		if (object != null && object.toString().equals("!=")) {
+    			Node obj1 = (Node) this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+1];
+    			Node obj2 = (Node) this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+2];
+    			if (obj1.getCanonicalNode() == node1.getCanonicalNode() && obj2.getCanonicalNode() == node2.getCanonicalNode()) {
+    				return true;
     			}
     		}
     	}
@@ -701,7 +745,8 @@ implements Serializable {
     */
     private boolean areSameIndividual(Node node1, Node node2) {
     	//Checkeo si es el mismo nodo
-    	if (node1.m_nodeID == node2.m_nodeID) return true;
+    	//El canonical node el nodo que queda luego del merge
+    	if ((node1.m_nodeID == node2.m_nodeID) || (node1.getCanonicalNode() == node2.getCanonicalNode())) return true;
     	//Obtengo los individuos a partir de los nodos
     	Individual paramIndividual1 = this.nodeToMetaIndividual.get(node1.m_nodeID);
     	Individual paramIndividual2 = this.nodeToMetaIndividual.get(node2.m_nodeID);

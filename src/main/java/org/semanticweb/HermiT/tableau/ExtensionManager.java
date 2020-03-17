@@ -24,6 +24,7 @@ import org.semanticweb.HermiT.model.InternalDatatype;
 import org.semanticweb.HermiT.model.InverseRole;
 import org.semanticweb.HermiT.model.Role;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
+import org.semanticweb.HermiT.structural.OWLNormalization;
 import org.semanticweb.HermiT.tableau.DependencySet;
 import org.semanticweb.HermiT.tableau.DependencySetFactory;
 import org.semanticweb.HermiT.tableau.ExtensionTable;
@@ -478,6 +479,24 @@ implements Serializable {
 					// <#A>(X) :- <#B>(X)
 					if (node1Class != node0Class && !MetamodellingAxiomHelper.containsSubClassOfAxiom( node0Class, node1Class, this.m_tableau.m_permanentDLOntology) && !MetamodellingAxiomHelper.containsSubClassOfAxiom(node1Class, node0Class, this.m_tableau.m_permanentDLOntology)) {
 						MetamodellingAxiomHelper.addSubClassOfAxioms(node0Class, node1Class, this.m_tableau.m_permanentDLOntology, this.m_tableau);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkInequalityMetamodellingRule(Node node0, Node node1) {
+		//Si ambos nodos que se mergean tienen axioma de metamodelling
+		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node0.m_nodeID), this.m_tableau.m_permanentDLOntology);
+		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node1.m_nodeID), this.m_tableau.m_permanentDLOntology);
+		if (!node0Classes.isEmpty() && !node1Classes.isEmpty()) {	
+			for (OWLClassExpression node0Class : node0Classes) {
+				for (OWLClassExpression node1Class : node1Classes) {
+					//Checkear si existe Axiom (A int not-B) union (not-A int B) 
+					if (node1Class != node0Class && !MetamodellingAxiomHelper.containsInequalityRuleAxiom( node0Class, node1Class, this.m_tableau)) {
+						MetamodellingAxiomHelper.addInequalityMetamodellingRuleAxiom(node0Class, node1Class, this.m_tableau.m_permanentDLOntology, this.m_tableau);
 						return true;
 					}
 				}
