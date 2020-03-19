@@ -646,8 +646,12 @@ implements Serializable {
 
 	private void backtrackHyperresolutionManager() {
 		//Remover axiomas agregados por rule =
-		for (DLClause dlClauseAdded : this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getDlClausesAdded()) {
-			this.getPermanentDLOntology().getDLClauses().remove(dlClauseAdded);
+		for (int i=1; i<this.branchedHyperresolutionManagers.size(); i++) {
+			if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.m_currentBranchingPoint && this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.getCurrentBranchingPointLevel()) {
+				for (DLClause dlClauseAdded : this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getDlClausesAdded()) {
+					this.getPermanentDLOntology().getDLClauses().remove(dlClauseAdded);
+				}
+			}
 		}
 		//Volver el HyperresolutionManager a su estado anterior
 		this.setPermanentHyperresolutionManager(new HyperresolutionManager(this, this.getPermanentDLOntology().getDLClauses()));
