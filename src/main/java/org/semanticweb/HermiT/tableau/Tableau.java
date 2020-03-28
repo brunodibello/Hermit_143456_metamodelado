@@ -578,7 +578,7 @@ implements Serializable {
  
                     //Backtracking manual: false - inconsistente | true - sigue corriendo
                     return backtrackMetamodellingClash();
-                } else if (checkEqualMetamodellingRuleIteration() || checkInequalityMetamodellingRuleIteration() || checkCloseMetamodellingRuleIteration()) {
+                } else if (checkEqualMetamodellingRule() || checkInequalityMetamodellingRule() || checkCloseMetamodellingRule()) {
                 	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
                 	this.m_extensionManager.resetDeltaNew();
                 }
@@ -712,11 +712,11 @@ implements Serializable {
      	Para cada par de nodos del conjunto de nodos que participan de un axioma de metamodelling, se checkea que sean iguales 
      	y de ser asi y de no existir el axioma que iguala a las clases relacionadas con esos individuos: se agrega dicho axioma
     */
-    private boolean checkEqualMetamodellingRuleIteration() {
+    private boolean checkEqualMetamodellingRule() {
     	for (Node node1 : this.metamodellingNodes) {
     		for (Node node2 : this.metamodellingNodes) {
     			if (areSameIndividual(node1, node2)) {
-    				if (this.m_extensionManager.checkEqualMetamodellingRule(node1, node2)) return true;
+    				if (this.m_extensionManager.checkEqualMetamodellingRuleIteration(node1, node2)) return true;
     			}
     		}
     	}
@@ -727,11 +727,11 @@ implements Serializable {
 	 	Para cada par de nodos del conjunto de nodos que participan de un axioma de metamodelling, se checkea que sean diferentes 
 	 	y de ser asi y de cumplirse las reglas de Rule != de metamodelling, se agerga nodo Z
 	*/
-    private boolean checkInequalityMetamodellingRuleIteration() {
+    private boolean checkInequalityMetamodellingRule() {
     	for (Node node1 : this.metamodellingNodes) {
     		for (Node node2 : this.metamodellingNodes) {
     			if (areDifferentIndividual(node1, node2)) {
-    				if (this.m_extensionManager.checkInequalityMetamodellingRule(node1, node2)) return true;
+    				if (this.m_extensionManager.checkInequalityMetamodellingRuleIteration(node1, node2)) return true;
     			}
     		}
     	}
@@ -741,10 +741,10 @@ implements Serializable {
     /*
     	Para cada par de individuos que participan en un axioma de metamodelling chequear si se debe aplicar la Close Rule
     */
-    private boolean checkCloseMetamodellingRuleIteration() {
+    private boolean checkCloseMetamodellingRule() {
     	for (Node node1 : this.metamodellingNodes) {
     		for (Node node2 : this.metamodellingNodes) {
-    			if (this.m_extensionManager.checkCloseMetamodellingRule(node1, node2)) return true;
+    			if (this.m_extensionManager.checkCloseMetamodellingRuleIteration(node1, node2)) return true;
     		}
     	}
     	return false;

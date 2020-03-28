@@ -471,7 +471,7 @@ implements Serializable {
         }
     }
 
-	public boolean checkEqualMetamodellingRule(Node node0, Node node1) {
+	public boolean checkEqualMetamodellingRuleIteration(Node node0, Node node1) {
 		//Si ambos nodos que se mergean tienen axioma de metamodelling
 		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node0.m_nodeID), this.m_tableau.m_permanentDLOntology);
 		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node1.m_nodeID), this.m_tableau.m_permanentDLOntology);
@@ -491,7 +491,7 @@ implements Serializable {
 		return false;
 	}
 	
-	public boolean checkInequalityMetamodellingRule(Node node0, Node node1) {
+	public boolean checkInequalityMetamodellingRuleIteration(Node node0, Node node1) {
 		//Si ambos nodos que se mergean tienen axioma de metamodelling
 		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node0.m_nodeID), this.m_tableau.m_permanentDLOntology);
 		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node1.m_nodeID), this.m_tableau.m_permanentDLOntology);
@@ -509,7 +509,7 @@ implements Serializable {
 		return false;
 	}
 	
-	public boolean checkCloseMetamodellingRule(Node node0, Node node1) {
+	public boolean checkCloseMetamodellingRuleIteration(Node node0, Node node1) {
 		List<Node> node0Equivalents = this.m_tableau.getEquivalentNodes(node0);
 		List<Node> node1Equivalents = this.m_tableau.getEquivalentNodes(node1);
 		for (Node node0Equivalent : node0Equivalents) {
