@@ -4,6 +4,7 @@
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 import org.fing.metamodelling.MetamodellingAxiomHelper;
 import org.semanticweb.HermiT.model.AnnotatedEquality;
+import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
 import org.semanticweb.HermiT.model.Concept;
@@ -20,11 +22,13 @@ import org.semanticweb.HermiT.model.DLPredicate;
 import org.semanticweb.HermiT.model.DataRange;
 import org.semanticweb.HermiT.model.DescriptionGraph;
 import org.semanticweb.HermiT.model.Equality;
+import org.semanticweb.HermiT.model.Inequality;
 import org.semanticweb.HermiT.model.InternalDatatype;
 import org.semanticweb.HermiT.model.InverseRole;
 import org.semanticweb.HermiT.model.Role;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
 import org.semanticweb.HermiT.structural.OWLNormalization;
+import org.semanticweb.HermiT.tableau.DLClauseEvaluator.GroundDisjunctionHeaderManager;
 import org.semanticweb.HermiT.tableau.DependencySet;
 import org.semanticweb.HermiT.tableau.DependencySetFactory;
 import org.semanticweb.HermiT.tableau.ExtensionTable;
@@ -491,7 +495,7 @@ implements Serializable {
 		//Si ambos nodos que se mergean tienen axioma de metamodelling
 		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node0.m_nodeID), this.m_tableau.m_permanentDLOntology);
 		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.nodeToMetaIndividual.get(node1.m_nodeID), this.m_tableau.m_permanentDLOntology);
-		if (!node0Classes.isEmpty() && !node1Classes.isEmpty()) {	
+		if (!node0Classes.isEmpty() && !node1Classes.isEmpty()) {
 			for (OWLClassExpression node0Class : node0Classes) {
 				for (OWLClassExpression node1Class : node1Classes) {
 					//Checkear si existe Axiom (A int not-B) union (not-A int B) 
@@ -504,7 +508,38 @@ implements Serializable {
 		}
 		return false;
 	}
-
+	
+	public boolean checkCloseMetamodellingRule(Node node0, Node node1) {
+		List<Node> node0Equivalents = this.m_tableau.getEquivalentNodes(node0);
+		List<Node> node1Equivalents = this.m_tableau.getEquivalentNodes(node1);
+		for (Node node0Equivalent : node0Equivalents) {
+			for (Node node1Equivalent : node1Equivalents) {
+				if (!this.m_tableau.areDifferentIndividual(node0Equivalent, node1Equivalent) && !this.m_tableau.areSameIndividual(node0Equivalent, node1Equivalent) && !this.m_tableau.alreadyCreateDisjunction(node0Equivalent, node1Equivalent)) {
+					//create ground disjunction x=y or x!=y
+					Atom eqAtom = Atom.create(Equality.INSTANCE, this.m_tableau.mapNodeIndividual.get(node0Equivalent.m_nodeID), this.m_tableau.mapNodeIndividual.get(node1Equivalent.m_nodeID));
+					DLPredicate equalityPredicate = eqAtom.getDLPredicate();
+					Atom ineqAtom = Atom.create(Inequality.INSTANCE, this.m_tableau.mapNodeIndividual.get(node0Equivalent.m_nodeID), this.m_tableau.mapNodeIndividual.get(node1Equivalent.m_nodeID));
+					DLPredicate inequalityPredicate = ineqAtom.getDLPredicate();
+					DLPredicate[] dlPredicates = new DLPredicate[] {equalityPredicate, inequalityPredicate};
+					
+					int hashCode = 0;
+		            for (int disjunctIndex = 0; disjunctIndex < dlPredicates.length; ++disjunctIndex) {
+		                hashCode = hashCode * 7 + dlPredicates[disjunctIndex].hashCode();
+		            }
+		            
+					GroundDisjunctionHeader gdh = new GroundDisjunctionHeader(dlPredicates, hashCode , null);
+					//isCore[] y dependencySet investigar
+					GroundDisjunction groundDisjunction = new GroundDisjunction(this.m_tableau, gdh, new Node[] {node0Equivalent, node1Equivalent, node0Equivalent, node1Equivalent}, new boolean[] {true, true}, this.m_dependencySetFactory.emptySet());
+					this.m_tableau.addGroundDisjunction(groundDisjunction);
+					this.m_tableau.addCreatedDisjuntcion(node0Equivalent, node1Equivalent);
+					System.out.println("CLOSE RULE add the following disjunction -> "+eqAtom.toString() +" OR "+ineqAtom.toString());
+		            return true;
+				}
+			}
+		}
+		return false;
+	}
+	
     public boolean addAssertion(DLPredicate dlPredicate, Node node0, Node node1, Node node2, DependencySet dependencySet, boolean isCore) {
         if (this.m_addActive) {
             throw new IllegalStateException("ExtensionManager is not reentrant.");

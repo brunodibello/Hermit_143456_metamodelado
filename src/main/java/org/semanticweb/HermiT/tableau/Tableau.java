@@ -98,6 +98,9 @@ implements Serializable {
     protected GroundDisjunction m_firstUnprocessedGroundDisjunction;
     protected Map<Integer, Individual> nodeToMetaIndividual;
     protected List<Node> metamodellingNodes;
+    protected Map<Integer, Individual> mapNodeIndividual;
+    protected Map<Integer, Node> mapNodeIdtoNodes;
+    protected Map<Integer, List<Integer>> createdDisjunction;
 
     /*
      * WARNING - Removed try catching itself - possible behaviour change.
@@ -134,6 +137,9 @@ implements Serializable {
             this.nodeToMetaIndividual = new HashMap<Integer, Individual>();
             this.metamodellingNodes = new ArrayList<Node>();
             this.branchedHyperresolutionManagers = new ArrayList<BranchedHyperresolutionManager>();
+            this.mapNodeIndividual = new HashMap<Integer, Individual>();
+            this.mapNodeIdtoNodes = new HashMap<Integer, Node>();
+            this.createdDisjunction = new HashMap<Integer, List<Integer>>();
             
             BranchedHyperresolutionManager branchedHypM = new BranchedHyperresolutionManager();
     		branchedHypM.setHyperresolutionManager(this.m_permanentHyperresolutionManager);
@@ -334,7 +340,9 @@ implements Serializable {
         		System.out.println("    Individual -> "+ind+" || Node -> "+node);
             	termsToNodes.put(ind, node);
         	}
+        	this.mapNodeIndividual.put(termsToNodes.get(ind).m_nodeID, ind);
         	this.nodeToMetaIndividual.put(termsToNodes.get(ind).m_nodeID, ind);
+        	this.mapNodeIdtoNodes.put(termsToNodes.get(ind).m_nodeID, termsToNodes.get(ind));
         	this.metamodellingNodes.add(termsToNodes.get(ind));
         }
         if (loadPermanentABox) {
@@ -487,6 +495,8 @@ implements Serializable {
                 }
             }
             termsToNodes.put(term, node);
+            this.mapNodeIndividual.put(node.m_nodeID, (Individual) term);
+            this.mapNodeIdtoNodes.put(node.m_nodeID, node);
             System.out.println("node -> "+node);
         }
         return node.getCanonicalNode();
@@ -562,25 +572,17 @@ implements Serializable {
                     this.m_nominalIntroductionManager.processAnnotatedEqualities();
                 }
                 //Acciones de Metamodeling 
-                //Si encontramos clash y hay mas de 1 elemento en branchedHyperresolutionManagers y el tableau se encuentra en estado de backtracking
-                if (this.m_extensionManager.containsClash() && this.branchedHyperresolutionManagers.size() > 1 && this.m_branchingPoints[0] != null) {
-                	//Si el branching point y el branching point level coinciden con el ultimo elemento almacenado en branchedHyperresolutionManagers
-                	if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() == this.m_currentBranchingPoint && this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() == this.getCurrentBranchingPointLevel()) {
-                		//Al entrar aca se supone que el tableau encontro un clash, se encuentra haciendo backtracking y se agregaron axiomas de metamodelling a partir del backtracking
-                		 // Por lo que se remueven esos axiomas y se pasa a la siguiente opcions
-                		
-                		
-                		//Se remueven las dlclauses agregadas y se vuelve el hyperresolutionManager al estado anterior
-                		backtrackHyperresolutionManager();
-     
-                        //Backtracking manual: false - inconsistente | true - sigue corriendo
-                        return backtrackMetamodellingClash();
-                	}
-                	
-                } else if (checkEqualMetamodellingRuleIteration() || checkInequalityMetamodellingRule()) {
+                if (shouldBacktrackHyperresolutionManager()) {
+                	//Se remueven las dlclauses agregadas y se vuelve el hyperresolutionManager al estado anterior
+            		backtrackHyperresolutionManager();
+ 
+                    //Backtracking manual: false - inconsistente | true - sigue corriendo
+                    return backtrackMetamodellingClash();
+                } else if (checkEqualMetamodellingRuleIteration() || checkInequalityMetamodellingRuleIteration() || checkCloseMetamodellingRuleIteration()) {
                 	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
                 	this.m_extensionManager.resetDeltaNew();
                 }
+                //checkCloseMetamodellingRuleIteration();
                 hasChange = true;
             }
             if (hasChange) {
@@ -589,6 +591,14 @@ implements Serializable {
         }
         if (!this.m_extensionManager.containsClash() && this.m_existentialExpansionStrategy.expandExistentials(false)) {
             return true;
+        }
+        //Acciones de Metamodeling 
+        if (shouldBacktrackHyperresolutionManager()) {
+        	//Se remueven las dlclauses agregadas y se vuelve el hyperresolutionManager al estado anterior
+    		backtrackHyperresolutionManager();
+
+            //Backtracking manual: false - inconsistente | true - sigue corriendo
+            return backtrackMetamodellingClash();
         }
         if (!this.m_extensionManager.containsClash()) {
             while (this.m_firstUnprocessedGroundDisjunction != null) {
@@ -643,13 +653,26 @@ implements Serializable {
         }
         return false;
     }
+    
+    private boolean shouldBacktrackHyperresolutionManager() {
+    	//Si encontramos clash y hay mas de 1 elemento en branchedHyperresolutionManagers y el tableau se encuentra en estado de backtracking
+        if (this.m_extensionManager.containsClash() && this.branchedHyperresolutionManagers.size() > 1 && this.m_branchingPoints[0] != null) {
+        	//Si el branching point y el branching point level coinciden con el ultimo elemento almacenado en branchedHyperresolutionManagers
+        	if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() == this.m_currentBranchingPoint && this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() == this.getCurrentBranchingPointLevel()) {
+        		return true;
+        	}
+        }
+    	return false;
+    }
 
 	private void backtrackHyperresolutionManager() {
 		//Remover axiomas agregados por rule =
+		System.out.println("BACKTRACK HYPERRESOLUTIONMANAGER");
 		for (int i=1; i<this.branchedHyperresolutionManagers.size(); i++) {
 			if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.m_currentBranchingPoint && this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.getCurrentBranchingPointLevel()) {
 				for (DLClause dlClauseAdded : this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getDlClausesAdded()) {
 					this.getPermanentDLOntology().getDLClauses().remove(dlClauseAdded);
+					System.out.println("Se remueve -> "+dlClauseAdded);
 				}
 			}
 		}
@@ -704,12 +727,24 @@ implements Serializable {
 	 	Para cada par de nodos del conjunto de nodos que participan de un axioma de metamodelling, se checkea que sean diferentes 
 	 	y de ser asi y de cumplirse las reglas de Rule != de metamodelling, se agerga nodo Z
 	*/
-    private boolean checkInequalityMetamodellingRule() {
+    private boolean checkInequalityMetamodellingRuleIteration() {
     	for (Node node1 : this.metamodellingNodes) {
     		for (Node node2 : this.metamodellingNodes) {
     			if (areDifferentIndividual(node1, node2)) {
     				if (this.m_extensionManager.checkInequalityMetamodellingRule(node1, node2)) return true;
     			}
+    		}
+    	}
+    	return false;
+    }
+    
+    /*
+    	Para cada par de individuos que participan en un axioma de metamodelling chequear si se debe aplicar la Close Rule
+    */
+    private boolean checkCloseMetamodellingRuleIteration() {
+    	for (Node node1 : this.metamodellingNodes) {
+    		for (Node node2 : this.metamodellingNodes) {
+    			if (this.m_extensionManager.checkCloseMetamodellingRule(node1, node2)) return true;
     		}
     	}
     	return false;
@@ -728,7 +763,7 @@ implements Serializable {
     /*
 		Devuelve true si los 2 nodos son diferentes
     */
-    private boolean areDifferentIndividual(Node node1, Node node2) {
+    public boolean areDifferentIndividual(Node node1, Node node2) {
     	//buscar si existe el axioma de node1 != node2
     	//Recorrer la ternaryTable del etension manager en busca de axiomas de !=
     	for (int i=0; i < this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length-2 ;i++) {
@@ -747,7 +782,7 @@ implements Serializable {
     /*
     	Devuelve true si los 2 nodos son iguales, ya sea porque sean el mismo nodo, igualados por un axioma o si fueron mergeados
     */
-    private boolean areSameIndividual(Node node1, Node node2) {
+    public boolean areSameIndividual(Node node1, Node node2) {
     	//Checkeo si es el mismo nodo
     	//El canonical node el nodo que queda luego del merge
     	if ((node1.m_nodeID == node2.m_nodeID) || (node1.getCanonicalNode() == node2.getCanonicalNode())) return true;
@@ -768,6 +803,40 @@ implements Serializable {
     	}
     	//Checkear si los nodos fueron mergeados (Igualdad inferida)
     	return ((node1.isMerged() && node1.m_mergedInto == node2) || (node2.isMerged() && node2.m_mergedInto == node1)) ;
+    }
+    
+    public List<Node> getEquivalentNodes(Node node) { 
+    	List<Node> equivalentNodes = new ArrayList<Node>();
+    	for (Integer nodeIterId : this.mapNodeIndividual.keySet()) {
+    		if (areSameIndividual(node, this.mapNodeIdtoNodes.get(nodeIterId)) && node.m_nodeID != nodeIterId) {
+    			equivalentNodes.add(this.mapNodeIdtoNodes.get(nodeIterId));
+    		}
+    	}
+    	return equivalentNodes;
+    }
+    
+    /*
+     Devuelve true si ya se creo la disjunction por close rule
+    */
+    public boolean alreadyCreateDisjunction(Node node0, Node node1) {
+    	if (createdDisjunction.containsKey(node0.m_nodeID)) {
+    		for (int nodeIter : createdDisjunction.get(node0.m_nodeID)) {
+    			if (nodeIter == node1.m_nodeID) return true;
+    		}
+    	}
+    	if (createdDisjunction.containsKey(node1.m_nodeID)) {
+    		for (int nodeIter : createdDisjunction.get(node1.m_nodeID)) {
+    			if (nodeIter == node0.m_nodeID) return true;
+    		}
+    	}
+		return false;
+	}
+    
+    public void addCreatedDisjuntcion(Node node0, Node node1) {
+    	if (!this.createdDisjunction.containsKey(node0.m_nodeID)) {
+    		this.createdDisjunction.put(node0.m_nodeID, new ArrayList<Integer>());
+    	}
+    	this.createdDisjunction.get(node0.m_nodeID).add(node1.m_nodeID);
     }
     
     public boolean isCurrentModelDeterministic() {
