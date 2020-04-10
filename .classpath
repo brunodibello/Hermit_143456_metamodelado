@@ -93,19 +93,8 @@
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-api"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-apibinding"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-compatibility"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-contract"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-distribution"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-fixers"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-impl"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-oboformat"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-osgidistribution"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-parsers"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-rio"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/owlapi-tools"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
