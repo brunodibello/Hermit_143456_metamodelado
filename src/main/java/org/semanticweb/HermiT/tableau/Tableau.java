@@ -571,14 +571,7 @@ implements Serializable {
                 if (!this.m_extensionManager.containsClash()) {
                     this.m_nominalIntroductionManager.processAnnotatedEqualities();
                 }
-                //Acciones de Metamodeling 
-                if (shouldBacktrackHyperresolutionManager()) {
-                	//Se remueven las dlclauses agregadas y se vuelve el hyperresolutionManager al estado anterior
-            		backtrackHyperresolutionManager();
- 
-                    //Backtracking manual: false - inconsistente | true - sigue corriendo
-                    return backtrackMetamodellingClash();
-                } else if (checkEqualMetamodellingRule() || checkInequalityMetamodellingRule() || checkCloseMetamodellingRule()) {
+                if (checkEqualMetamodellingRule() || checkInequalityMetamodellingRule() || checkCloseMetamodellingRule()) {
                 	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
                 	this.m_extensionManager.resetDeltaNew();
                 }

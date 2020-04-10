@@ -367,15 +367,17 @@ public class MetamodellingTests extends TestCase {
 	public void testTestDifference2() {
 		CommandLine cl = new CommandLine();
 		flags.add(testCasesPath+"NotEqual/TestDifference2.owl");
+		boolean result = false;
 		try {
 			cl.main(flags.toArray(new String[flagsCount+1]));
 		}catch (InconsistentOntologyException e) {
 			System.out.println("TestDifference2 es inconsistente");
+			result = true;
 		}
 		
 		//remover la flag del escenario
 		flags.remove(flagsCount);
-		TestCase.assertEquals(true, true);
+		TestCase.assertEquals(true, result);
 	}
 	
 	public void testAccountingConsistente3() {
@@ -411,7 +413,7 @@ public class MetamodellingTests extends TestCase {
 			cl.main(flags.toArray(new String[flagsCount+1]));
 		}catch (InconsistentOntologyException e) {
 			System.out.println("closeruleInc es inconsistente");
-			result = false;
+			result = true;
 		}
 		
 		//remover la flag del escenario
