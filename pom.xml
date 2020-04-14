@@ -5,9 +5,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<prerequisites>
+	<!-- <prerequisites>
 		<maven>3.0.5</maven>
-	</prerequisites>
+	</prerequisites> -->
 
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -24,7 +24,7 @@
 		to SCP the build results to linux.cs.ox.ac.uk. -->
 
 	<groupId>net.sourceforge.owlapi</groupId>
-	<artifactId>org.semanticweb.hermit</artifactId>
+	<artifactId>org.semanticweb.hermit-metamodelling</artifactId>
 	<version>1.4.3.456</version>
 	<packaging>bundle</packaging>
 
@@ -250,7 +250,7 @@
 
  		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
-			<artifactId>owlapi-distribution</artifactId>
+			<artifactId>owlapi-distribution-metamodelling</artifactId>
 			<version>4.5.7</version>
 		</dependency>
 
