@@ -194,7 +194,7 @@ Serializable {
     @Override
     public void modelFound() {
         if (this.m_useBlockingSignatureCache && this.m_blockingSignatureCache != null) {
-            assert (this.m_firstChangedNode == null);
+            //assert (this.m_firstChangedNode == null);
             for (Node node = this.m_tableau.getFirstTableauNode(); node != null; node = node.getNextTableauNode()) {
                 if (!node.isActive() || node.isBlocked() || !this.m_directBlockingChecker.canBeBlocker(node)) continue;
                 this.m_blockingSignatureCache.addNode(node);
