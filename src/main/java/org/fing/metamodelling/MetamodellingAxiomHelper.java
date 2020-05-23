@@ -261,18 +261,28 @@ public class MetamodellingAxiomHelper {
 		
 		DLClause dlClause5 = new DLClause( headAtoms5, bodyAtoms5);
 		
+		//New Inequality Axiom
+		Atom[] headAtoms6 = {};
+		Atom[] bodyAtoms6 = {classAAtom, classBAtom};
+		
+		DLClause dlClause6 = new DLClause( headAtoms6, bodyAtoms6);
+		
+		ontology.getDLClauses().add(dlClause1);
+		
 		ontology.getDLClauses().add(dlClause1);
 		ontology.getDLClauses().add(dlClause2);
 		ontology.getDLClauses().add(dlClause3);
 		ontology.getDLClauses().add(dlClause4);
 		ontology.getDLClauses().add(dlClause5);
+		ontology.getDLClauses().add(dlClause6);
 		
-		System.out.println("Se agregan 2 dlClauses");
+		System.out.println("Se agregan dlClauses por la != metamodelling rule:");
 		System.out.println("-> "+dlClause1);
 		System.out.println("-> "+dlClause2);
 		System.out.println("-> "+dlClause3);
 		System.out.println("-> "+dlClause4);
 		System.out.println("-> "+dlClause5);
+		System.out.println("-> "+dlClause6);
 		
 		List<DLClause> dlClauses = new ArrayList<DLClause>() { 
             { 
@@ -280,7 +290,8 @@ public class MetamodellingAxiomHelper {
                 add(dlClause2); 
                 add(dlClause3); 
                 add(dlClause4); 
-                add(dlClause5); 
+                add(dlClause5);
+                add(dlClause6);
             } 
         }; 
         
