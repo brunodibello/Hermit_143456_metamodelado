@@ -53,6 +53,7 @@ import org.semanticweb.HermiT.tableau.PermanentDependencySet;
 import org.semanticweb.HermiT.tableau.ReasoningTaskDescription;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 
 public final class Tableau
 implements Serializable {
@@ -570,12 +571,11 @@ implements Serializable {
                 }
                 if (!this.m_extensionManager.containsClash()) {
                     this.m_nominalIntroductionManager.processAnnotatedEqualities();
+                    if (checkEqualMetamodellingRule() || checkInequalityMetamodellingRule()) {
+                    	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
+                    	this.m_extensionManager.resetDeltaNew();
+                    }
                 }
-                if (checkEqualMetamodellingRule() || checkInequalityMetamodellingRule() || checkCloseMetamodellingRule()) {
-                	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
-                	this.m_extensionManager.resetDeltaNew();
-                }
-                //checkCloseMetamodellingRuleIteration();
                 hasChange = true;
             }
             if (hasChange) {
@@ -585,53 +585,29 @@ implements Serializable {
         if (!this.m_extensionManager.containsClash() && this.m_existentialExpansionStrategy.expandExistentials(false)) {
             return true;
         }
-        //Acciones de Metamodeling 
-        if (shouldBacktrackHyperresolutionManager()) {
-        	//Se remueven las dlclauses agregadas y se vuelve el hyperresolutionManager al estado anterior
-    		backtrackHyperresolutionManager();
-
-            //Backtracking manual: false - inconsistente | true - sigue corriendo
-            return backtrackMetamodellingClash();
-        }
         if (!this.m_extensionManager.containsClash()) {
-            while (this.m_firstUnprocessedGroundDisjunction != null) {
-            	System.out.println("@@@@@@ Backtracking @@@@");
-                GroundDisjunction groundDisjunction = this.m_firstUnprocessedGroundDisjunction;
-                System.out.println("@@@@@@ groundDisjunction -> "+groundDisjunction);
-                if (this.m_tableauMonitor != null) {
-                    this.m_tableauMonitor.processGroundDisjunctionStarted(groundDisjunction);
-                }
-                this.m_firstUnprocessedGroundDisjunction = groundDisjunction.m_previousGroundDisjunction;
-                if (!groundDisjunction.isPruned() && !groundDisjunction.isSatisfied(this)) {
-                    int[] sortedDisjunctIndexes = groundDisjunction.getGroundDisjunctionHeader().getSortedDisjunctIndexes();
-                    DependencySet dependencySet = groundDisjunction.getDependencySet();
-                    if (groundDisjunction.getNumberOfDisjuncts() > 1) {
-                        DisjunctionBranchingPoint branchingPoint = new DisjunctionBranchingPoint(this, groundDisjunction, sortedDisjunctIndexes);
-                        this.pushBranchingPoint(branchingPoint);
-                        dependencySet = this.m_dependencySetFactory.addBranchingPoint(dependencySet, branchingPoint.getLevel());
-                    }
-                    if (this.m_tableauMonitor != null) {
-                        this.m_tableauMonitor.disjunctProcessingStarted(groundDisjunction, sortedDisjunctIndexes[0]);
-                    }
-                    groundDisjunction.addDisjunctToTableau(this, sortedDisjunctIndexes[0], dependencySet);
-                    if (this.m_tableauMonitor != null) {
-                        this.m_tableauMonitor.disjunctProcessingFinished(groundDisjunction, sortedDisjunctIndexes[0]);
-                        this.m_tableauMonitor.processGroundDisjunctionFinished(groundDisjunction);
-                    }
-                    return true;
-                }
-                if (this.m_tableauMonitor != null) {
-                    this.m_tableauMonitor.groundDisjunctionSatisfied(groundDisjunction);
-                }
-                this.m_interruptFlag.checkInterrupt();
-            }
+        	if (checkCloseMetamodellingRule()) {
+        		//this.m_extensionManager.resetDeltaNew();
+        		return true;
+        	}
         }
         if (this.m_extensionManager.containsClash()) {
+        	System.out.println("#$# Se encuentra un Clash y se va a chequear si se debe hacer backtracking");
         	DependencySet clashDependencySet = this.m_extensionManager.getClashDependencySet();
     		int newCurrentBranchingPoint = clashDependencySet.getMaximumBranchingPoint();
     		if (newCurrentBranchingPoint <= this.m_nonbacktrackableBranchingPoint) {
+    			System.out.println("#$# Se va a chequear si se debe hacer backtracking manual por motivos de metamodelling");
+    			if (shouldBacktrackHyperresolutionManager()) {
+    				System.out.println("#$# Se va a hacer backtracking manual");
+    	        	//Se remueven las dlclauses agregadas y se vuelve el hyperresolutionManager al estado anterior
+    	    		backtrackHyperresolutionManager();
+
+    	            //Backtracking manual: false - inconsistente | true - sigue corriendo
+    	            return backtrackMetamodellingClash();
+    	        }
     		    return false;
     		}
+    		System.out.println("#$# Se hara el backtracking normal de Hermit");
     		this.backtrackTo(newCurrentBranchingPoint);
     		BranchingPoint branchingPoint = this.getCurrentBranchingPoint();
     		if (this.m_tableauMonitor != null) {
@@ -646,12 +622,45 @@ implements Serializable {
         }
         return false;
     }
+
+	public boolean startBacktracking(GroundDisjunction groundDisjunction) {
+		System.out.println("@@@@@@ Backtracking @@@@");
+		System.out.println("@@@@@@ groundDisjunction -> "+groundDisjunction);
+		if (this.m_tableauMonitor != null) {
+		    this.m_tableauMonitor.processGroundDisjunctionStarted(groundDisjunction);
+		}
+		this.m_firstUnprocessedGroundDisjunction = groundDisjunction.m_previousGroundDisjunction;
+		if (!groundDisjunction.isPruned() && !groundDisjunction.isSatisfied(this)) {
+		    int[] sortedDisjunctIndexes = groundDisjunction.getGroundDisjunctionHeader().getSortedDisjunctIndexes();
+		    DependencySet dependencySet = groundDisjunction.getDependencySet();
+		    if (groundDisjunction.getNumberOfDisjuncts() > 1) {
+		        DisjunctionBranchingPoint branchingPoint = new DisjunctionBranchingPoint(this, groundDisjunction, sortedDisjunctIndexes);
+		        this.pushBranchingPoint(branchingPoint);
+		        dependencySet = this.m_dependencySetFactory.addBranchingPoint(dependencySet, branchingPoint.getLevel());
+		    }
+		    if (this.m_tableauMonitor != null) {
+		        this.m_tableauMonitor.disjunctProcessingStarted(groundDisjunction, sortedDisjunctIndexes[0]);
+		    }
+		    groundDisjunction.addDisjunctToTableau(this, sortedDisjunctIndexes[0], dependencySet);
+		    if (this.m_tableauMonitor != null) {
+		        this.m_tableauMonitor.disjunctProcessingFinished(groundDisjunction, sortedDisjunctIndexes[0]);
+		        this.m_tableauMonitor.processGroundDisjunctionFinished(groundDisjunction);
+		    }
+		    return true;
+		}
+		if (this.m_tableauMonitor != null) {
+		    this.m_tableauMonitor.groundDisjunctionSatisfied(groundDisjunction);
+		}
+		this.m_interruptFlag.checkInterrupt();
+		return false;
+	}
     
     private boolean shouldBacktrackHyperresolutionManager() {
     	//Si encontramos clash y hay mas de 1 elemento en branchedHyperresolutionManagers y el tableau se encuentra en estado de backtracking
         if (this.m_extensionManager.containsClash() && this.branchedHyperresolutionManagers.size() > 1 && this.m_branchingPoints[0] != null) {
         	//Si el branching point y el branching point level coinciden con el ultimo elemento almacenado en branchedHyperresolutionManagers
-        	if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() == this.m_currentBranchingPoint && this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() == this.getCurrentBranchingPointLevel()) {
+        	if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() <= this.m_currentBranchingPoint 
+        			&& this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() <= this.getCurrentBranchingPointLevel()) {
         		return true;
         	}
         }
@@ -662,7 +671,8 @@ implements Serializable {
 		//Remover axiomas agregados por rule =
 		System.out.println("BACKTRACK HYPERRESOLUTIONMANAGER");
 		for (int i=1; i<this.branchedHyperresolutionManagers.size(); i++) {
-			if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.m_currentBranchingPoint && this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.getCurrentBranchingPointLevel()) {
+			if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.m_currentBranchingPoint && 
+					this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.getCurrentBranchingPointLevel()) {
 				for (DLClause dlClauseAdded : this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getDlClausesAdded()) {
 					this.getPermanentDLOntology().getDLClauses().remove(dlClauseAdded);
 					System.out.println("Se remueve -> "+dlClauseAdded);
@@ -764,7 +774,8 @@ implements Serializable {
     		if (object != null && object.toString().equals("!=")) {
     			Node obj1 = (Node) this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+1];
     			Node obj2 = (Node) this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+2];
-    			if (obj1.getCanonicalNode() == node1.getCanonicalNode() && obj2.getCanonicalNode() == node2.getCanonicalNode()) {
+    			if ((obj1.getCanonicalNode() == node1.getCanonicalNode() && obj2.getCanonicalNode() == node2.getCanonicalNode()) ||
+    					(obj2.getCanonicalNode() == node1.getCanonicalNode() && obj1.getCanonicalNode() == node2.getCanonicalNode())) {
     				return true;
     			}
     		}
@@ -805,6 +816,7 @@ implements Serializable {
     			equivalentNodes.add(this.mapNodeIdtoNodes.get(nodeIterId));
     		}
     	}
+    	equivalentNodes.add(node);
     	return equivalentNodes;
     }
     

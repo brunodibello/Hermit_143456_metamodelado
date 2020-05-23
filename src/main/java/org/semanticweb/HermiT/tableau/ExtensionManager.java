@@ -5,6 +5,7 @@ package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -510,31 +511,30 @@ implements Serializable {
 	}
 	
 	public boolean checkCloseMetamodellingRuleIteration(Node node0, Node node1) {
-		List<Node> node0Equivalents = this.m_tableau.getEquivalentNodes(node0);
-		List<Node> node1Equivalents = this.m_tableau.getEquivalentNodes(node1);
-		for (Node node0Equivalent : node0Equivalents) {
-			for (Node node1Equivalent : node1Equivalents) {
-				if (!this.m_tableau.areDifferentIndividual(node0Equivalent, node1Equivalent) && !this.m_tableau.areSameIndividual(node0Equivalent, node1Equivalent) && !this.m_tableau.alreadyCreateDisjunction(node0Equivalent, node1Equivalent)) {
-					//create ground disjunction x=y or x!=y
-					Atom eqAtom = Atom.create(Equality.INSTANCE, this.m_tableau.mapNodeIndividual.get(node0Equivalent.m_nodeID), this.m_tableau.mapNodeIndividual.get(node1Equivalent.m_nodeID));
-					DLPredicate equalityPredicate = eqAtom.getDLPredicate();
-					Atom ineqAtom = Atom.create(Inequality.INSTANCE, this.m_tableau.mapNodeIndividual.get(node0Equivalent.m_nodeID), this.m_tableau.mapNodeIndividual.get(node1Equivalent.m_nodeID));
-					DLPredicate inequalityPredicate = ineqAtom.getDLPredicate();
-					DLPredicate[] dlPredicates = new DLPredicate[] {equalityPredicate, inequalityPredicate};
-					
-					int hashCode = 0;
-		            for (int disjunctIndex = 0; disjunctIndex < dlPredicates.length; ++disjunctIndex) {
-		                hashCode = hashCode * 7 + dlPredicates[disjunctIndex].hashCode();
-		            }
-		            
-					GroundDisjunctionHeader gdh = new GroundDisjunctionHeader(dlPredicates, hashCode , null);
-					//isCore[] y dependencySet investigar
-					GroundDisjunction groundDisjunction = new GroundDisjunction(this.m_tableau, gdh, new Node[] {node0Equivalent, node1Equivalent, node0Equivalent, node1Equivalent}, new boolean[] {true, true}, this.m_dependencySetFactory.emptySet());
-					this.m_tableau.addGroundDisjunction(groundDisjunction);
-					this.m_tableau.addCreatedDisjuntcion(node0Equivalent, node1Equivalent);
-					System.out.println("CLOSE RULE add the following disjunction -> "+eqAtom.toString() +" OR "+ineqAtom.toString());
-		            return true;
-				}
+		Node node0Equivalent = node0.getCanonicalNode();
+		Node node1Equivalent = node1.getCanonicalNode();
+		if (!this.m_tableau.areDifferentIndividual(node0Equivalent, node1Equivalent) && !this.m_tableau.areSameIndividual(node0Equivalent, node1Equivalent) && !this.m_tableau.alreadyCreateDisjunction(node0Equivalent, node1Equivalent)) {
+			//create ground disjunction x=y or x!=y
+			Atom eqAtom = Atom.create(Equality.INSTANCE, this.m_tableau.mapNodeIndividual.get(node0Equivalent.m_nodeID), this.m_tableau.mapNodeIndividual.get(node1Equivalent.m_nodeID));
+			DLPredicate equalityPredicate = eqAtom.getDLPredicate();
+			Atom ineqAtom = Atom.create(Inequality.INSTANCE, this.m_tableau.mapNodeIndividual.get(node0Equivalent.m_nodeID), this.m_tableau.mapNodeIndividual.get(node1Equivalent.m_nodeID));
+			DLPredicate inequalityPredicate = ineqAtom.getDLPredicate();
+			DLPredicate[] dlPredicates = new DLPredicate[] {equalityPredicate, inequalityPredicate};
+			
+			int hashCode = 0;
+            for (int disjunctIndex = 0; disjunctIndex < dlPredicates.length; ++disjunctIndex) {
+                hashCode = hashCode * 7 + dlPredicates[disjunctIndex].hashCode();
+            }
+            
+			GroundDisjunctionHeader gdh = new GroundDisjunctionHeader(dlPredicates, hashCode , null);
+			DependencySet dependencySet = this.m_dependencySetFactory.lastEntryAddedIndex == -1 || this.m_dependencySetFactory.m_entries[this.m_dependencySetFactory.lastEntryAddedIndex] == null ? this.m_dependencySetFactory.emptySet() : this.m_dependencySetFactory.m_entries[this.m_dependencySetFactory.lastEntryAddedIndex];
+			System.out.println("DEPENDENCYSET FOR CLOSE RULE DISJUNCTION -> "+dependencySet);
+			GroundDisjunction groundDisjunction = new GroundDisjunction(this.m_tableau, gdh, new Node[] {node0Equivalent, node1Equivalent, node0Equivalent, node1Equivalent}, new boolean[] {true, true}, dependencySet);
+			this.m_tableau.addGroundDisjunction(groundDisjunction);
+			if (this.m_tableau.startBacktracking(groundDisjunction)) {
+				this.m_tableau.addCreatedDisjuntcion(node0Equivalent, node1Equivalent);
+				System.out.println("CLOSE RULE add the following disjunction -> "+eqAtom.toString() +" OR "+ineqAtom.toString());
+				return true;
 			}
 		}
 		return false;
