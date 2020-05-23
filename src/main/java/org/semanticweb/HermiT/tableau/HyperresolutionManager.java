@@ -213,15 +213,15 @@ implements Serializable {
             ExtensionTable.Retrieval deltaOldRetrieval = this.m_deltaOldRetrievals[index];
             deltaOldRetrieval.open();
             Object[] deltaOldTupleBuffer = deltaOldRetrieval.getTupleBuffer();
-            System.out.print("----| deltaOldTupleBuffer: ");
-            for (Object o : deltaOldTupleBuffer) {
-            	System.out.print(o+" ");
-            }
-            System.out.println();
             while (!deltaOldRetrieval.afterLast() && !this.m_extensionManager.containsClash()) {
                 CompiledDLClauseInfo unguardedCompiledDLClauseInfo;
                 Object deltaOldPredicate = deltaOldTupleBuffer[0];
                 CompiledDLClauseInfo unoptimizedCompiledDLClauseInfo = this.m_tupleConsumersByDeltaPredicate.get(deltaOldPredicate);
+                System.out.print("----| deltaOldTupleBuffer: ");
+                for (Object o : deltaOldTupleBuffer) {
+                	System.out.print(o+" ");
+                }
+                System.out.println();
                 if (unoptimizedCompiledDLClauseInfo != null)
                 	System.out.println("----| unoptimizedCompiledDLClauseInfo: \n"+unoptimizedCompiledDLClauseInfo.m_evaluator.toString());
                 boolean applyUnoptimized = true;
