@@ -587,7 +587,6 @@ implements Serializable {
         }
         if (!this.m_extensionManager.containsClash()) {
         	if (checkCloseMetamodellingRule()) {
-        		//this.m_extensionManager.resetDeltaNew();
         		return true;
         	}
         }
