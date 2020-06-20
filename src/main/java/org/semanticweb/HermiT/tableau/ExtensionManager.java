@@ -530,8 +530,8 @@ implements Serializable {
 			DependencySet dependencySet = this.m_dependencySetFactory.lastEntryAddedIndex == -1 || this.m_dependencySetFactory.m_entries[this.m_dependencySetFactory.lastEntryAddedIndex] == null ? this.m_dependencySetFactory.emptySet() : this.m_dependencySetFactory.m_entries[this.m_dependencySetFactory.lastEntryAddedIndex];
 			System.out.println("DEPENDENCYSET FOR CLOSE RULE DISJUNCTION -> "+dependencySet);
 			GroundDisjunction groundDisjunction = new GroundDisjunction(this.m_tableau, gdh, new Node[] {node0Equivalent, node1Equivalent, node0Equivalent, node1Equivalent}, new boolean[] {true, true}, dependencySet);
-			this.m_tableau.addGroundDisjunction(groundDisjunction);
-			if (this.m_tableau.startBacktracking(groundDisjunction)) {
+			if (!groundDisjunction.isSatisfied(this.m_tableau)) {
+				this.m_tableau.addGroundDisjunction(groundDisjunction);
 				this.m_tableau.addCreatedDisjuntcion(node0Equivalent, node1Equivalent);
 				System.out.println("CLOSE RULE add the following disjunction -> "+eqAtom.toString() +" OR "+ineqAtom.toString());
 				return true;

@@ -79,7 +79,7 @@ implements Serializable {
     protected final boolean m_useDisjunctionLearning;
     protected final boolean m_hasDescriptionGraphs;
     protected BranchingPoint[] m_branchingPoints;
-    public int m_currentBranchingPoint;
+    protected int m_currentBranchingPoint;
     protected int m_nonbacktrackableBranchingPoint;
     protected boolean m_isCurrentModelDeterministic;
     protected boolean m_needsThingExtension;
@@ -157,6 +157,10 @@ implements Serializable {
             this.m_interruptFlag.endTask();
         }
     }
+    
+    public int getM_currentBranchingPoint() {
+		return m_currentBranchingPoint;
+	}
 
     public ArrayList<BranchedHyperresolutionManager> getBranchedHyperresolutionManagers() {
 		return branchedHyperresolutionManagers;
@@ -586,8 +590,39 @@ implements Serializable {
             return true;
         }
         if (!this.m_extensionManager.containsClash()) {
+        	while (this.m_firstUnprocessedGroundDisjunction != null) {
+        		GroundDisjunction groundDisjunction = this.m_firstUnprocessedGroundDisjunction;
+        		if (this.m_tableauMonitor != null) {
+        			this.m_tableauMonitor.processGroundDisjunctionStarted(groundDisjunction);
+        		}
+        		this.m_firstUnprocessedGroundDisjunction = groundDisjunction.m_previousGroundDisjunction;
+        		if (!groundDisjunction.isPruned() && !groundDisjunction.isSatisfied(this)) {
+        			int[] sortedDisjunctIndexes = groundDisjunction.getGroundDisjunctionHeader().getSortedDisjunctIndexes();
+        			DependencySet dependencySet = groundDisjunction.getDependencySet();
+        			if (groundDisjunction.getNumberOfDisjuncts() > 1) {
+        				DisjunctionBranchingPoint branchingPoint = new DisjunctionBranchingPoint(this, groundDisjunction, sortedDisjunctIndexes);
+        				this.pushBranchingPoint(branchingPoint);
+        				dependencySet = this.m_dependencySetFactory.addBranchingPoint(dependencySet, branchingPoint.getLevel());
+        			}
+        			if (this.m_tableauMonitor != null) {
+        				this.m_tableauMonitor.disjunctProcessingStarted(groundDisjunction, sortedDisjunctIndexes[0]);
+        			}
+        			groundDisjunction.addDisjunctToTableau(this, sortedDisjunctIndexes[0], dependencySet);
+        			if (this.m_tableauMonitor != null) {
+        				this.m_tableauMonitor.disjunctProcessingFinished(groundDisjunction, sortedDisjunctIndexes[0]);
+        				this.m_tableauMonitor.processGroundDisjunctionFinished(groundDisjunction);
+        			}
+        			return true;
+        		}
+        		if (this.m_tableauMonitor != null) {
+        			this.m_tableauMonitor.groundDisjunctionSatisfied(groundDisjunction);
+        		}
+        		this.m_interruptFlag.checkInterrupt();
+        	}
         	if (checkCloseMetamodellingRule()) {
-        		return true;
+        		if (this.startBacktracking(this.m_firstUnprocessedGroundDisjunction)) {
+        			return true;
+        		}
         	}
         }
         if (this.m_extensionManager.containsClash()) {
@@ -606,6 +641,8 @@ implements Serializable {
     	        }
     		    return false;
     		}
+    		//backtrack axioms added by metamodelling rule if needed
+    		backtrackHyperresolutionManager();
     		System.out.println("#$# Se hara el backtracking normal de Hermit");
     		this.backtrackTo(newCurrentBranchingPoint);
     		BranchingPoint branchingPoint = this.getCurrentBranchingPoint();
@@ -707,6 +744,7 @@ implements Serializable {
 			return false;
 		}                
 		this.m_extensionManager.clearClash();
+		this.m_dependencySetFactory.removeUnusedSets();
 		return true;
 	}
     

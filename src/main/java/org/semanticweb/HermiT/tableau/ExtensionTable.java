@@ -111,17 +111,15 @@ implements Serializable {
     public abstract boolean isCore(Object[] var1);
 
     public boolean propagateDeltaNew() {
-    	System.out.println("this.m_afterExtensionThisTupleIndex "+this.m_afterExtensionThisTupleIndex);
-    	System.out.println("this.m_afterDeltaNewTupleIndex "+this.m_afterDeltaNewTupleIndex);
-    	System.out.println("this.m_afterExtensionOldTupleIndex "+this.m_afterExtensionOldTupleIndex);
-    	System.out.println("this.m_tupleTable.getFirstFreeTupleIndex() "+this.m_tupleTable.getFirstFreeTupleIndex());
     	System.out.println("Table elements:");
     	if (this.m_tupleTable.m_pages != null) {
     		for(Page p : this.m_tupleTable.m_pages) {
         		if(p != null) {
         			for (Object o : p.m_objects) {
-            			if(o != null) System.out.println("    "+ o);
+            			if(o != null) System.out.print("    "+ o);
+            			if(o != null && o.toString().startsWith("{")) System.out.println();
             		}
+        			
         		}
 
         	}

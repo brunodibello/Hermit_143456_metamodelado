@@ -173,27 +173,23 @@ public class MetamodellingAxiomHelper {
 		
 		DLClause dlClause2 = new DLClause( headAtoms2, bodyAtoms2);
 		
-		if (!ontology.getDLClauses().contains(dlClause1) && !ontology.getDLClauses().contains(dlClause2)) {
-			ontology.getDLClauses().add(dlClause1);
-			ontology.getDLClauses().add(dlClause2);
-			
-			System.out.println("Se agregan 2 dlClauses");
-			System.out.println("-> "+dlClause1);
-			System.out.println("-> "+dlClause2);
-			
-			List<DLClause> dlClauses = new ArrayList<DLClause>() { 
-	            { 
-	                add(dlClause1); 
-	                add(dlClause2); 
-	            } 
-	        }; 
-
-			createHyperResolutionManager(tableau, dlClauses);
-			
-			return true;
-		}
+		ontology.getDLClauses().add(dlClause1);
+		ontology.getDLClauses().add(dlClause2);
 		
-		return false;
+		System.out.println("Se agregan 2 dlClauses");
+		System.out.println("-> "+dlClause1);
+		System.out.println("-> "+dlClause2);
+		
+		List<DLClause> dlClauses = new ArrayList<DLClause>() { 
+            { 
+                add(dlClause1); 
+                add(dlClause2); 
+            } 
+        }; 
+
+		createHyperResolutionManager(tableau, dlClauses);
+		
+		return true;
 	}
 	
 	/*
@@ -261,12 +257,6 @@ public class MetamodellingAxiomHelper {
 		
 		DLClause dlClause5 = new DLClause( headAtoms5, bodyAtoms5);
 		
-		//New Inequality Axiom
-		Atom[] headAtoms6 = {};
-		Atom[] bodyAtoms6 = {classAAtom, classBAtom};
-		
-		DLClause dlClause6 = new DLClause( headAtoms6, bodyAtoms6);
-		
 		ontology.getDLClauses().add(dlClause1);
 		
 		ontology.getDLClauses().add(dlClause1);
@@ -274,7 +264,6 @@ public class MetamodellingAxiomHelper {
 		ontology.getDLClauses().add(dlClause3);
 		ontology.getDLClauses().add(dlClause4);
 		ontology.getDLClauses().add(dlClause5);
-		ontology.getDLClauses().add(dlClause6);
 		
 		System.out.println("Se agregan dlClauses por la != metamodelling rule:");
 		System.out.println("-> "+dlClause1);
@@ -282,7 +271,6 @@ public class MetamodellingAxiomHelper {
 		System.out.println("-> "+dlClause3);
 		System.out.println("-> "+dlClause4);
 		System.out.println("-> "+dlClause5);
-		System.out.println("-> "+dlClause6);
 		
 		List<DLClause> dlClauses = new ArrayList<DLClause>() { 
             { 
@@ -291,7 +279,6 @@ public class MetamodellingAxiomHelper {
                 add(dlClause3); 
                 add(dlClause4); 
                 add(dlClause5);
-                add(dlClause6);
             } 
         }; 
         
@@ -317,7 +304,7 @@ public class MetamodellingAxiomHelper {
 		BranchedHyperresolutionManager branchedHypM = new BranchedHyperresolutionManager();
 		branchedHypM.setHyperresolutionManager(hypM);
 		branchedHypM.setBranchingIndex(tableau.getCurrentBranchingPointLevel());
-		branchedHypM.setBranchingPoint(tableau.m_currentBranchingPoint);
+		branchedHypM.setBranchingPoint(tableau.getM_currentBranchingPoint());
 		for (DLClause dlClause: dlClauses) {
 			branchedHypM.getDlClausesAdded().add(dlClause);
 		}

@@ -83,7 +83,6 @@ implements Serializable {
     }
 
     public void evaluate() {
-    	//Agregar logs
         int programCounter = 0;
         System.out.println("----|----| Empieza evaluacion");
         while (programCounter < this.m_workers.length && !this.m_extensionManager.containsClash()) {

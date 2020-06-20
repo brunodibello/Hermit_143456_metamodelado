@@ -30,7 +30,7 @@ implements Serializable {
         return this.m_level;
     }
 
-    public void startNextChoice(Tableau tableau, DependencySet clashDepdendencySet) {
+    public void startNextChoice(Tableau tableau, DependencySet clashDependencySet) {
     }
 }
 
