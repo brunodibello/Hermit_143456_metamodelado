@@ -1,0 +1,291 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY untitled-ontology-5 "http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#"
+     xml:base="http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:untitled-ontology-5="http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#EsMiradaPor -->
+
+    <owl:ObjectProperty rdf:about="&untitled-ontology-5;EsMiradaPor">
+        <owl:inverseOf rdf:resource="&untitled-ontology-5;Miran"/>
+        <rdfs:domain rdf:resource="&untitled-ontology-5;Película"/>
+        <rdfs:range rdf:resource="&untitled-ontology-5;Persona"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Miran -->
+
+    <owl:ObjectProperty rdf:about="&untitled-ontology-5;Miran">
+        <rdfs:range rdf:resource="&untitled-ontology-5;Película"/>
+        <rdfs:domain rdf:resource="&untitled-ontology-5;Persona"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#TieneLink -->
+
+    <owl:ObjectProperty rdf:about="&untitled-ontology-5;TieneLink">
+        <rdfs:domain rdf:resource="&untitled-ontology-5;Película"/>
+        <rdfs:range rdf:resource="&untitled-ontology-5;Película"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Adulto -->
+
+    <owl:Class rdf:about="&untitled-ontology-5;Adulto">
+        <rdfs:subClassOf rdf:resource="&untitled-ontology-5;Persona"/>
+        <owl:disjointWith rdf:resource="&untitled-ontology-5;Niño"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Infantil -->
+
+    <owl:Class rdf:about="&untitled-ontology-5;Infantil">
+        <rdfs:subClassOf rdf:resource="&untitled-ontology-5;Película"/>
+        <owl:disjointWith rdf:resource="&untitled-ontology-5;ParaAdultos"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Niño -->
+
+    <owl:Class rdf:about="&untitled-ontology-5;Niño">
+        <rdfs:subClassOf rdf:resource="&untitled-ontology-5;Persona"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&untitled-ontology-5;Miran"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&untitled-ontology-5;Infantil"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="&untitled-ontology-5;TieneLink"/>
+                                <owl:allValuesFrom rdf:resource="&untitled-ontology-5;Infantil"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#NiñosVenMasDe2Peliculas -->
+
+    <owl:Class rdf:about="&untitled-ontology-5;NiñosVenMasDe2Peliculas">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&untitled-ontology-5;Niño"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&untitled-ontology-5;Miran"/>
+                        <owl:onClass rdf:resource="&untitled-ontology-5;Infantil"/>
+                        <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&untitled-ontology-5;Persona"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#ParaAdultos -->
+
+    <owl:Class rdf:about="&untitled-ontology-5;ParaAdultos">
+        <rdfs:subClassOf rdf:resource="&untitled-ontology-5;Película"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#PeliculasInfantilesLinksAdultos -->
+
+    <owl:Class rdf:about="&untitled-ontology-5;PeliculasInfantilesLinksAdultos">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&untitled-ontology-5;Infantil"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&untitled-ontology-5;TieneLink"/>
+                        <owl:someValuesFrom rdf:resource="&untitled-ontology-5;ParaAdultos"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&untitled-ontology-5;Película"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#PeliculasVistasNiños -->
+
+    <owl:Class rdf:about="&untitled-ontology-5;PeliculasVistasNiños">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&untitled-ontology-5;Película"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&untitled-ontology-5;EsMiradaPor"/>
+                        <owl:someValuesFrom rdf:resource="&untitled-ontology-5;Niño"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&untitled-ontology-5;Película"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Película -->
+
+    <owl:Class rdf:about="&untitled-ontology-5;Película">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&untitled-ontology-5;TieneLink"/>
+                <owl:onClass rdf:resource="&untitled-ontology-5;Película"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Persona -->
+
+    <owl:Class rdf:about="&untitled-ontology-5;Persona"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Madagascar -->
+
+    <owl:NamedIndividual rdf:about="&untitled-ontology-5;Madagascar">
+        <rdf:type rdf:resource="&untitled-ontology-5;Infantil"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Martín -->
+
+    <owl:NamedIndividual rdf:about="&untitled-ontology-5;Martín">
+        <rdf:type rdf:resource="&untitled-ontology-5;Niño"/>
+        <Miran rdf:resource="&untitled-ontology-5;Madagascar"/>
+        <Miran rdf:resource="&untitled-ontology-5;Minions"/>
+        <Miran rdf:resource="&untitled-ontology-5;Shreck"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Minions -->
+
+    <owl:NamedIndividual rdf:about="&untitled-ontology-5;Minions">
+        <rdf:type rdf:resource="&untitled-ontology-5;Infantil"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Shreck -->
+
+    <owl:NamedIndividual rdf:about="&untitled-ontology-5;Shreck">
+        <rdf:type rdf:resource="&untitled-ontology-5;Infantil"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/montse/ontologies/2015/6/untitled-ontology-5#Terminator -->
+
+    <owl:NamedIndividual rdf:about="&untitled-ontology-5;Terminator">
+        <rdf:type rdf:resource="&untitled-ontology-5;ParaAdultos"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="&untitled-ontology-5;Minions"/>
+            <rdf:Description rdf:about="&untitled-ontology-5;Terminator"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="&untitled-ontology-5;Minions"/>
+            <rdf:Description rdf:about="&untitled-ontology-5;Shreck"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="&untitled-ontology-5;Madagascar"/>
+            <rdf:Description rdf:about="&untitled-ontology-5;Minions"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net -->
+

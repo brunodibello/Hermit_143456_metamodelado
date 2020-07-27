@@ -56,7 +56,7 @@ implements Serializable {
                 lastEntry = entry;
                 entry = entry.m_nextEntry;
             }
-            throw new IllegalStateException("Internal error: entry not in cache!");
+            //throw new IllegalStateException("Internal error: entry not in cache!");
         }
     }
 

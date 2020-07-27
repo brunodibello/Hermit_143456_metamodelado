@@ -175,10 +175,19 @@ implements Serializable {
 
     public boolean propagateDeltaNew() {
         boolean hasChange = false;
-        System.out.println(" => propagateDeltaNew for "+this.m_allExtensionTablesArray.length+" extension tables <=");
+        //System.out.println(" => propagateDeltaNew for "+this.m_allExtensionTablesArray.length+" extension tables <=");
         for (int index = 0; index < this.m_allExtensionTablesArray.length; ++index) {
-        	System.out.println(" Table "+index);
+        	//System.out.println(" Table "+index);
             if (!this.m_allExtensionTablesArray[index].propagateDeltaNew()) continue;
+            hasChange = true;
+        }
+        return hasChange;
+    }
+    
+    public boolean checkDeltaNewPropagation() {
+    	boolean hasChange = false;
+        for (int index = 0; index < this.m_allExtensionTablesArray.length; ++index) {
+            if (!this.m_allExtensionTablesArray[index].checkDeltaNewPropagation()) continue;
             hasChange = true;
         }
         return hasChange;
@@ -434,9 +443,9 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = dlPredicate;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
-            System.out.println("[!] Se agrega Assertion a la binaryExtensionTable");
-            System.out.println("	dlPredicate -> "+dlPredicate);
-            System.out.println("	Node -> "+node);
+//            System.out.println("[!] Se agrega Assertion a la binaryExtensionTable");
+//            System.out.println("	dlPredicate -> "+dlPredicate);
+//            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -460,10 +469,10 @@ implements Serializable {
             this.m_ternaryAuxiliaryTupleAdd[0] = dlPredicate;
             this.m_ternaryAuxiliaryTupleAdd[1] = node0;
             this.m_ternaryAuxiliaryTupleAdd[2] = node1;
-            System.out.println("[!] Se agrega Assertion a la m_ternaryExtensionTable");
-            System.out.println("	dlPredicate -> "+dlPredicate);
-            System.out.println("	node0 -> "+node0);
-            System.out.println("	node1 -> "+node1);
+//            System.out.println("[!] Se agrega Assertion a la m_ternaryExtensionTable");
+//            System.out.println("	dlPredicate -> "+dlPredicate);
+//            System.out.println("	node0 -> "+node0);
+//            System.out.println("	node1 -> "+node1);
             boolean bl = this.m_ternaryExtensionTable.addTuple(this.m_ternaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }
@@ -500,9 +509,13 @@ implements Serializable {
 			for (OWLClassExpression node0Class : node0Classes) {
 				for (OWLClassExpression node1Class : node1Classes) {
 					//Checkear si existe Axiom (A int not-B) union (not-A int B) 
-					if (node1Class != node0Class && !MetamodellingAxiomHelper.containsInequalityRuleAxiom( node0Class, node1Class, this.m_tableau)) {
-						MetamodellingAxiomHelper.addInequalityMetamodellingRuleAxiom(node0Class, node1Class, this.m_tableau.m_permanentDLOntology, this.m_tableau);
-						return true;
+					
+					if (node1Class != node0Class) { 
+						Atom def0 = MetamodellingAxiomHelper.containsInequalityRuleAxiom( node0Class, node1Class, this.m_tableau);
+						if ((def0 != null && !this.m_tableau.containsClassAssertion(def0.getDLPredicate().toString())) || def0 == null) {
+							MetamodellingAxiomHelper.addInequalityMetamodellingRuleAxiom(node0Class, node1Class, this.m_tableau.m_permanentDLOntology, this.m_tableau, def0);
+							return true;
+						}
 					}
 				}
 			}
@@ -520,6 +533,7 @@ implements Serializable {
 			Atom ineqAtom = Atom.create(Inequality.INSTANCE, this.m_tableau.mapNodeIndividual.get(node0Equivalent.m_nodeID), this.m_tableau.mapNodeIndividual.get(node1Equivalent.m_nodeID));
 			DLPredicate inequalityPredicate = ineqAtom.getDLPredicate();
 			DLPredicate[] dlPredicates = new DLPredicate[] {equalityPredicate, inequalityPredicate};
+			//DLPredicate[] dlPredicates = new DLPredicate[] {inequalityPredicate, equalityPredicate};
 			
 			int hashCode = 0;
             for (int disjunctIndex = 0; disjunctIndex < dlPredicates.length; ++disjunctIndex) {
@@ -527,10 +541,10 @@ implements Serializable {
             }
             
 			GroundDisjunctionHeader gdh = new GroundDisjunctionHeader(dlPredicates, hashCode , null);
-			DependencySet dependencySet = this.m_dependencySetFactory.lastEntryAddedIndex == -1 || this.m_dependencySetFactory.m_entries[this.m_dependencySetFactory.lastEntryAddedIndex] == null ? this.m_dependencySetFactory.emptySet() : this.m_dependencySetFactory.m_entries[this.m_dependencySetFactory.lastEntryAddedIndex];
+			DependencySet dependencySet = getActualDependencySet();
 			System.out.println("DEPENDENCYSET FOR CLOSE RULE DISJUNCTION -> "+dependencySet);
 			GroundDisjunction groundDisjunction = new GroundDisjunction(this.m_tableau, gdh, new Node[] {node0Equivalent, node1Equivalent, node0Equivalent, node1Equivalent}, new boolean[] {true, true}, dependencySet);
-			if (!groundDisjunction.isSatisfied(this.m_tableau)) {
+			if (!this.m_tableau.alreadyCreateDisjunction(node0Equivalent, node1Equivalent) && !groundDisjunction.isSatisfied(this.m_tableau)) {
 				this.m_tableau.addGroundDisjunction(groundDisjunction);
 				this.m_tableau.addCreatedDisjuntcion(node0Equivalent, node1Equivalent);
 				System.out.println("CLOSE RULE add the following disjunction -> "+eqAtom.toString() +" OR "+ineqAtom.toString());
@@ -538,6 +552,10 @@ implements Serializable {
 			}
 		}
 		return false;
+	}
+	
+	public DependencySet getActualDependencySet() {
+		return this.m_dependencySetFactory.lastEntryAddedIndex == -1 || this.m_dependencySetFactory.m_entries[this.m_dependencySetFactory.lastEntryAddedIndex] == null ? this.m_dependencySetFactory.emptySet() : this.m_dependencySetFactory.m_entries[this.m_dependencySetFactory.lastEntryAddedIndex];
 	}
 	
     public boolean addAssertion(DLPredicate dlPredicate, Node node0, Node node1, Node node2, DependencySet dependencySet, boolean isCore) {
@@ -548,11 +566,11 @@ implements Serializable {
         this.m_fouraryAuxiliaryTupleAdd[1] = node0;
         this.m_fouraryAuxiliaryTupleAdd[2] = node1;
         this.m_fouraryAuxiliaryTupleAdd[3] = node2;
-        System.out.println("[!] Se agrega Assertion a la m_fouraryAuxiliaryTupleAdd");
-        System.out.println("	dlPredicate -> "+dlPredicate);
-        System.out.println("	node0 -> "+node0);
-        System.out.println("	node1 -> "+node1);
-        System.out.println("	node2 -> "+node2);
+//        System.out.println("[!] Se agrega Assertion a la m_fouraryAuxiliaryTupleAdd");
+//        System.out.println("	dlPredicate -> "+dlPredicate);
+//        System.out.println("	node0 -> "+node0);
+//        System.out.println("	node1 -> "+node1);
+//        System.out.println("	node2 -> "+node2);
         
         return this.addTuple(this.m_fouraryAuxiliaryTupleAdd, dependencySet, isCore);
     }
@@ -582,6 +600,13 @@ implements Serializable {
         this.m_addActive = true;
         try {
             boolean result = this.getExtensionTable(tuple.length).addTuple(tuple, dependencySet, isCore);
+            if(result) {
+            	System.out.print("TUPLE ADDED: ");
+            	for (Object obj : tuple) {
+            		System.out.println(obj+" ");
+            	}
+            	System.out.println();
+            }
             return result;
         }
         finally {

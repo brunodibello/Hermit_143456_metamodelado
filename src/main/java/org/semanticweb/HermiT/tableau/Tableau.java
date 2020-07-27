@@ -4,13 +4,16 @@
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.fing.metamodelling.BranchedHyperresolutionManager;
+import org.fing.metamodelling.MetamodellingAxiomHelper;
 import org.semanticweb.HermiT.existentials.ExistentialExpansionStrategy;
 import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicConcept;
@@ -31,7 +34,9 @@ import org.semanticweb.HermiT.model.InternalDatatype;
 import org.semanticweb.HermiT.model.LiteralConcept;
 import org.semanticweb.HermiT.model.NegatedAtomicRole;
 import org.semanticweb.HermiT.model.Term;
+import org.semanticweb.HermiT.model.Variable;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
+import org.semanticweb.HermiT.structural.OWLClausification;
 import org.semanticweb.HermiT.tableau.BranchingPoint;
 import org.semanticweb.HermiT.tableau.ClashManager;
 import org.semanticweb.HermiT.tableau.DatatypeManager;
@@ -51,8 +56,11 @@ import org.semanticweb.HermiT.tableau.NodeType;
 import org.semanticweb.HermiT.tableau.NominalIntroductionManager;
 import org.semanticweb.HermiT.tableau.PermanentDependencySet;
 import org.semanticweb.HermiT.tableau.ReasoningTaskDescription;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLMetaRuleAxiom;
 import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 
 public final class Tableau
@@ -99,9 +107,10 @@ implements Serializable {
     protected GroundDisjunction m_firstUnprocessedGroundDisjunction;
     protected Map<Integer, Individual> nodeToMetaIndividual;
     protected List<Node> metamodellingNodes;
-    protected Map<Integer, Individual> mapNodeIndividual;
+	protected Map<Integer, Individual> mapNodeIndividual;
     protected Map<Integer, Node> mapNodeIdtoNodes;
     protected Map<Integer, List<Integer>> createdDisjunction;
+    protected Map<String, List<Map.Entry<Node, Node>>> closeMetaRuleDisjunctionsMap;
 
     /*
      * WARNING - Removed try catching itself - possible behaviour change.
@@ -141,6 +150,7 @@ implements Serializable {
             this.mapNodeIndividual = new HashMap<Integer, Individual>();
             this.mapNodeIdtoNodes = new HashMap<Integer, Node>();
             this.createdDisjunction = new HashMap<Integer, List<Integer>>();
+            this.closeMetaRuleDisjunctionsMap = new HashMap<String, List<Map.Entry<Node, Node>>> ();
             
             BranchedHyperresolutionManager branchedHypM = new BranchedHyperresolutionManager();
     		branchedHypM.setHyperresolutionManager(this.m_permanentHyperresolutionManager);
@@ -157,6 +167,14 @@ implements Serializable {
             this.m_interruptFlag.endTask();
         }
     }
+    
+    public List<Node> getMetamodellingNodes() {
+		return metamodellingNodes;
+	}
+
+	public void setMetamodellingNodes(List<Node> metamodellingNodes) {
+		this.metamodellingNodes = metamodellingNodes;
+	}
     
     public int getM_currentBranchingPoint() {
 		return m_currentBranchingPoint;
@@ -488,10 +506,15 @@ implements Serializable {
         Node node = termsToNodes.get(term);
         if (node == null) {
         	System.out.println("***** Going to create a Node ******");
+        	if (term.toString().contains("@")) {
+        		System.out.println("aca");
+        	}
         	System.out.println("term -> "+term);
             if (term instanceof Individual) {
                 Individual individual = (Individual)term;
                 node = individual.isAnonymous() ? this.createNewNINode(dependencySet) : this.createNewNamedNode(dependencySet);
+                this.mapNodeIndividual.put(node.m_nodeID, (Individual) term);
+                this.mapNodeIdtoNodes.put(node.m_nodeID, node);
             } else {
                 Constant constant = (Constant)term;
                 node = this.createNewRootConstantNode(dependencySet);
@@ -500,8 +523,6 @@ implements Serializable {
                 }
             }
             termsToNodes.put(term, node);
-            this.mapNodeIndividual.put(node.m_nodeID, (Individual) term);
-            this.mapNodeIdtoNodes.put(node.m_nodeID, node);
             System.out.println("node -> "+node);
         }
         return node.getCanonicalNode();
@@ -553,7 +574,6 @@ implements Serializable {
     }
 
     protected boolean doIteration() {
-    	System.out.println("[!] Start Iteration [!]");
         if (!this.m_extensionManager.containsClash()) {
             this.m_nominalIntroductionManager.processAnnotatedEqualities();
             boolean hasChange = false;
@@ -579,6 +599,16 @@ implements Serializable {
                     	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
                     	this.m_extensionManager.resetDeltaNew();
                     }
+                    checkMetaRule();
+                    if(checkPropertyNegation()) {
+                    	return true;
+                    }
+                    if (MetamodellingAxiomHelper.findCyclesInM(this)) {
+                    	//DependencySet clashDependencySet = this.m_firstGroundDisjunction != null? this.m_firstGroundDisjunction.getDependencySet() : this.m_dependencySetFactory.emptySet();
+                    	DependencySet clashDependencySet = this.m_extensionManager.getActualDependencySet();
+                    	this.m_extensionManager.setClash(clashDependencySet);
+                    	return true;
+                    }
                 }
                 hasChange = true;
             }
@@ -592,6 +622,8 @@ implements Serializable {
         if (!this.m_extensionManager.containsClash()) {
         	while (this.m_firstUnprocessedGroundDisjunction != null) {
         		GroundDisjunction groundDisjunction = this.m_firstUnprocessedGroundDisjunction;
+        		System.out.println("$$$$ EVALUATE GROUND DISJUNCTION $$$$$");
+        		System.out.println("\nGround Disjunction: "+groundDisjunction);
         		if (this.m_tableauMonitor != null) {
         			this.m_tableauMonitor.processGroundDisjunctionStarted(groundDisjunction);
         		}
@@ -620,10 +652,11 @@ implements Serializable {
         		this.m_interruptFlag.checkInterrupt();
         	}
         	if (checkCloseMetamodellingRule()) {
-        		if (this.startBacktracking(this.m_firstUnprocessedGroundDisjunction)) {
-        			return true;
-        		}
+        		return true;
         	}
+            if (checkCloseMetaRule()) {
+            	return true;
+            }
         }
         if (this.m_extensionManager.containsClash()) {
         	System.out.println("#$# Se encuentra un Clash y se va a chequear si se debe hacer backtracking");
@@ -658,6 +691,206 @@ implements Serializable {
         }
         return false;
     }
+    
+    public Set<Node> getClassInstances(String className) {
+    	Set<Node> instances = new HashSet<Node>();
+    	Atom classAtom = Atom.create(AtomicConcept.create(className.substring(1, className.length()-1)), Variable.create("X"));
+    	DLPredicate dlPredicate = classAtom.getDLPredicate();
+    	for (int nodeId : this.mapNodeIdtoNodes.keySet()) {
+    		if (this.getExtensionManager().containsAssertion(dlPredicate, mapNodeIdtoNodes.get(nodeId))) {
+    			instances.add(mapNodeIdtoNodes.get(nodeId));
+    		}
+    	}
+    	return instances;
+    }
+    
+    private boolean checkPropertyNegation() {
+    	boolean findClash = false;
+    	for (Node node0 : this.metamodellingNodes) {
+    		for (Node node1 : this.metamodellingNodes) {
+    			List<String> propertiesRForEqNodes = getObjectProperties(node0, node1);
+    			for (String propertyR : propertiesRForEqNodes) {
+    				for (String propertyIter : propertiesRForEqNodes) {
+    					if (propertyIter.equals("<~"+propertyR.substring(1))) {
+                        	//DependencySet clashDependencySet = this.m_firstGroundDisjunction != null? this.m_firstGroundDisjunction.getDependencySet() : this.m_dependencySetFactory.emptySet();
+    						DependencySet clashDependencySet = this.m_extensionManager.getActualDependencySet();
+    						this.m_extensionManager.setClash(clashDependencySet);
+    						findClash = true;
+    					}
+    				}
+    			}
+    		}
+    	}
+    	return findClash;
+    }
+    
+    private boolean checkCloseMetaRule() {
+    	boolean checkCloseMetaRuleApplied = false;
+		for (Node node0 : this.metamodellingNodes) {
+    		for (Node node1 : this.metamodellingNodes) {
+    			Node node0Eq = node0.getCanonicalNode();
+    			Node node1Eq = node1.getCanonicalNode();
+    			List<String> propertiesRForEqNodes = getObjectProperties(node0Eq, node1Eq); //R(x,y)
+    			String propertyRString = meetCloseMetaRuleCondition(propertiesRForEqNodes);
+    			if (!propertyRString.equals("")) {
+    				//Crear role viborita
+    				if (!isCloseMetaRuleDisjunctionAdded(propertyRString, node0Eq, node1Eq)) {
+	    				GroundDisjunction groundDisjunction = createCloseMetaRuleDisjunction(propertyRString, node0Eq, node1Eq);
+	    				if (!groundDisjunction.isSatisfied(this)) {
+    						this.addGroundDisjunction(groundDisjunction);
+        					checkCloseMetaRuleApplied = true;
+    					}
+    				}		
+    			}
+    		}
+    	}
+    	return checkCloseMetaRuleApplied;
+    }
+    
+    private boolean isCloseMetaRuleDisjunctionAdded(String propertyRString, Node node0, Node node1) {
+    	if (closeMetaRuleDisjunctionsMap.containsKey(propertyRString)) {
+    		for (Map.Entry<Node, Node> nodePair : closeMetaRuleDisjunctionsMap.get(propertyRString)) {
+    			if (nodePair.getKey().m_nodeID == node0.m_nodeID && nodePair.getValue().m_nodeID == node1.m_nodeID) {
+    				return true;
+    			}
+    		}
+    	} else {
+    		closeMetaRuleDisjunctionsMap.put(propertyRString, new ArrayList<Map.Entry<Node, Node>>());
+    	}
+    	closeMetaRuleDisjunctionsMap.get(propertyRString).add(new AbstractMap.SimpleEntry<>(node0, node1));
+    	return false;
+    }
+    
+    private GroundDisjunction createCloseMetaRuleDisjunction(String propertyRString, Node node0Eq, Node node1Eq) {
+    	//Crear role viborita
+    	propertyRString = propertyRString.substring(1, propertyRString.length()-1); //se le saca <>
+		AtomicRole newProperty = AtomicRole.create("~"+propertyRString);
+		AtomicRole propertyR = AtomicRole.create(propertyRString);
+		        				
+		Atom relationR = Atom.create(propertyR, (Term)this.mapNodeIndividual.get(node0Eq.m_nodeID), (Term)this.mapNodeIndividual.get(node1Eq.m_nodeID));	
+		DLPredicate relationRPredicate = relationR.getDLPredicate();
+		Atom newRelationR = Atom.create(newProperty, (Term)this.mapNodeIndividual.get(node0Eq.m_nodeID), (Term)this.mapNodeIndividual.get(node1Eq.m_nodeID));	
+		DLPredicate newRelationRPredicate = newRelationR.getDLPredicate();
+		DLPredicate[] dlPredicates = new DLPredicate[] {relationRPredicate, newRelationRPredicate};
+		
+		int hashCode = 0;
+        for (int disjunctIndex = 0; disjunctIndex < dlPredicates.length; ++disjunctIndex) {
+            hashCode = hashCode * 7 + dlPredicates[disjunctIndex].hashCode();
+        }
+             	            
+		GroundDisjunctionHeader gdh = new GroundDisjunctionHeader(dlPredicates, hashCode , null);
+		DependencySet dependencySet = this.m_dependencySetFactory.lastEntryAddedIndex == -1 || this.m_dependencySetFactory.m_entries[this.m_dependencySetFactory.lastEntryAddedIndex] == null ? this.m_dependencySetFactory.emptySet() : this.m_dependencySetFactory.m_entries[this.m_dependencySetFactory.lastEntryAddedIndex];
+		System.out.println("DEPENDENCYSET FOR CLOSE META RULE DISJUNCTION -> "+dependencySet);
+		GroundDisjunction groundDisjunction = new GroundDisjunction(this, gdh, new Node[] {node0Eq, node1Eq, node0Eq, node1Eq}, new boolean[] {true, true}, dependencySet);
+		System.out.println("CLOSE META RULE add the following disjunction -> "+relationR.toString() +" OR "+newRelationR.toString());
+		return groundDisjunction;
+    }
+    
+    private void checkMetaRule() {
+    	for (OWLMetamodellingAxiom metamodellingAxiom : this.m_permanentDLOntology.getMetamodellingAxioms()) {
+    		Node metamodellingNode = getMetamodellingNodeFromIndividual(metamodellingAxiom.getMetamodelIndividual());
+    		for (OWLMetaRuleAxiom mrAxiom : this.m_permanentDLOntology.getMetaRuleAxioms()) {
+    			String metaRulePropertyR = mrAxiom.getPropertyR().toString();
+    			List<Node> relatedNodes = getRelatedNodes(metamodellingNode, metaRulePropertyR);
+    			if (relatedNodes.size() > 0) {
+    				List<String> classesImageForMetamodellingNode = getNodesClasses(relatedNodes);
+    				if (!classesImageForMetamodellingNode.isEmpty() && !MetamodellingAxiomHelper.containsMetaRuleAddedAxiom(metamodellingAxiom.getModelClass().toString(), mrAxiom.getPropertyS().toString(), classesImageForMetamodellingNode, this)) {
+    					MetamodellingAxiomHelper.addMetaRuleAddedAxiom(metamodellingAxiom.getModelClass().toString(), mrAxiom.getPropertyS().toString(), classesImageForMetamodellingNode, this);
+    				}
+    			}
+    		}
+    	}
+    }
+    
+    public Node getMetamodellingNodeFromIndividual(OWLIndividual individual) {
+    	int nodeId = -1;
+    	for (int metamodellingNodeId : nodeToMetaIndividual.keySet()) {
+    		if (nodeToMetaIndividual.get(metamodellingNodeId).toString().equals(individual.toString())) {
+    			nodeId = metamodellingNodeId;
+    		}
+    	}
+    	for (Node metamodellingNode : metamodellingNodes) {
+    		if (nodeId == metamodellingNode.m_nodeID) {
+    			return metamodellingNode;
+    		}
+    	}
+    	return null;
+    }
+    
+    private List<String> getNodesClasses(List<Node> nodes) {
+    	List<String> classes = new ArrayList<String>();
+    	for (Node node : nodes) {
+    		int nodeId = -1;
+    		for (Node metamodellingNode : metamodellingNodes) {
+    			if (metamodellingNode.getCanonicalNode().m_nodeID == node.getCanonicalNode().m_nodeID) {
+    				nodeId = metamodellingNode.m_nodeID;
+    			}
+    		}
+    		if (nodeToMetaIndividual.containsKey(nodeId)) {
+    			Individual individual = nodeToMetaIndividual.get(nodeId);
+    			for (OWLMetamodellingAxiom metamodellingAxiom : m_permanentDLOntology.getMetamodellingAxioms()) {
+    				if (metamodellingAxiom.getMetamodelIndividual().toString().equals(individual.toString())) {
+    					classes.add(metamodellingAxiom.getModelClass().toString());
+    				}
+    			}
+    		}
+    	}
+    	return classes;
+    }
+    
+    private List<Node> getRelatedNodes(Node node, String property) {
+    	List<Node> relatedNodes = new ArrayList<Node>();
+    	if (this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0] != null) {
+    		for (int i = 0; i < this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length; i++) {
+    			Object obj = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i];
+    			if (obj instanceof AtomicRole && ((AtomicRole) obj).toString().equals(property) && (i + 2) <= this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length) {
+    				Object obj1 = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+1];
+    				Object obj2 = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+2];
+    				if (obj1 instanceof Node && obj2 instanceof Node && (((Node) obj1).getNodeID() == node.getNodeID() || ((Node) obj1).getCanonicalNode().getNodeID() == node.getCanonicalNode().getNodeID())) {
+    					relatedNodes.add(((Node) obj2));
+    					if (((Node) obj2).getCanonicalNode().m_nodeID != ((Node) obj2).m_nodeID) {
+    						relatedNodes.add(((Node) obj2).getCanonicalNode());
+    					}
+    				}
+    			}
+    		}
+    	}
+    	return relatedNodes;
+    }
+    
+    private List<String> getObjectProperties(Node node0, Node node1) {
+    	List<String> objectProperties = new ArrayList<String>();
+    	if (this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0] != null) {
+    		for (int i = 0; i < this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length; i++) {
+    			Object obj = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i];
+    			if (obj instanceof AtomicRole && (i + 2) <= this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length) {
+    				Object obj1 = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+1];
+    				Object obj2 = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+2];
+    				if (obj1 instanceof Node && obj2 instanceof Node && ((Node) obj1).getNodeID() == node0.getNodeID() && ((Node) obj2).getNodeID() == node1.getNodeID()) {
+    					objectProperties.add(((AtomicRole) obj).toString());
+    				}
+    			}
+    		}
+    	}
+    	return objectProperties;
+    }
+    
+    private String meetCloseMetaRuleCondition(List<String> propertiesRForEqNodes) {
+    	for (OWLMetaRuleAxiom mrAxiom : this.m_permanentDLOntology.getMetaRuleAxioms()) {
+    		String metaRulePropertyR = mrAxiom.getPropertyR().toString();
+    		if (!propertiesRForEqNodes.contains(metaRulePropertyR) && !propertiesRForEqNodes.contains(getNegativeProperty(metaRulePropertyR))) {
+    			//si no existe R(x,y) o ~R(x,y)
+				return metaRulePropertyR;
+			}
+    	}
+    	return "";
+    }
+    
+    private String getNegativeProperty(String property) {
+    	String prefix = "<~";
+    	String negativeProperty = prefix + property.substring(1);
+    	return negativeProperty;
+    }
 
 	public boolean startBacktracking(GroundDisjunction groundDisjunction) {
 		System.out.println("@@@@@@ Backtracking @@@@");
@@ -682,6 +915,7 @@ implements Serializable {
 		        this.m_tableauMonitor.disjunctProcessingFinished(groundDisjunction, sortedDisjunctIndexes[0]);
 		        this.m_tableauMonitor.processGroundDisjunctionFinished(groundDisjunction);
 		    }
+		    this.m_extensionManager.resetDeltaNew();
 		    return true;
 		}
 		if (this.m_tableauMonitor != null) {

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <Ontology xmlns="http://www.w3.org/2002/07/owl#"
-     xml:base=""
+     xml:base="http://www.semanticweb.org/usuario/ontologies/2018/2/untitled-ontology-242"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     ontologyIRI="">
+     ontologyIRI="http://www.semanticweb.org/usuario/ontologies/2018/2/untitled-ontology-242">
     <Prefix name="" IRI="http://www.semanticweb.org/usuario/ontologies/2018/2/untitled-ontology-242"/>
     <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
     <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
@@ -144,7 +144,7 @@
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Entry"/>
-        <ObjectUnionOf>
+        <ObjectIntersectionOf>
             <ObjectSomeValuesFrom>
                 <ObjectProperty IRI="#detailC"/>
                 <Class abbreviatedIRI="owl:Thing"/>
@@ -153,7 +153,7 @@
                 <ObjectProperty IRI="#detailD"/>
                 <Class abbreviatedIRI="owl:Thing"/>
             </ObjectSomeValuesFrom>
-        </ObjectUnionOf>
+        </ObjectIntersectionOf>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Entry"/>
@@ -177,7 +177,7 @@
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#EntryDef"/>
-        <ObjectUnionOf>
+        <ObjectIntersectionOf>
             <ObjectSomeValuesFrom>
                 <ObjectProperty IRI="#detailDefC"/>
                 <Class abbreviatedIRI="owl:Thing"/>
@@ -186,7 +186,7 @@
                 <ObjectProperty IRI="#detailDefD"/>
                 <Class abbreviatedIRI="owl:Thing"/>
             </ObjectSomeValuesFrom>
-        </ObjectUnionOf>
+        </ObjectIntersectionOf>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#EntryDef"/>
@@ -448,10 +448,6 @@
         <ObjectProperty IRI="#detailDef"/>
         <Class IRI="#DetDef"/>
     </ObjectPropertyRange>
-    <DisjointObjectProperties>
-        <ObjectProperty IRI="#detailDefC"/>
-        <ObjectProperty IRI="#detailDefD"/>
-    </DisjointObjectProperties>
 	<MetaModelling>
         <NamedIndividual IRI="#monthRent"/>
         <Class IRI="#MonthRentEnt"/>

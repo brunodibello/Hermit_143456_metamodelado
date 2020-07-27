@@ -66,16 +66,6 @@
 	<FunctionalObjectProperty>
         <ObjectProperty IRI="#P"/>
     </FunctionalObjectProperty>
-
-    <!-- <EquivalentClasses>
-        <Class IRI="#A1"/>
-        <Class IRI="#A2"/>
-    </EquivalentClasses> -->
-
-    <!-- <SameIndividual>
-        <NamedIndividual IRI="#a1"/>
-        <NamedIndividual IRI="#a2"/>
-    </SameIndividual> -->
 	
 	<MetaModelling>
         <NamedIndividual IRI="#a1"/>

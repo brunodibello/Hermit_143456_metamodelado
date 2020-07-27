@@ -207,9 +207,9 @@ implements Serializable {
 
     public void applyDLClauses() {
     	System.out.println("\n$$$$ APPLY DLCLAUSES $$$$$");
-    	System.out.println(this.m_deltaOldRetrievals.length+" m_deltaOldRetrievals");
+    	//System.out.println(this.m_deltaOldRetrievals.length+" m_deltaOldRetrievals");
         for (int index = 0; index < this.m_deltaOldRetrievals.length; ++index) {
-        	System.out.println("----| DELTAOLDRETRIEVAL - NRO: "+(index+1));
+        	//System.out.println("----| DELTAOLDRETRIEVAL - NRO: "+(index+1));
             ExtensionTable.Retrieval deltaOldRetrieval = this.m_deltaOldRetrievals[index];
             deltaOldRetrieval.open();
             Object[] deltaOldTupleBuffer = deltaOldRetrieval.getTupleBuffer();
@@ -217,11 +217,12 @@ implements Serializable {
                 CompiledDLClauseInfo unguardedCompiledDLClauseInfo;
                 Object deltaOldPredicate = deltaOldTupleBuffer[0];
                 CompiledDLClauseInfo unoptimizedCompiledDLClauseInfo = this.m_tupleConsumersByDeltaPredicate.get(deltaOldPredicate);
-                System.out.print("----| deltaOldTupleBuffer: ");
-                for (Object o : deltaOldTupleBuffer) {
-                	System.out.print(o+" ");
-                }
-                System.out.println();
+//                System.out.print("----| deltaOldTupleBuffer: ");
+//                for (Object o : deltaOldTupleBuffer) {
+//                	System.out.print(o+" ");
+//                }
+//                System.out.println();
+                
 //                if (unoptimizedCompiledDLClauseInfo != null)
 //                	System.out.println("----| unoptimizedCompiledDLClauseInfo: \n"+unoptimizedCompiledDLClauseInfo.m_evaluator.toString());
                 boolean applyUnoptimized = true;

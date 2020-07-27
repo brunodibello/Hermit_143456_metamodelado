@@ -31,6 +31,10 @@ implements Serializable {
     public int sizeInMemory() {
         return this.m_entries.length * 4 + this.m_size * 20;
     }
+    
+    public PermanentDependencySet getFirstUnusedSet() {
+    	return this.m_firstUnusedSet;
+    }
 
     public void clear() {
         this.m_mergeArray.clear();

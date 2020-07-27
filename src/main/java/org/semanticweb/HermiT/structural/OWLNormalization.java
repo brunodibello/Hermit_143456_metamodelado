@@ -1478,6 +1478,12 @@ public class OWLNormalization {
 			// TODO Auto-generated method stub
         	OWLNormalization.this.m_axioms.m_metamodellingAxioms.add(axiom);
 		}
+        
+        @Override
+		public void visit(OWLMetaRuleAxiom axiom) {
+			// TODO Auto-generated method stub
+        	OWLNormalization.this.m_axioms.m_metaRuleAxioms.add(axiom);
+		}
 
         public void visit(SWRLRule rule) {
             for (Object atom : rule.getBody()) {

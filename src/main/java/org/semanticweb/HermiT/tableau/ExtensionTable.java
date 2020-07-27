@@ -92,6 +92,11 @@ implements Serializable {
             this.m_tableau.m_descriptionGraphManager.descriptionGraphTupleAdded(tupleIndex, tuple);
         }
         this.m_tableau.m_clashManager.tupleAdded(this, tuple, dependencySet);
+        System.out.print("TUPLE ADDED: ");
+    	for (Object obj : tuple) {
+    		System.out.println(obj+" ");
+    	}
+    	System.out.println();
     }
 
     public abstract boolean containsTuple(Object[] var1);
@@ -111,23 +116,30 @@ implements Serializable {
     public abstract boolean isCore(Object[] var1);
 
     public boolean propagateDeltaNew() {
-    	System.out.println("Table elements:");
+//    	System.out.println("Table elements:");
     	if (this.m_tupleTable.m_pages != null) {
-    		for(Page p : this.m_tupleTable.m_pages) {
-        		if(p != null) {
-        			for (Object o : p.m_objects) {
-            			if(o != null) System.out.print("    "+ o);
-            			if(o != null && o.toString().startsWith("{")) System.out.println();
-            		}
-        			
-        		}
-
-        	}
+//    		for(Page p : this.m_tupleTable.m_pages) {
+//        		if(p != null) {
+//        			for (Object o : p.m_objects) {
+//        				if(o != null && (o.toString().startsWith("<") || o.toString().startsWith("!="))) System.out.println();
+//            			if(o != null) System.out.print("    "+ o);
+//            			if(o == null) break;
+//            		}
+//        			
+//        		}
+//
+//        	}
     	}
+    	System.out.println();
         boolean deltaNewNotEmpty = this.m_afterExtensionThisTupleIndex != this.m_afterDeltaNewTupleIndex;
         this.m_afterExtensionOldTupleIndex = this.m_afterExtensionThisTupleIndex;
         this.m_afterExtensionThisTupleIndex = this.m_afterDeltaNewTupleIndex;
         this.m_afterDeltaNewTupleIndex = this.m_tupleTable.getFirstFreeTupleIndex();
+        return deltaNewNotEmpty;
+    }
+    
+    public boolean checkDeltaNewPropagation() {
+        boolean deltaNewNotEmpty = this.m_afterExtensionThisTupleIndex != this.m_afterDeltaNewTupleIndex;
         return deltaNewNotEmpty;
     }
     
