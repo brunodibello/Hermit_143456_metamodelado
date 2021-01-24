@@ -33,6 +33,14 @@ extends BranchingPoint {
         this.m_groundDisjunction = groundDisjunction;
         this.m_sortedDisjunctIndexes = sortedDisjunctIndexes;
     }
+    
+    @Override
+    public boolean canStartNextChoice() {
+    	if (this.m_sortedDisjunctIndexes.length > this.m_currentIndex + 1) {
+    		return true;
+    	}
+    	return false;
+    }
 
     @Override
     public void startNextChoice(Tableau tableau, DependencySet clashDependencySet) {

@@ -32,5 +32,9 @@ implements Serializable {
 
     public void startNextChoice(Tableau tableau, DependencySet clashDependencySet) {
     }
+    
+    public boolean canStartNextChoice() {
+    	return true;
+    }
 }
 

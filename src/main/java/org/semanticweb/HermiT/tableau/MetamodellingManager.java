@@ -275,7 +275,7 @@ protected boolean checkEqualMetamodellingRule() {
 	for (Node node1 : this.m_tableau.metamodellingNodes) {
 		for (Node node2 : this.m_tableau.metamodellingNodes) {
 			if (this.m_tableau.areSameIndividual(node1, node2)) {
-				if (this.m_tableau.m_metamodellingManager.checkEqualMetamodellingRuleIteration(node1, node2)) return true;
+				if (checkEqualMetamodellingRuleIteration(node1, node2)) return true;
 			}
 		}
 	}
@@ -290,7 +290,7 @@ protected boolean checkInequalityMetamodellingRule() {
 	for (Node node1 : this.m_tableau.metamodellingNodes) {
 		for (Node node2 : this.m_tableau.metamodellingNodes) {
 			if (this.m_tableau.areDifferentIndividual(node1, node2)) {
-				if (this.m_tableau.m_metamodellingManager.checkInequalityMetamodellingRuleIteration(node1, node2)) return true;
+				if (checkInequalityMetamodellingRuleIteration(node1, node2)) return true;
 			}
 		}
 	}

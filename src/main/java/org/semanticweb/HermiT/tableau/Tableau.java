@@ -670,7 +670,7 @@ implements Serializable {
         	System.out.println("#$# Se encuentra un Clash y se va a chequear si se debe hacer backtracking");
         	DependencySet clashDependencySet = this.m_extensionManager.getClashDependencySet();
     		int newCurrentBranchingPoint = clashDependencySet.getMaximumBranchingPoint();
-    		if (newCurrentBranchingPoint <= this.m_nonbacktrackableBranchingPoint) {
+    		if (newCurrentBranchingPoint <= this.m_nonbacktrackableBranchingPoint || this.m_branchingPoints[newCurrentBranchingPoint] == null) {
     			System.out.println("#$# Se va a chequear si se debe hacer backtracking manual por motivos de metamodelling");
     			if (shouldBacktrackHyperresolutionManager()) {
     				System.out.println("#$# Se va a hacer backtracking manual");
@@ -683,7 +683,6 @@ implements Serializable {
     		    return false;
     		}
     		//backtrack axioms added by metamodelling rule if needed
-    		backtrackHyperresolutionManager();
     		System.out.println("#$# Se hara el backtracking normal de Hermit");
     		this.backtrackTo(newCurrentBranchingPoint);
     		BranchingPoint branchingPoint = this.getCurrentBranchingPoint();
@@ -818,21 +817,25 @@ implements Serializable {
 		}
 		
 		//Pasar a la siguiete opcion, de lo contrario se retorna una exception y Hermit determina inconsistencia
-		try {
+		if (this.m_branchingPoints[this.m_currentBranchingPoint].canStartNextChoice()) {
 			this.m_branchingPoints[this.m_currentBranchingPoint].startNextChoice(this, this.m_extensionManager.getClashDependencySet());
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} else {
 			return false;
-		}                
+		}           
 		this.m_extensionManager.clearClash();
 		this.m_dependencySetFactory.removeUnusedSets();
 		return true;
 	}
     
     public boolean containsClassAssertion(String def) {
-    	for (int i=0; i < m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length ;i++) {
-    		Object object = this.m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i];
-    		if (object != null && object.toString().equals(def)) {
-    			return true;
+    	for (int j=0; j < m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages.length; j++) {
+    		if (m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[j] != null) {
+    			for (int i=0; i < m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[j].m_objects.length ;i++) {
+    	    		Object object = this.m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i];
+    	    		if (object != null && object.toString().equals(def)) {
+    	    			return true;
+    	    		}
+    	    	}
     		}
     	}
     	return false;
@@ -972,15 +975,15 @@ implements Serializable {
         }
     }
 
-    protected void backtrackTo(int newCurrentBrancingPoint) {
-        BranchingPoint branchingPoint = this.m_branchingPoints[newCurrentBrancingPoint];
+    protected void backtrackTo(int newCurrentBranchingPoint) {
+        BranchingPoint branchingPoint = this.m_branchingPoints[newCurrentBranchingPoint];
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.backtrackToStarted(branchingPoint);
         }
-        for (int index = newCurrentBrancingPoint + 1; index <= this.m_currentBranchingPoint; ++index) {
+        for (int index = newCurrentBranchingPoint + 1; index <= this.m_currentBranchingPoint; ++index) {
             this.m_branchingPoints[index] = null;
         }
-        this.m_currentBranchingPoint = newCurrentBrancingPoint;
+        this.m_currentBranchingPoint = newCurrentBranchingPoint;
         this.m_firstUnprocessedGroundDisjunction = branchingPoint.m_firstUnprocessedGroundDisjunction;
         GroundDisjunction firstGroundDisjunctionShouldBe = branchingPoint.m_firstGroundDisjunction;
         while (this.m_firstGroundDisjunction != firstGroundDisjunctionShouldBe) {

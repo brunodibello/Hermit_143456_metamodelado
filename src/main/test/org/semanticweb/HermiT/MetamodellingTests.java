@@ -191,16 +191,16 @@ public class MetamodellingTests extends TestCase {
 	
 	//COMIENZO - Escenario E - Casos consistentes con metamodelling (SHIQM)
 	
-//	public void testAccountingConsistente1() {
-//		CommandLine cl = new CommandLine();
-//		flags.add(testCasesPath+"EscenarioE/AccountingConsistente1.owl");
-//		
-//		cl.main(flags.toArray(new String[flagsCount+1]));
-//		System.out.println("AccountingConsistente1 es consistente");
-//		//remover la flag del escenario
-//		flags.remove(flagsCount);
-//		TestCase.assertEquals(true, true);
-//	}
+	public void testAccountingConsistente1() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"EscenarioE/AccountingConsistente1.owl");
+		
+		cl.main(flags.toArray(new String[flagsCount+1]));
+		System.out.println("AccountingConsistente1 es consistente");
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, true);
+	}
 	
 	public void testAccountingConsistente1Corta() {
 		CommandLine cl = new CommandLine();
@@ -213,27 +213,27 @@ public class MetamodellingTests extends TestCase {
 		TestCase.assertEquals(true, true);
 	}
 	
-//	public void testAccountingConsistente2() {
-//		CommandLine cl = new CommandLine();
-//		flags.add(testCasesPath+"EscenarioE/AccountingConsistente2.owl");
-//		
-//		cl.main(flags.toArray(new String[flagsCount+1]));
-//		System.out.println("AccountingConsistente2 es consistente");
-//		//remover la flag del escenario
-//		flags.remove(flagsCount);
-//		TestCase.assertEquals(true, true);
-//	}
+	public void testAccountingConsistente2() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"EscenarioE/AccountingConsistente2.owl");
+		
+		cl.main(flags.toArray(new String[flagsCount+1]));
+		System.out.println("AccountingConsistente2 es consistente");
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, true);
+	}
 
-//	public void testAccountingConsistente3() {
-//		CommandLine cl = new CommandLine();
-//		flags.add(testCasesPath+"EscenarioE/AccountingConsistente3.owl");
-//		
-//		cl.main(flags.toArray(new String[flagsCount+1]));
-//		System.out.println("AccountingConsistente3 es consistente");
-//		//remover la flag del escenario
-//		flags.remove(flagsCount);
-//		TestCase.assertEquals(true, true);
-//	}
+	public void testAccountingConsistente3() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"EscenarioE/AccountingConsistente3.owl");
+		
+		cl.main(flags.toArray(new String[flagsCount+1]));
+		System.out.println("AccountingConsistente3 es consistente");
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, true);
+	}
 	
 	public void testTestEquality2() {
 		CommandLine cl = new CommandLine();
@@ -590,19 +590,21 @@ public class MetamodellingTests extends TestCase {
 	}
 	
 	public void testTestEquality9() {
-		CommandLine cl = new CommandLine();
-		flags.add(testCasesPath+"EscenarioF/TestEquality9.owl");
-		boolean result = false;
-		try {
-			cl.main(flags.toArray(new String[flagsCount+1]));
-		}catch (InconsistentOntologyException e) {
-			System.out.println("TestEquality9 es inconsistente");
-			result = true;
+		for (int i=0; i<100; i++) {
+			CommandLine cl = new CommandLine();
+			flags.add(testCasesPath+"EscenarioF/TestEquality9.owl");
+			boolean result = false;
+			try {
+				cl.main(flags.toArray(new String[flagsCount+1]));
+			}catch (InconsistentOntologyException e) {
+				System.out.println("TestEquality9 es inconsistente");
+				result = true;
+			}
+			
+			//remover la flag del escenario
+			flags.remove(flagsCount);
+			TestCase.assertEquals(true, result);
 		}
-		
-		//remover la flag del escenario
-		flags.remove(flagsCount);
-		TestCase.assertEquals(true, result);
 	}
 	
 	public void testTestEquality11() {
