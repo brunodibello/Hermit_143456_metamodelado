@@ -123,7 +123,7 @@ public class MetamodellingAxiomHelper {
 		tableau.getPermanentDLOntology().getDLClauses().add(dlClause1);
 		tableau.getPermanentDLOntology().getDLClauses().add(dlClause2);
 		
-		System.out.println("Se agregan 2 dlClauses por regla = metamodelling");
+		System.out.println("Se agregan 2 dlClauses por MetaRule");
 		System.out.println("-> "+dlClause1);
 		System.out.println("-> "+dlClause2);
 		
@@ -313,7 +313,7 @@ public class MetamodellingAxiomHelper {
 		ontology.getDLClauses().add(dlClause1);
 		ontology.getDLClauses().add(dlClause2);
 		
-		System.out.println("Se agregan 2 dlClauses");
+		System.out.println("Se agregan 2 dlClauses por = rule");
 		System.out.println("-> "+dlClause1);
 		System.out.println("-> "+dlClause2);
 		

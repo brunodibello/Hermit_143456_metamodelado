@@ -607,7 +607,6 @@ implements Serializable {
                     	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
                     	this.m_extensionManager.resetDeltaNew();
                     }
-                    this.m_metamodellingManager.checkMetaRule();
                     if(this.m_metamodellingManager.checkPropertyNegation()) {
                     	return true;
                     }
@@ -628,6 +627,16 @@ implements Serializable {
             return true;
         }
         if (!this.m_extensionManager.containsClash()) {
+        	if (this.m_metamodellingManager.checkCloseMetamodellingRule()) {
+        		return true;
+        	}
+            if (this.m_metamodellingManager.checkCloseMetaRule()) {
+            	return true;
+            }
+            if(this.m_metamodellingManager.checkMetaRule()) {
+            	this.m_extensionManager.resetDeltaNew();
+            	return true;
+            }
         	while (this.m_firstUnprocessedGroundDisjunction != null) {
         		GroundDisjunction groundDisjunction = this.m_firstUnprocessedGroundDisjunction;
         		System.out.println("$$$$ EVALUATE GROUND DISJUNCTION $$$$$");
@@ -659,12 +668,6 @@ implements Serializable {
         		}
         		this.m_interruptFlag.checkInterrupt();
         	}
-        	if (this.m_metamodellingManager.checkCloseMetamodellingRule()) {
-        		return true;
-        	}
-            if (this.m_metamodellingManager.checkCloseMetaRule()) {
-            	return true;
-            }
         }
         if (this.m_extensionManager.containsClash()) {
         	System.out.println("#$# Se encuentra un Clash y se va a chequear si se debe hacer backtracking");

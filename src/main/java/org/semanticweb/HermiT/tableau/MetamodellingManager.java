@@ -119,7 +119,7 @@ public final class MetamodellingManager {
     }
 	
 	protected boolean checkCloseMetaRule() {
-    	boolean checkCloseMetaRuleApplied = false;
+    	//boolean checkCloseMetaRuleApplied = false;
 		for (Node node0 : this.m_tableau.metamodellingNodes) {
     		for (Node node1 : this.m_tableau.metamodellingNodes) {
     			Node node0Eq = node0.getCanonicalNode();
@@ -132,13 +132,13 @@ public final class MetamodellingManager {
 	    				GroundDisjunction groundDisjunction = createCloseMetaRuleDisjunction(propertyRString, node0Eq, node1Eq);
 	    				if (!groundDisjunction.isSatisfied(this.m_tableau)) {
     						this.m_tableau.addGroundDisjunction(groundDisjunction);
-        					checkCloseMetaRuleApplied = true;
+    							return true;
     					}
     				}		
     			}
     		}
     	}
-    	return checkCloseMetaRuleApplied;
+    	return false;
     }
 	
 	private List<String> getObjectProperties(Node node0, Node node1) {
@@ -197,7 +197,7 @@ public final class MetamodellingManager {
 		return groundDisjunction;
     }
     
-    protected void checkMetaRule() {
+    protected boolean checkMetaRule() {
     	for (OWLMetamodellingAxiom metamodellingAxiom : this.m_tableau.m_permanentDLOntology.getMetamodellingAxioms()) {
     		Node metamodellingNode = getMetamodellingNodeFromIndividual(metamodellingAxiom.getMetamodelIndividual());
     		for (OWLMetaRuleAxiom mrAxiom : this.m_tableau.m_permanentDLOntology.getMetaRuleAxioms()) {
@@ -207,10 +207,12 @@ public final class MetamodellingManager {
     				List<String> classesImageForMetamodellingNode = getNodesClasses(relatedNodes);
     				if (!classesImageForMetamodellingNode.isEmpty() && !MetamodellingAxiomHelper.containsMetaRuleAddedAxiom(metamodellingAxiom.getModelClass().toString(), mrAxiom.getPropertyS().toString(), classesImageForMetamodellingNode, this.m_tableau)) {
     					MetamodellingAxiomHelper.addMetaRuleAddedAxiom(metamodellingAxiom.getModelClass().toString(), mrAxiom.getPropertyS().toString(), classesImageForMetamodellingNode, this.m_tableau);
+    					return true;
     				}
     			}
     		}
     	}
+    	return false;
     }
     
     public Node getMetamodellingNodeFromIndividual(OWLIndividual individual) {
