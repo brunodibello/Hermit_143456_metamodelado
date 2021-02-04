@@ -877,8 +877,96 @@ public class MetamodellingTests extends TestCase {
 	
 	//FIN - Escenario H - Casos inconsistentes con metamodelling (SHIQM*)
 	
-	//COMIENZO - otras
+	//COMIENZO - Prototipo
 	
-	//FIN - otras
+	public void testPrototipo1() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"Prototipo/ont1.owl");
+		cl.main(flags.toArray(new String[flagsCount+1]));
+		System.out.println("Prototipo2 es consistente");
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, true);
+	}
+	
+	public void testPrototipo2() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"Prototipo/ont2.owl");
+		boolean result = false;
+		try {
+			cl.main(flags.toArray(new String[flagsCount+1]));
+		}catch (InconsistentOntologyException e) {
+			System.out.println("Prototipo2 es inconsistente");
+			result = true;
+		}
+		
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, result);
+	}
+	
+	public void testPrototipo3() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"Prototipo/ont3.owl");
+		boolean result = false;
+		try {
+			cl.main(flags.toArray(new String[flagsCount+1]));
+		}catch (InconsistentOntologyException e) {
+			System.out.println("Prototipo3 es inconsistente");
+			result = true;
+		}
+		
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, result);
+	}
+	
+	public void testPrototipo4() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"Prototipo/ont4.owl");
+		cl.main(flags.toArray(new String[flagsCount+1]));
+		System.out.println("Prototipo4 es consistente");
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, true);
+	}
+	
+	public void testPrototipo5() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"Prototipo/ont5.owl");
+		cl.main(flags.toArray(new String[flagsCount+1]));
+		System.out.println("Prototipo5 es consistente");
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, true);
+	}
+	
+	public void testPrototipo6() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"Prototipo/ont6.owl");
+		boolean result = false;
+		try {
+			cl.main(flags.toArray(new String[flagsCount+1]));
+		}catch (InconsistentOntologyException e) {
+			System.out.println("Prototipo6 es inconsistente");
+			result = true;
+		}
+		
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, result);
+	}
+	
+	public void testPrototipo7() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"Prototipo/ont7.owl");
+		cl.main(flags.toArray(new String[flagsCount+1]));
+		System.out.println("Prototipo7 es consistente");
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, true);
+	}
+	
+	//FIN - Prototipo
 	
 }
