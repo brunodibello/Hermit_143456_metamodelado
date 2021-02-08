@@ -65,14 +65,6 @@ implements Serializable {
             dlClausesForKey.add(dlClause);
             interruptFlag.checkInterrupt();
         }
-        //System.out.println("HyperresolutionManager -> dlClausesByBody:");
-        for (DLClauseBodyKey key : dlClausesByBody.keySet()) {
-        	//System.out.println("	KEY -> "+key.m_dlClause);
-        	//System.out.println("	clauses:");
-        	for (DLClause dlClasue : dlClausesByBody.get(key)) {
-        		//System.out.println("		- "+dlClasue);
-        	}
-        }
         HashMap<Integer, ExtensionTable.Retrieval> retrievalsByArity = new HashMap<Integer, ExtensionTable.Retrieval>();
         DLClauseEvaluator.BufferSupply bufferSupply = new DLClauseEvaluator.BufferSupply();
         Map<Term, Node> noTermsToNodes = Collections.emptyMap();
@@ -140,8 +132,6 @@ implements Serializable {
                     if (guardingAtomicConceptAtoms1.isEmpty() && guardingAtomicConceptAtoms2.isEmpty()) {
                         CompiledDLClauseInfo unguardedTupleConsumer = new CompiledDLClauseInfo(evaluator, this.m_atomicRoleTupleConsumersUnguarded.get(deltaAtomicRole));
                         this.m_atomicRoleTupleConsumersUnguarded.put(deltaAtomicRole, unguardedTupleConsumer);
-                        //System.out.println("		deltaAtomicRole -> "+deltaAtomicRole);
-                        //System.out.println("		unguardedTupleConsumer -> "+unguardedTupleConsumer);
                     }
                 }
                 bufferSupply.reuseBuffers();

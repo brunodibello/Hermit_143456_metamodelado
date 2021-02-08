@@ -431,6 +431,54 @@ public class MetamodellingTests extends TestCase {
 		TestCase.assertEquals(true, result);
 	}
 	
+	public void testTestCycles5() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"EscenarioF/TestCycles5.owl");
+		boolean result = false;
+		try {
+			cl.main(flags.toArray(new String[flagsCount+1]));
+		}catch (InconsistentOntologyException e) {
+			System.out.println("TestCycles5 es inconsistente");
+			result = true;
+		}
+		
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, result);
+	}
+	
+	public void testTestCycles7() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"EscenarioF/TestCycles7.owl");
+		boolean result = false;
+		try {
+			cl.main(flags.toArray(new String[flagsCount+1]));
+		}catch (InconsistentOntologyException e) {
+			System.out.println("TestCycles7 es inconsistente");
+			result = true;
+		}
+		
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, result);
+	}
+	
+	public void testTestCycles8() {
+		CommandLine cl = new CommandLine();
+		flags.add(testCasesPath+"EscenarioF/TestCycles8.owl");
+		boolean result = false;
+		try {
+			cl.main(flags.toArray(new String[flagsCount+1]));
+		}catch (InconsistentOntologyException e) {
+			System.out.println("TestCycles8 es inconsistente");
+			result = true;
+		}
+		
+		//remover la flag del escenario
+		flags.remove(flagsCount);
+		TestCase.assertEquals(true, result);
+	}
+	
 	public void testTestDifference2() {
 		CommandLine cl = new CommandLine();
 		flags.add(testCasesPath+"EscenarioF/TestDifference2.owl");
@@ -921,25 +969,25 @@ public class MetamodellingTests extends TestCase {
 		TestCase.assertEquals(true, result);
 	}
 	
-	public void testPrototipo4() {
-		CommandLine cl = new CommandLine();
-		flags.add(testCasesPath+"Prototipo/ont4.owl");
-		cl.main(flags.toArray(new String[flagsCount+1]));
-		System.out.println("Prototipo4 es consistente");
-		//remover la flag del escenario
-		flags.remove(flagsCount);
-		TestCase.assertEquals(true, true);
-	}
+//	public void testPrototipo4() {
+//		CommandLine cl = new CommandLine();
+//		flags.add(testCasesPath+"Prototipo/ont4.owl");
+//		cl.main(flags.toArray(new String[flagsCount+1]));
+//		System.out.println("Prototipo4 es consistente");
+//		//remover la flag del escenario
+//		flags.remove(flagsCount);
+//		TestCase.assertEquals(true, true);
+//	}
 	
-	public void testPrototipo5() {
-		CommandLine cl = new CommandLine();
-		flags.add(testCasesPath+"Prototipo/ont5.owl");
-		cl.main(flags.toArray(new String[flagsCount+1]));
-		System.out.println("Prototipo5 es consistente");
-		//remover la flag del escenario
-		flags.remove(flagsCount);
-		TestCase.assertEquals(true, true);
-	}
+//	public void testPrototipo5() {
+//		CommandLine cl = new CommandLine();
+//		flags.add(testCasesPath+"Prototipo/ont5.owl");
+//		cl.main(flags.toArray(new String[flagsCount+1]));
+//		System.out.println("Prototipo5 es consistente");
+//		//remover la flag del escenario
+//		flags.remove(flagsCount);
+//		TestCase.assertEquals(true, true);
+//	}
 	
 	public void testPrototipo6() {
 		CommandLine cl = new CommandLine();
@@ -957,15 +1005,15 @@ public class MetamodellingTests extends TestCase {
 		TestCase.assertEquals(true, result);
 	}
 	
-	public void testPrototipo7() {
-		CommandLine cl = new CommandLine();
-		flags.add(testCasesPath+"Prototipo/ont7.owl");
-		cl.main(flags.toArray(new String[flagsCount+1]));
-		System.out.println("Prototipo7 es consistente");
-		//remover la flag del escenario
-		flags.remove(flagsCount);
-		TestCase.assertEquals(true, true);
-	}
+//	public void testPrototipo7() {
+//		CommandLine cl = new CommandLine();
+//		flags.add(testCasesPath+"Prototipo/ont7.owl");
+//		cl.main(flags.toArray(new String[flagsCount+1]));
+//		System.out.println("Prototipo7 es consistente");
+//		//remover la flag del escenario
+//		flags.remove(flagsCount);
+//		TestCase.assertEquals(true, true);
+//	}
 	
 	//FIN - Prototipo
 	

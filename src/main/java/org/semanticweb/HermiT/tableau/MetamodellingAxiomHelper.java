@@ -129,7 +129,7 @@ public class MetamodellingAxiomHelper {
 		
 		List<DLClause> dlClauses = new ArrayList<DLClause>() { 
             { 
-                add(dlClause1); 
+                add(dlClause1);
                 add(dlClause2); 
             } 
         }; 
