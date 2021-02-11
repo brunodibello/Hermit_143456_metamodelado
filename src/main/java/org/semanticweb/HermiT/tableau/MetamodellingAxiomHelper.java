@@ -295,7 +295,7 @@ public class MetamodellingAxiomHelper {
 			- classB es subclase de classA
 		Crea el nuevo hyperresolutionManager y lo asocia al tableau
 	*/
-	public static boolean addSubClassOfAxioms(OWLClassExpression classA, OWLClassExpression classB, DLOntology ontology, Tableau tableau) {
+	public static List<DLClause> addSubClassOfAxioms(OWLClassExpression classA, OWLClassExpression classB, DLOntology ontology, Tableau tableau) {
 		
 		Atom classAAtom = Atom.create(AtomicConcept.create(classA.toString().substring(1, classA.toString().length()-1)), Variable.create("X"));
 		Atom classBAtom = Atom.create(AtomicConcept.create(classB.toString().substring(1, classB.toString().length()-1)), Variable.create("X"));
@@ -324,9 +324,9 @@ public class MetamodellingAxiomHelper {
             } 
         }; 
 
-		createHyperResolutionManager(tableau, dlClauses);
+		//createHyperResolutionManager(tableau, dlClauses);
 		
-		return true;
+		return dlClauses;
 	}
 	
 	/*
@@ -357,7 +357,7 @@ public class MetamodellingAxiomHelper {
 		return nextDef + 1;
 	}
 	
-	public static void addInequalityMetamodellingRuleAxiom(OWLClassExpression classA, OWLClassExpression classB, DLOntology ontology, Tableau tableau, Atom def0AtomParam) {
+	public static List<DLClause> addInequalityMetamodellingRuleAxiom(OWLClassExpression classA, OWLClassExpression classB, DLOntology ontology, Tableau tableau, Atom def0AtomParam) {
 		
 		if (def0AtomParam == null) {
 			int nextDef = getNextDef(ontology);
@@ -429,8 +429,10 @@ public class MetamodellingAxiomHelper {
 	        
 	        //create axiom in binary table
 	        tableau.getExtensionManager().addConceptAssertion((LiteralConcept)((Object)def0Atom.getDLPredicate()), zNode, dependencySet, true);
+	        
+	        return dlClauses;
 
-			createHyperResolutionManager(tableau, dlClauses);
+			//createHyperResolutionManager(tableau, dlClauses);
 		} else {
 			DependencySet dependencySet = tableau.m_dependencySetFactory.getActualDependencySet();
 
@@ -439,6 +441,8 @@ public class MetamodellingAxiomHelper {
 	        
 	        //create axiom in binary table
 	        tableau.getExtensionManager().addConceptAssertion((LiteralConcept)((Object)def0AtomParam.getDLPredicate()), zNode, dependencySet, true);
+	        
+	        return new ArrayList<DLClause>();
 		}	
 	}
 	
@@ -447,7 +451,7 @@ public class MetamodellingAxiomHelper {
 	 Tambien crea un nuevo BranchedHyperresolutionManager con el nuevo hyperresolutionManager, sus nuevos axiomas y los estados de backtracking 
 	 actuales del tableau en la coleccion de BranchedHyperresolutionManagers del tableau.
 	*/
-	private static void createHyperResolutionManager(Tableau tableau, List<DLClause> dlClauses) {
+	public static void createHyperResolutionManager(Tableau tableau, List<DLClause> dlClauses) {
 		
 		HyperresolutionManager hypM =  new HyperresolutionManager(tableau, tableau.getPermanentDLOntology().getDLClauses());
 		

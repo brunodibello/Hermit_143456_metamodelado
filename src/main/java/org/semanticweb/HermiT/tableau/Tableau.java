@@ -603,7 +603,13 @@ implements Serializable {
                 }
                 if (!this.m_extensionManager.containsClash()) {
                     this.m_nominalIntroductionManager.processAnnotatedEqualities();
-                    if (this.m_metamodellingManager.checkEqualMetamodellingRule() || this.m_metamodellingManager.checkInequalityMetamodellingRule()) {
+                    List<DLClause> dlClauses = new ArrayList<DLClause>();
+                    dlClauses.addAll(this.m_metamodellingManager.checkEqualMetamodellingRule());
+                    dlClauses.addAll(this.m_metamodellingManager.checkInequalityMetamodellingRule());
+                    //if (this.m_metamodellingManager.checkEqualMetamodellingRule() || this.m_metamodellingManager.checkInequalityMetamodellingRule()) {
+                    if (!dlClauses.isEmpty()) {
+                    	this.m_permanentDLOntology.getDLClauses().addAll(dlClauses);
+                    	MetamodellingAxiomHelper.createHyperResolutionManager(this, dlClauses);
                     	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
                     	this.m_extensionManager.resetDeltaNew();
                     }

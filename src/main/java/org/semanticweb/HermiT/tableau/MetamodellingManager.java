@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicRole;
+import org.semanticweb.HermiT.model.DLClause;
 import org.semanticweb.HermiT.model.DLPredicate;
 import org.semanticweb.HermiT.model.Equality;
 import org.semanticweb.HermiT.model.Individual;
@@ -25,7 +26,8 @@ public final class MetamodellingManager {
 		this.m_tableau = tableau;
 	}
 	
-	public boolean checkEqualMetamodellingRuleIteration(Node node0, Node node1) {
+	public List<DLClause> checkEqualMetamodellingRuleIteration(Node node0, Node node1) {
+		List<DLClause> dlClauses = new ArrayList<DLClause>();
 		//Si ambos nodos que se mergean tienen axioma de metamodelling
 		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.getNodeToMetaIndividual().get(node0.getNodeID()), this.m_tableau.getPermanentDLOntology());
 		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.getNodeToMetaIndividual().get(node1.getNodeID()), this.m_tableau.getPermanentDLOntology());
@@ -36,16 +38,18 @@ public final class MetamodellingManager {
 					// <#B>(X) :- <#A>(X)
 					// <#A>(X) :- <#B>(X)
 					if (node1Class != node0Class && !MetamodellingAxiomHelper.containsSubClassOfAxiom( node0Class, node1Class, this.m_tableau.getPermanentDLOntology()) && !MetamodellingAxiomHelper.containsSubClassOfAxiom(node1Class, node0Class, this.m_tableau.getPermanentDLOntology())) {
-						MetamodellingAxiomHelper.addSubClassOfAxioms(node0Class, node1Class, this.m_tableau.getPermanentDLOntology(), this.m_tableau);
-						return true;
+						dlClauses.addAll(MetamodellingAxiomHelper.addSubClassOfAxioms(node0Class, node1Class, this.m_tableau.getPermanentDLOntology(), this.m_tableau));
+						//MetamodellingAxiomHelper.addSubClassOfAxioms(node0Class, node1Class, this.m_tableau.getPermanentDLOntology(), this.m_tableau);
+						//return true;
 					}
 				}
 			}
 		}
-		return false;
+		return dlClauses;
 	}
 	
-	public boolean checkInequalityMetamodellingRuleIteration(Node node0, Node node1) {
+	public List<DLClause> checkInequalityMetamodellingRuleIteration(Node node0, Node node1) {
+		List<DLClause> dlClauses = new ArrayList<DLClause>();
 		//Si ambos nodos que se mergean tienen axioma de metamodelling
 		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.getNodeToMetaIndividual().get(node0.getNodeID()), this.m_tableau.getPermanentDLOntology());
 		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.getNodeToMetaIndividual().get(node1.getNodeID()), this.m_tableau.getPermanentDLOntology());
@@ -57,14 +61,15 @@ public final class MetamodellingManager {
 					if (node1Class != node0Class) { 
 						Atom def0 = MetamodellingAxiomHelper.containsInequalityRuleAxiom( node0Class, node1Class, this.m_tableau);
 						if ((def0 != null && !this.m_tableau.containsClassAssertion(def0.getDLPredicate().toString())) || def0 == null) {
-							MetamodellingAxiomHelper.addInequalityMetamodellingRuleAxiom(node0Class, node1Class, this.m_tableau.getPermanentDLOntology(), this.m_tableau, def0);
-							return true;
+							dlClauses.addAll(MetamodellingAxiomHelper.addInequalityMetamodellingRuleAxiom(node0Class, node1Class, this.m_tableau.getPermanentDLOntology(), this.m_tableau, def0));
+							//MetamodellingAxiomHelper.addInequalityMetamodellingRuleAxiom(node0Class, node1Class, this.m_tableau.getPermanentDLOntology(), this.m_tableau, def0);
+							//return true;
 						}
 					}
 				}
 			}
 		}
-		return false;
+		return dlClauses;
 	}
 	
 	public boolean checkCloseMetamodellingRuleIteration(Node node0, Node node1) {
@@ -273,30 +278,34 @@ public final class MetamodellingManager {
  	y de ser asi y de no existir el axioma que iguala a las clases relacionadas con esos individuos: se agrega dicho axioma
 */
 
-protected boolean checkEqualMetamodellingRule() {
+protected List<DLClause> checkEqualMetamodellingRule() {
+	List<DLClause> dlClauses = new ArrayList<DLClause>();
 	for (Node node1 : this.m_tableau.metamodellingNodes) {
 		for (Node node2 : this.m_tableau.metamodellingNodes) {
 			if (this.m_tableau.areSameIndividual(node1, node2)) {
-				if (checkEqualMetamodellingRuleIteration(node1, node2)) return true;
+				//if (checkEqualMetamodellingRuleIteration(node1, node2)) return true;
+				dlClauses.addAll(checkEqualMetamodellingRuleIteration(node1, node2));
 			}
 		}
 	}
-	return false;
+	return dlClauses;
 }
 
 /*
  	Para cada par de nodos del conjunto de nodos que participan de un axioma de metamodelling, se checkea que sean diferentes 
  	y de ser asi y de cumplirse las reglas de Rule != de metamodelling, se agerga nodo Z
 */
-protected boolean checkInequalityMetamodellingRule() {
+protected List<DLClause> checkInequalityMetamodellingRule() {
+	List<DLClause> dlClauses = new ArrayList<DLClause>();
 	for (Node node1 : this.m_tableau.metamodellingNodes) {
 		for (Node node2 : this.m_tableau.metamodellingNodes) {
 			if (this.m_tableau.areDifferentIndividual(node1, node2)) {
-				if (checkInequalityMetamodellingRuleIteration(node1, node2)) return true;
+				//if (checkInequalityMetamodellingRuleIteration(node1, node2)) return true;
+				dlClauses.addAll(checkInequalityMetamodellingRuleIteration(node1, node2));
 			}
 		}
 	}
-	return false;
+	return dlClauses;
 }
 
 /*
