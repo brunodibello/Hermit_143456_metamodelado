@@ -2,8 +2,11 @@ package org.semanticweb.HermiT.tableau;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicRole;
@@ -20,9 +23,13 @@ import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
 public final class MetamodellingManager {
 	
 	protected final Tableau m_tableau;
+	protected Map<OWLClassExpression,Map<OWLClassExpression,Atom>> inequalityMetamodellingPairs;
+	protected List<String> defAssertions;
 	
 	public MetamodellingManager(Tableau tableau) {
 		this.m_tableau = tableau;
+		inequalityMetamodellingPairs = new HashMap<OWLClassExpression,Map<OWLClassExpression,Atom>>();
+		defAssertions = new ArrayList<String>();
 	}
 	
 	public boolean checkEqualMetamodellingRuleIteration(Node node0, Node node1) {
@@ -47,17 +54,34 @@ public final class MetamodellingManager {
 	
 	public boolean checkInequalityMetamodellingRuleIteration(Node node0, Node node1) {
 		//Si ambos nodos que se mergean tienen axioma de metamodelling
+		long startTime = System.nanoTime();
 		List<OWLClassExpression> node0Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.getNodeToMetaIndividual().get(node0.getNodeID()), this.m_tableau.getPermanentDLOntology());
 		List<OWLClassExpression> node1Classes = MetamodellingAxiomHelper.getMetamodellingClassesByIndividual(this.m_tableau.getNodeToMetaIndividual().get(node1.getNodeID()), this.m_tableau.getPermanentDLOntology());
+    	long stopTime = System.nanoTime();
+      //  System.out.println("####################################################################### getMetamodellingClassesByIndividual"+((stopTime - startTime)/1000000));
 		if (!node0Classes.isEmpty() && !node1Classes.isEmpty()) {
 			for (OWLClassExpression node0Class : node0Classes) {
 				for (OWLClassExpression node1Class : node1Classes) {
 					//Checkear si existe Axiom (A int not-B) union (not-A int B) 
 					
 					if (node1Class != node0Class) { 
-						Atom def0 = MetamodellingAxiomHelper.containsInequalityRuleAxiom( node0Class, node1Class, this.m_tableau);
-						if ((def0 != null && !this.m_tableau.containsClassAssertion(def0.getDLPredicate().toString())) || def0 == null) {
-							MetamodellingAxiomHelper.addInequalityMetamodellingRuleAxiom(node0Class, node1Class, this.m_tableau.getPermanentDLOntology(), this.m_tableau, def0);
+						startTime = System.nanoTime();
+						//Atom def0 = MetamodellingAxiomHelper.containsInequalityRuleAxiom( node0Class, node1Class, this.m_tableau);
+						Atom def0 = null;
+						if (this.inequalityMetamodellingPairs.containsKey(node1Class) && this.inequalityMetamodellingPairs.get(node1Class).containsKey(node0Class)) {
+							def0 = this.inequalityMetamodellingPairs.get(node1Class).get(node0Class);
+						}
+						if (this.inequalityMetamodellingPairs.containsKey(node0Class) && this.inequalityMetamodellingPairs.get(node0Class).containsKey(node1Class)) {
+							def0 = this.inequalityMetamodellingPairs.get(node0Class).get(node1Class);
+						}
+						stopTime = System.nanoTime();
+				        //System.out.println("####################################################################### containsInequalityRuleAxiom"+((stopTime - startTime)/1000000));
+						if (def0 == null || (def0 != null && !this.m_tableau.containsClassAssertion(def0.getDLPredicate().toString()))) {
+						//if (def0 == null ) {
+							startTime = System.nanoTime();
+							MetamodellingAxiomHelper.addInequalityMetamodellingRuleAxiom(node0Class, node1Class, this.m_tableau.getPermanentDLOntology(), this.m_tableau, def0, this.inequalityMetamodellingPairs);
+							stopTime = System.nanoTime();
+					        System.out.println("####################################################################### addInequalityMetamodellingRuleAxiom"+((stopTime - startTime)/1000000));
 							return true;
 						}
 					}
@@ -110,6 +134,8 @@ public final class MetamodellingManager {
     						DependencySet clashDependencySet = this.m_tableau.m_dependencySetFactory.getActualDependencySet();
     						this.m_tableau.m_extensionManager.setClash(clashDependencySet);
     						findClash = true;
+    						System.out.println("FIND CLASH IN PROPERTY NEGATION: "+propertyIter +" || "+propertyR +" || "+node0 +" || "+node1);
+    						break;
     					}
     				}
     			}
@@ -124,7 +150,7 @@ public final class MetamodellingManager {
     		for (Node node1 : this.m_tableau.metamodellingNodes) {
     			Node node0Eq = node0.getCanonicalNode();
     			Node node1Eq = node1.getCanonicalNode();
-    			List<String> propertiesRForEqNodes = getObjectProperties(node0Eq, node1Eq); //R(x,y)
+				List<String> propertiesRForEqNodes = getObjectProperties(node0Eq, node1Eq); //R(x,y)
     			String propertyRString = meetCloseMetaRuleCondition(propertiesRForEqNodes);
     			if (!propertyRString.equals("")) {
     				//Crear role viborita
@@ -142,20 +168,42 @@ public final class MetamodellingManager {
     }
 	
 	private List<String> getObjectProperties(Node node0, Node node1) {
-    	List<String> objectProperties = new ArrayList<String>();
-    	if (this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0] != null) {
-    		for (int i = 0; i < this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length; i++) {
-    			Object obj = this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i];
-    			if (obj instanceof AtomicRole && (i + 2) <= this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length) {
-    				Object obj1 = this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+1];
-    				Object obj2 = this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+2];
-    				if (obj1 instanceof Node && obj2 instanceof Node && ((Node) obj1).getNodeID() == node0.getNodeID() && ((Node) obj2).getNodeID() == node1.getNodeID()) {
-    					objectProperties.add(((AtomicRole) obj).toString());
-    				}
-    			}
+    	Set<String> objectProperties = new HashSet<String>();
+    	if (this.m_tableau.nodeProperties.containsKey(node0.getCanonicalNode().m_nodeID)) {
+    		if (this.m_tableau.nodeProperties.get(node0.getCanonicalNode().m_nodeID).containsKey(node1.getCanonicalNode().m_nodeID)) {
+    			objectProperties.addAll(this.m_tableau.nodeProperties.get(node0.getCanonicalNode().m_nodeID).get(node1.getCanonicalNode().m_nodeID));
     		}
     	}
-    	return objectProperties;
+    	if (this.m_tableau.nodeProperties.containsKey(node0.getCanonicalNode().m_nodeID)) {
+    		if (this.m_tableau.nodeProperties.get(node0.getCanonicalNode().m_nodeID).containsKey(node1.m_nodeID)) {
+    			objectProperties.addAll(this.m_tableau.nodeProperties.get(node0.getCanonicalNode().m_nodeID).get(node1.m_nodeID));
+    		}
+    	}
+    	if (this.m_tableau.nodeProperties.containsKey(node0.m_nodeID)) {
+    		if (this.m_tableau.nodeProperties.get(node0.m_nodeID).containsKey(node1.getCanonicalNode().m_nodeID)) {
+    			objectProperties.addAll(this.m_tableau.nodeProperties.get(node0.m_nodeID).get(node1.getCanonicalNode().m_nodeID));
+    		}
+    	}
+    	if (this.m_tableau.nodeProperties.containsKey(node0.m_nodeID)) {
+    		if (this.m_tableau.nodeProperties.get(node0.m_nodeID).containsKey(node1.m_nodeID)) {
+    			objectProperties.addAll(this.m_tableau.nodeProperties.get(node0.m_nodeID).get(node1.m_nodeID));
+    		}
+    	}
+//		for (int j=0; j<this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages.length; j++) {
+//			if (this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j] != null) {
+//				for (int i = 0; i < this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects.length; i++) {
+//	    			Object obj = this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i];
+//	    			if (obj instanceof AtomicRole && (i + 2) <= this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects.length) {
+//	    				Object obj1 = this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i+1];
+//	    				Object obj2 = this.m_tableau.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i+2];
+//	    				if (obj1 instanceof Node && obj2 instanceof Node && ((Node) obj1).getCanonicalNode().getNodeID() == node0.getCanonicalNode().getNodeID() && ((Node) obj2).getCanonicalNode().getNodeID() == node1.getCanonicalNode().getNodeID()) {
+//	    					objectProperties.add(((AtomicRole) obj).toString());
+//	    				}
+//	    			}
+//	    		}
+//			}
+//		}
+    	return new ArrayList<String>(objectProperties);
     }
 	
 	private boolean isCloseMetaRuleDisjunctionAdded(String propertyRString, Node node0, Node node1) {
@@ -274,14 +322,15 @@ public final class MetamodellingManager {
 */
 
 protected boolean checkEqualMetamodellingRule() {
+	boolean ruleApplied = false;
 	for (Node node1 : this.m_tableau.metamodellingNodes) {
 		for (Node node2 : this.m_tableau.metamodellingNodes) {
 			if (this.m_tableau.areSameIndividual(node1, node2)) {
-				if (checkEqualMetamodellingRuleIteration(node1, node2)) return true;
+				if (checkEqualMetamodellingRuleIteration(node1, node2)) ruleApplied = true;
 			}
 		}
 	}
-	return false;
+	return ruleApplied;
 }
 
 /*
@@ -289,14 +338,15 @@ protected boolean checkEqualMetamodellingRule() {
  	y de ser asi y de cumplirse las reglas de Rule != de metamodelling, se agerga nodo Z
 */
 protected boolean checkInequalityMetamodellingRule() {
+	boolean ruleApplied = false;
 	for (Node node1 : this.m_tableau.metamodellingNodes) {
 		for (Node node2 : this.m_tableau.metamodellingNodes) {
 			if (this.m_tableau.areDifferentIndividual(node1, node2)) {
-				if (checkInequalityMetamodellingRuleIteration(node1, node2)) return true;
+				if (checkInequalityMetamodellingRuleIteration(node1, node2)) ruleApplied = true;
 			}
 		}
 	}
-	return false;
+	return ruleApplied;
 }
 
 /*

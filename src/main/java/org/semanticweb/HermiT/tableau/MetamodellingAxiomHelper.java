@@ -1,8 +1,10 @@
 package org.semanticweb.HermiT.tableau;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -19,7 +21,7 @@ import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
 
 public class MetamodellingAxiomHelper {
 	
-	private final static String DEF_STRING = "<internal:def#";
+	protected final static String DEF_STRING = "<internal:def#";
 	//For cycle control
 	private static Stack<Node> nodeStack;
 	private static boolean existCycle;
@@ -345,7 +347,7 @@ public class MetamodellingAxiomHelper {
 				}
 			}
 			for (Atom atom : dlClause.getBodyAtoms()) {
-				if (atom.getDLPredicate().toString().contains(DEF_STRING)) {
+				if (atom.getDLPredicate().toString().startsWith(DEF_STRING)) {
 					String defString = atom.getDLPredicate().toString().substring(atom.getDLPredicate().toString().indexOf("#")+1, atom.getDLPredicate().toString().length() - 1);
 					int def = Integer.parseInt(defString);
 					if (def > nextDef) {
@@ -357,10 +359,13 @@ public class MetamodellingAxiomHelper {
 		return nextDef + 1;
 	}
 	
-	public static void addInequalityMetamodellingRuleAxiom(OWLClassExpression classA, OWLClassExpression classB, DLOntology ontology, Tableau tableau, Atom def0AtomParam) {
+	public static void addInequalityMetamodellingRuleAxiom(OWLClassExpression classA, OWLClassExpression classB, DLOntology ontology, Tableau tableau, Atom def0AtomParam, Map<OWLClassExpression,Map<OWLClassExpression,Atom>> inequalityMetamodellingPairs) {
 		
 		if (def0AtomParam == null) {
+			long startTime = System.nanoTime();
 			int nextDef = getNextDef(ontology);
+			long stopTime = System.nanoTime();
+            System.out.println("####################################################################### getNextDef: "+((stopTime - startTime)/1000000));
 			String def0 = DEF_STRING + nextDef + ">";
 			String def1 = DEF_STRING + (nextDef+1) + ">";
 			String def2 = DEF_STRING + (nextDef+2) + ">";
@@ -431,6 +436,11 @@ public class MetamodellingAxiomHelper {
 	        tableau.getExtensionManager().addConceptAssertion((LiteralConcept)((Object)def0Atom.getDLPredicate()), zNode, dependencySet, true);
 
 			createHyperResolutionManager(tableau, dlClauses);
+			
+			inequalityMetamodellingPairs.putIfAbsent(classA, new HashMap<OWLClassExpression,Atom>());
+			inequalityMetamodellingPairs.get(classA).putIfAbsent(classB, def0Atom);
+			tableau.m_metamodellingManager.defAssertions.add(def0);
+			
 		} else {
 			DependencySet dependencySet = tableau.m_dependencySetFactory.getActualDependencySet();
 
@@ -439,6 +449,7 @@ public class MetamodellingAxiomHelper {
 	        
 	        //create axiom in binary table
 	        tableau.getExtensionManager().addConceptAssertion((LiteralConcept)((Object)def0AtomParam.getDLPredicate()), zNode, dependencySet, true);
+	        tableau.m_metamodellingManager.defAssertions.add(def0AtomParam.getDLPredicate().toString());
 		}	
 	}
 	

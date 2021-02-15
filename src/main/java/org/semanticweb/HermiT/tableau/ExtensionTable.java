@@ -4,6 +4,11 @@
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.semanticweb.HermiT.existentials.ExistentialExpansionStrategy;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicNegationConcept;
@@ -92,6 +97,19 @@ implements Serializable {
             this.m_tableau.m_descriptionGraphManager.descriptionGraphTupleAdded(tupleIndex, tuple);
         }
         this.m_tableau.m_clashManager.tupleAdded(this, tuple, dependencySet);
+        if (tuple.length>2 && tuple[1] instanceof Node && tuple[2] instanceof Node) {
+        	Node node0 = (Node) tuple[1];
+        	Node node1 = (Node) tuple[2];
+        	if (tuple[0].toString().equals("!=")) {
+            	this.m_tableau.metamodellingFlag = true;
+            	this.m_tableau.differentIndividualsMap.putIfAbsent(node0.m_nodeID, new ArrayList<Integer>());
+            	this.m_tableau.differentIndividualsMap.get(node0.m_nodeID).add(node1.m_nodeID);
+            } else {
+            	this.m_tableau.nodeProperties.putIfAbsent(node0.m_nodeID, new HashMap<Integer, List<String>>());
+				this.m_tableau.nodeProperties.get(node0.m_nodeID).putIfAbsent(node1.m_nodeID, new ArrayList<String>());
+				this.m_tableau.nodeProperties.get(node0.m_nodeID).get(node1.m_nodeID).add(tuple[0].toString());
+            }
+        }
         System.out.print("TUPLE ADDED: ");
     	for (Object obj : tuple) {
     		System.out.println(obj+" ");
@@ -199,6 +217,68 @@ implements Serializable {
         } else if (dlPredicateObject instanceof DescriptionGraph) {
             this.m_tableau.m_descriptionGraphManager.descriptionGraphTupleRemoved(tupleIndex, tuple);
         }
+        
+        if (tuple.length > 2) {
+        	Node node0toDelete = null;
+            Node node1toDelete = null;
+            int j = -1;
+            boolean flag = false;
+            if (tuple[0].toString().equals("!=")) {
+            	Node node0 = (Node) tuple[1];
+            	Node node1 = (Node) tuple[2];
+            	for (Integer node0iter : this.m_tableau.differentIndividualsMap.keySet()) {
+            		if (node0iter == node0.m_nodeID) {
+            			j = 0;
+            			for (Integer node1iter : this.m_tableau.differentIndividualsMap.get(node0.m_nodeID)) {
+            				if (node1iter == node1.m_nodeID) {
+            					node0toDelete = node0;
+            					node1toDelete = node1;
+            					flag = true;
+            					break;
+            				}
+            				j++;
+            			}
+            		}
+            		if (flag) {
+            			break;
+            		}
+            	}
+            	if (node0toDelete != null && node1toDelete != null) {
+                    this.m_tableau.differentIndividualsMap.get(node0toDelete.m_nodeID).remove(j);
+                }
+            } else {
+            	Node node0 = (Node) tuple[1];
+            	Node node1 = (Node) tuple[2];
+        		String propertyToDelete = null;
+            	for (Integer node0iter : this.m_tableau.nodeProperties.keySet()) {
+            		if (node0iter == node0.m_nodeID) {
+            			for (Integer node1iter : this.m_tableau.nodeProperties.get(node0.m_nodeID).keySet()) {
+            				if (node1iter == node1.m_nodeID) {
+            					for (String property :  this.m_tableau.nodeProperties.get(node0.m_nodeID).get(node1.m_nodeID)) {
+            						if (property.toString().equals(tuple[0].toString())) {
+            							node0toDelete = node0;
+                    					node1toDelete = node1;
+                    					propertyToDelete = property;
+                    					flag = true;
+                    					break;
+            						}
+            					}
+            				}
+            			}
+            		}
+            		if (flag) {
+            			break;
+            		}
+            	}
+            	if (node0toDelete != null && node1toDelete != null) {
+                    this.m_tableau.nodeProperties.get(node0toDelete.m_nodeID).get(node1toDelete.m_nodeID).remove(propertyToDelete);
+                }
+            }
+        } else if (tuple.length == 2) {
+        	this.m_tableau.m_metamodellingManager.defAssertions.remove(tuple[0].toString());
+        }
+        
+        
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.tupleRemoved(tuple);
         }

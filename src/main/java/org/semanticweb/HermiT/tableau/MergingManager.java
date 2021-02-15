@@ -94,9 +94,6 @@ implements Serializable {
                 throw new IllegalStateException("Internal error: unsupported merge type.");
             }
         }
-        System.out.println("---- Merge de Nodos ----");
-        System.out.println("	mergeFrom -> "+mergeFrom);
-    	System.out.println("	mergeInto -> "+mergeInto);
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.mergeStarted(mergeFrom, mergeInto);
         }
@@ -172,6 +169,10 @@ implements Serializable {
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.mergeFinished(mergeFrom, mergeInto);
         }
+        System.out.println("---- Merge de Nodos ----");
+        System.out.println("	mergeFrom -> "+mergeFrom);
+    	System.out.println("	mergeInto -> "+mergeInto);
+    	this.m_tableau.metamodellingFlag = true;
         return true;
     }
 

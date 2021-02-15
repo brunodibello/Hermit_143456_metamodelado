@@ -15,38 +15,19 @@
 package org.semanticweb.HermiT.cli;
 
 import gnu.getopt.Getopt;
-import gnu.getopt.LongOpt;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Set;
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.Reasoner;
-import org.semanticweb.HermiT.cli.Action;
-import org.semanticweb.HermiT.cli.ClassifyAction;
-import org.semanticweb.HermiT.cli.DumpClausesAction;
-import org.semanticweb.HermiT.cli.DumpPrefixesAction;
-import org.semanticweb.HermiT.cli.EntailsAction;
-import org.semanticweb.HermiT.cli.EquivalentsAction;
-import org.semanticweb.HermiT.cli.Option;
-import org.semanticweb.HermiT.cli.SatisfiabilityAction;
-import org.semanticweb.HermiT.cli.StatusOutput;
-import org.semanticweb.HermiT.cli.SubsAction;
-import org.semanticweb.HermiT.cli.SupersAction;
-import org.semanticweb.HermiT.cli.UsageException;
-import org.semanticweb.HermiT.cli.constants;
-import org.semanticweb.HermiT.monitor.TableauMonitor;
 import org.semanticweb.HermiT.monitor.Timer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -54,7 +35,6 @@ import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
-import org.semanticweb.owlapi.util.PriorityCollection;
 
 public class CommandLine {
     public static void main(String[] argv) {

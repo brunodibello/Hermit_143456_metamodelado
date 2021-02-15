@@ -20,6 +20,7 @@ import org.semanticweb.HermiT.tableau.GroundDisjunctionHeader;
 import org.semanticweb.HermiT.tableau.Node;
 import org.semanticweb.HermiT.tableau.PermanentDependencySet;
 import org.semanticweb.HermiT.tableau.Tableau;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 
 public final class DisjunctionBranchingPoint
 extends BranchingPoint {
@@ -49,6 +50,7 @@ extends BranchingPoint {
         }
         ++this.m_currentIndex;
         //assert (this.m_currentIndex < this.m_groundDisjunction.getNumberOfDisjuncts());
+        if (this.m_currentIndex >= this.m_sortedDisjunctIndexes.length) throw new InconsistentOntologyException();
         int currentDisjunctIndex = this.m_sortedDisjunctIndexes[this.m_currentIndex];
         if (tableau.m_tableauMonitor != null) {
             tableau.m_tableauMonitor.disjunctProcessingStarted(this.m_groundDisjunction, currentDisjunctIndex);
