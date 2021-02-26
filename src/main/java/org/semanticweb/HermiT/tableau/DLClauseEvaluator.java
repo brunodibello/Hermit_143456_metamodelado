@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
@@ -19,18 +16,6 @@ import org.semanticweb.HermiT.model.NodeIDsAscendingOrEqual;
 import org.semanticweb.HermiT.model.Term;
 import org.semanticweb.HermiT.model.Variable;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
-import org.semanticweb.HermiT.tableau.DependencySet;
-import org.semanticweb.HermiT.tableau.DependencySetFactory;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
-import org.semanticweb.HermiT.tableau.ExtensionTable;
-import org.semanticweb.HermiT.tableau.GroundDisjunction;
-import org.semanticweb.HermiT.tableau.GroundDisjunctionHeader;
-import org.semanticweb.HermiT.tableau.InterruptFlag;
-import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.PermanentDependencySet;
-import org.semanticweb.HermiT.tableau.Tableau;
-import org.semanticweb.HermiT.tableau.UnionDependencySet;
-
 public class DLClauseEvaluator
 implements Serializable {
     private static final long serialVersionUID = 4639844159658590456L;
@@ -84,10 +69,8 @@ implements Serializable {
 
     public void evaluate() {
         int programCounter = 0;
-        //System.out.println("----|----| Empieza evaluacion");
         while (programCounter < this.m_workers.length && !this.m_extensionManager.containsClash()) {
             this.m_interruptFlag.checkInterrupt();
-            //System.out.println("----|----| Paso: "+this.m_workers[programCounter]);
             programCounter = this.m_workers[programCounter].execute(programCounter);
         }
     }

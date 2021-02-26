@@ -1,23 +1,15 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.hierarchy;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
-import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import org.semanticweb.HermiT.hierarchy.HierarchyNode;
-import org.semanticweb.HermiT.hierarchy.Hierarchy.HierarchyNodeComparator;
 
 public class Hierarchy<E> {
     protected final HierarchyNode<E> m_topNode;

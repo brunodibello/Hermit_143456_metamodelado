@@ -1,16 +1,9 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.monitor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.Reader;
-import org.semanticweb.HermiT.monitor.Timer;
 
 public class TimerWithPause
 extends Timer {

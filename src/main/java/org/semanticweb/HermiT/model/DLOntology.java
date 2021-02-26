@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.model;
 
 import java.io.IOException;
@@ -9,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,20 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import org.semanticweb.HermiT.Prefixes;
-import org.semanticweb.HermiT.model.AtLeastConcept;
-import org.semanticweb.HermiT.model.Atom;
-import org.semanticweb.HermiT.model.AtomicConcept;
-import org.semanticweb.HermiT.model.AtomicRole;
-import org.semanticweb.HermiT.model.Constant;
-import org.semanticweb.HermiT.model.DLClause;
-import org.semanticweb.HermiT.model.DLPredicate;
-import org.semanticweb.HermiT.model.DatatypeRestriction;
-import org.semanticweb.HermiT.model.DescriptionGraph;
-import org.semanticweb.HermiT.model.ExistsDescriptionGraph;
-import org.semanticweb.HermiT.model.Individual;
-import org.semanticweb.HermiT.model.LiteralConcept;
-import org.semanticweb.HermiT.model.Role;
-import org.semanticweb.HermiT.model.Term;
 import org.semanticweb.owlapi.model.OWLMetaRuleAxiom;
 import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
 

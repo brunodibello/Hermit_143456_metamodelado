@@ -1,15 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.model;
 
 import org.semanticweb.HermiT.Prefixes;
-import org.semanticweb.HermiT.model.Atom;
-import org.semanticweb.HermiT.model.DLPredicate;
-import org.semanticweb.HermiT.model.InterningManager;
-import org.semanticweb.HermiT.model.InverseRole;
-import org.semanticweb.HermiT.model.Role;
-import org.semanticweb.HermiT.model.Term;
 
 public class AtomicRole
 extends Role

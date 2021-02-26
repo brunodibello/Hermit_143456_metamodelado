@@ -1,15 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  dk.brics.automaton.Automaton
- */
 package org.semanticweb.HermiT.datatypes.rdfplainliteral;
 
-import dk.brics.automaton.Automaton;
 import java.util.Collection;
-import org.semanticweb.HermiT.datatypes.rdfplainliteral.RDFPlainLiteralDataValue;
-import org.semanticweb.HermiT.datatypes.rdfplainliteral.RDFPlainLiteralPatternValueSpaceSubset;
 
 public class RDFPlainLiteralLengthInterval {
     public static final int CHARACTER_COUNT = 1112033;

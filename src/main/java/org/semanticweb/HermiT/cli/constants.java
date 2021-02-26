@@ -1,9 +1,4 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.cli;
-
-import org.semanticweb.HermiT.cli.CommandLine;
 
 class constants {
     protected static final int kTime = 1000;

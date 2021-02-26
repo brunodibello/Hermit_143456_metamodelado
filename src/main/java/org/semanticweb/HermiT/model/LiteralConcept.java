@@ -1,9 +1,4 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.model;
-
-import org.semanticweb.HermiT.model.Concept;
 
 public abstract class LiteralConcept
 extends Concept {

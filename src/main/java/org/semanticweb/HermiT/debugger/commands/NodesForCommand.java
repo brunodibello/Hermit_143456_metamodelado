@@ -1,19 +1,12 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.debugger.commands;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
-import java.io.Writer;
-import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.debugger.Debugger;
 import org.semanticweb.HermiT.debugger.Printing;
-import org.semanticweb.HermiT.debugger.commands.AbstractCommand;
 import org.semanticweb.HermiT.model.AtLeastConcept;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.ExistentialConcept;
-import org.semanticweb.HermiT.model.LiteralConcept;
 import org.semanticweb.HermiT.tableau.Node;
 
 public class NodesForCommand

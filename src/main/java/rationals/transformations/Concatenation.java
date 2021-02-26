@@ -1,16 +1,10 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.transformations;
 
 import java.util.HashMap;
-import java.util.Set;
 import rationals.Automaton;
 import rationals.State;
 import rationals.Transition;
 import rationals.properties.ContainsEpsilon;
-import rationals.transformations.BinaryTransformation;
-import rationals.transformations.Normalizer;
 
 public class Concatenation
 implements BinaryTransformation {

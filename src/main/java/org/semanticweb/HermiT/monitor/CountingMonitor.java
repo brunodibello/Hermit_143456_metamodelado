@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.monitor;
 
 import java.io.Serializable;
@@ -10,11 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.semanticweb.HermiT.Prefixes;
-import org.semanticweb.HermiT.monitor.TableauMonitorAdapter;
 import org.semanticweb.HermiT.tableau.BranchingPoint;
 import org.semanticweb.HermiT.tableau.Node;
 import org.semanticweb.HermiT.tableau.ReasoningTaskDescription;
-import org.semanticweb.HermiT.tableau.Tableau;
 
 public class CountingMonitor
 extends TableauMonitorAdapter {

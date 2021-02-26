@@ -1,31 +1,18 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.existentials;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.blocking.BlockingStrategy;
-import org.semanticweb.HermiT.existentials.AbstractExpansionStrategy;
 import org.semanticweb.HermiT.model.AtLeast;
 import org.semanticweb.HermiT.model.AtLeastConcept;
 import org.semanticweb.HermiT.model.AtLeastDataRange;
 import org.semanticweb.HermiT.model.AtomicConcept;
-import org.semanticweb.HermiT.model.Concept;
-import org.semanticweb.HermiT.model.ExistentialConcept;
-import org.semanticweb.HermiT.model.LiteralConcept;
-import org.semanticweb.HermiT.model.Role;
-import org.semanticweb.HermiT.monitor.TableauMonitor;
 import org.semanticweb.HermiT.tableau.BranchingPoint;
 import org.semanticweb.HermiT.tableau.DependencySet;
-import org.semanticweb.HermiT.tableau.DependencySetFactory;
-import org.semanticweb.HermiT.tableau.ExistentialExpansionManager;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
 import org.semanticweb.HermiT.tableau.Node;
 import org.semanticweb.HermiT.tableau.PermanentDependencySet;
 import org.semanticweb.HermiT.tableau.Tableau;

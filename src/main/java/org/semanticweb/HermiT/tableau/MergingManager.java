@@ -1,23 +1,9 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
 
-import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.DescriptionGraph;
-import org.semanticweb.HermiT.model.Equality;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
-import org.semanticweb.HermiT.structural.OWLClausification;
-import org.semanticweb.HermiT.tableau.DependencySet;
-import org.semanticweb.HermiT.tableau.DescriptionGraphManager;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
-import org.semanticweb.HermiT.tableau.ExtensionTable;
-import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.NodeType;
-import org.semanticweb.HermiT.tableau.Tableau;
-import org.semanticweb.HermiT.tableau.UnionDependencySet;
 
 public final class MergingManager
 implements Serializable {
@@ -169,9 +155,6 @@ implements Serializable {
         if (this.m_tableauMonitor != null) {
             this.m_tableauMonitor.mergeFinished(mergeFrom, mergeInto);
         }
-        System.out.println("---- Merge de Nodos ----");
-        System.out.println("	mergeFrom -> "+mergeFrom);
-    	System.out.println("	mergeInto -> "+mergeInto);
     	this.m_tableau.metamodellingFlag = true;
         return true;
     }

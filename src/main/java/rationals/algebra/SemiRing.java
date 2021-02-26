@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.algebra;
 
 public interface SemiRing {

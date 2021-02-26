@@ -1,9 +1,4 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.cli;
-
-import java.io.PrintStream;
 
 class StatusOutput {
     protected int level;

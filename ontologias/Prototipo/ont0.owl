@@ -91,6 +91,27 @@
         <NamedIndividual IRI="#21111-Landlords"/>
     </Declaration>
     <SubClassOf>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#detailDefD"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#account"/>
+                <Class IRI="#Availability"/>
+            </ObjectSomeValuesFrom>
+        </ObjectSomeValuesFrom>
+        <ObjectAllValuesFrom>
+            <ObjectProperty IRI="#detailDefC"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#account"/>
+                <ObjectIntersectionOf>
+                    <Class IRI="#Asset"/>
+                    <ObjectComplementOf>
+                        <Class IRI="#Availability"/>
+                    </ObjectComplementOf>
+                </ObjectIntersectionOf>
+            </ObjectSomeValuesFrom>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
         <Class IRI="#Asset"/>
         <Class IRI="#Account"/>
     </SubClassOf>

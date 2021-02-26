@@ -1,13 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals;
 
 import java.util.List;
 import java.util.Set;
-import rationals.State;
-import rationals.StateFactory;
-import rationals.Transition;
 
 public interface StateMachine {
     public Set<Object> alphabet();

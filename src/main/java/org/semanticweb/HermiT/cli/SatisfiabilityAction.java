@@ -1,25 +1,12 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.apibinding.OWLManager
- *  org.semanticweb.owlapi.model.IRI
- *  org.semanticweb.owlapi.model.OWLClass
- *  org.semanticweb.owlapi.model.OWLClassExpression
- *  org.semanticweb.owlapi.model.OWLDataFactory
- */
 package org.semanticweb.HermiT.cli;
 
 import java.io.PrintWriter;
 import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.Reasoner;
-import org.semanticweb.HermiT.cli.Action;
-import org.semanticweb.HermiT.cli.StatusOutput;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 
 class SatisfiabilityAction
 implements Action {

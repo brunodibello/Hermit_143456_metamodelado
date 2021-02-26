@@ -1,26 +1,9 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.model.OWLOntology
- *  org.semanticweb.owlapi.reasoner.FreshEntityPolicy
- *  org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy
- *  org.semanticweb.owlapi.reasoner.OWLReasoner
- *  org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration
- *  org.semanticweb.owlapi.reasoner.OWLReasonerFactory
- *  org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor
- */
 package org.semanticweb.HermiT;
 
-import org.semanticweb.HermiT.Configuration;
-import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
-import org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
-import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
 public class ReasonerFactory
 implements OWLReasonerFactory {

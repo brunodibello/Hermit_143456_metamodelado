@@ -1,19 +1,12 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.hierarchy;
 
 import java.util.Map;
 import java.util.Set;
-import org.semanticweb.HermiT.hierarchy.ClassificationProgressMonitor;
-import org.semanticweb.HermiT.hierarchy.QuasiOrderClassification;
-import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
 import org.semanticweb.HermiT.model.DLClause;
 import org.semanticweb.HermiT.model.DLPredicate;
 import org.semanticweb.HermiT.model.Role;
-import org.semanticweb.HermiT.model.Term;
 import org.semanticweb.HermiT.tableau.ReasoningTaskDescription;
 import org.semanticweb.HermiT.tableau.Tableau;
 

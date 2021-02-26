@@ -578,6 +578,10 @@
         <NamedIndividual IRI="#11311-RenterFee"/>
         <NamedIndividual IRI="#12222-DamageExpenses"/>
         <NamedIndividual IRI="#21111-Landlords"/>
+        <NamedIndividual IRI="#juanPayCDet"/>
+        <NamedIndividual IRI="#juanPayDDet"/>
+        <NamedIndividual IRI="#juanPayDaDet"/>
+        <NamedIndividual IRI="#juanRenterPay"/> 
     </DifferentIndividuals>
     <ObjectPropertyAssertion>
         <ObjectProperty IRI="#detailDefC"/>

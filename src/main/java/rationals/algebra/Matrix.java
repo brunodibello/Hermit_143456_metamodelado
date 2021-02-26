@@ -1,10 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.algebra;
 
 import java.util.Arrays;
-import rationals.algebra.SemiRing;
 
 public final class Matrix
 implements SemiRing {

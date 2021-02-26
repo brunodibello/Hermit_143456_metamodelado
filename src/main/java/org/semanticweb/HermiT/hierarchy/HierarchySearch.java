@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.hierarchy;
 
 import java.util.Collection;
@@ -9,7 +6,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
-import org.semanticweb.HermiT.hierarchy.HierarchyNode;
 
 public class HierarchySearch {
     public static <E> HierarchyNode<E> findPosition(Relation<E> hierarchyRelation, E element, HierarchyNode<E> topNode, HierarchyNode<E> bottomNode) {

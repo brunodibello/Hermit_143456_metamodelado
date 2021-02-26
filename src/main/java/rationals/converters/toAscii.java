@@ -1,14 +1,8 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.converters;
 
 import java.util.Iterator;
-import java.util.Set;
 import rationals.Automaton;
-import rationals.State;
 import rationals.Transition;
-import rationals.converters.ToString;
 
 public class toAscii
 implements ToString {

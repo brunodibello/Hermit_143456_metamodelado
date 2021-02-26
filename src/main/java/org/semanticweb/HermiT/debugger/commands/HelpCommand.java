@@ -1,14 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.debugger.commands;
 
 import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.Map;
 import org.semanticweb.HermiT.debugger.Debugger;
-import org.semanticweb.HermiT.debugger.commands.AbstractCommand;
-import org.semanticweb.HermiT.debugger.commands.DebuggerCommand;
 
 public class HelpCommand
 extends AbstractCommand {

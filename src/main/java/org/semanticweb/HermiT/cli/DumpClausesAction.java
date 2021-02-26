@@ -1,18 +1,10 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.cli;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.Reasoner;
-import org.semanticweb.HermiT.cli.Action;
-import org.semanticweb.HermiT.cli.StatusOutput;
-import org.semanticweb.HermiT.model.DLOntology;
 
 class DumpClausesAction
 implements Action {

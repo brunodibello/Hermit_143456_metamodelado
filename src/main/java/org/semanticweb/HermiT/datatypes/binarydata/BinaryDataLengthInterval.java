@@ -1,11 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.binarydata;
 
 import java.util.Collection;
-import org.semanticweb.HermiT.datatypes.binarydata.BinaryData;
-import org.semanticweb.HermiT.datatypes.binarydata.BinaryDataType;
 
 public class BinaryDataLengthInterval {
     protected final BinaryDataType m_binaryDataType;

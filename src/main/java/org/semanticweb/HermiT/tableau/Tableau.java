@@ -1,28 +1,21 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.semanticweb.HermiT.existentials.ExistentialExpansionStrategy;
 import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
-import org.semanticweb.HermiT.model.Concept;
 import org.semanticweb.HermiT.model.Constant;
 import org.semanticweb.HermiT.model.ConstantEnumeration;
 import org.semanticweb.HermiT.model.DLClause;
 import org.semanticweb.HermiT.model.DLOntology;
 import org.semanticweb.HermiT.model.DLPredicate;
-import org.semanticweb.HermiT.model.DataRange;
 import org.semanticweb.HermiT.model.DescriptionGraph;
 import org.semanticweb.HermiT.model.Equality;
 import org.semanticweb.HermiT.model.ExistentialConcept;
@@ -34,32 +27,8 @@ import org.semanticweb.HermiT.model.NegatedAtomicRole;
 import org.semanticweb.HermiT.model.Term;
 import org.semanticweb.HermiT.model.Variable;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
-import org.semanticweb.HermiT.structural.OWLClausification;
-import org.semanticweb.HermiT.tableau.BranchingPoint;
-import org.semanticweb.HermiT.tableau.ClashManager;
-import org.semanticweb.HermiT.tableau.DatatypeManager;
-import org.semanticweb.HermiT.tableau.DependencySet;
-import org.semanticweb.HermiT.tableau.DependencySetFactory;
-import org.semanticweb.HermiT.tableau.DescriptionGraphManager;
-import org.semanticweb.HermiT.tableau.DisjunctionBranchingPoint;
-import org.semanticweb.HermiT.tableau.ExistentialExpansionManager;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
-import org.semanticweb.HermiT.tableau.GroundDisjunction;
-import org.semanticweb.HermiT.tableau.GroundDisjunctionHeader;
-import org.semanticweb.HermiT.tableau.HyperresolutionManager;
-import org.semanticweb.HermiT.tableau.InterruptFlag;
-import org.semanticweb.HermiT.tableau.MergingManager;
-import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.NodeType;
-import org.semanticweb.HermiT.tableau.NominalIntroductionManager;
-import org.semanticweb.HermiT.tableau.PermanentDependencySet;
-import org.semanticweb.HermiT.tableau.ReasoningTaskDescription;
 import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLMetaRuleAxiom;
 import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
-import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
-import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 
 public final class Tableau
 implements Serializable {
@@ -114,9 +83,6 @@ implements Serializable {
     protected Map<Integer,Map<Integer, List<String>>> nodeProperties;
     protected boolean metamodellingFlag;
 
-    /*
-     * WARNING - Removed try catching itself - possible behaviour change.
-     */
     public Tableau(InterruptFlag interruptFlag, TableauMonitor tableauMonitor, ExistentialExpansionStrategy existentialsExpansionStrategy, boolean useDisjunctionLearning, DLOntology permanentDLOntology, DLOntology additionalDLOntology, Map<String, Object> parameters) {
         if (additionalDLOntology != null && !additionalDLOntology.getAllDescriptionGraphs().isEmpty()) {
             throw new IllegalArgumentException("Additional ontology cannot contain description graphs.");
@@ -332,12 +298,11 @@ implements Serializable {
     }
 
     public boolean supportsAdditionalDLOntology(DLOntology additionalDLOntology) {
-        boolean hasBottomObjectProperty;
         boolean hasInverseRoles = this.m_permanentDLOntology.hasInverseRoles() || this.m_additionalDLOntology != null && this.m_additionalDLOntology.hasInverseRoles();
         boolean hasNominals = this.m_permanentDLOntology.hasNominals() || this.m_additionalDLOntology != null && this.m_additionalDLOntology.hasNominals();
         boolean isHorn = this.m_permanentDLOntology.isHorn() || this.m_additionalDLOntology != null && this.m_additionalDLOntology.isHorn();
         boolean permanentHasBottomObjectProperty = this.m_permanentDLOntology.containsObjectRole(AtomicRole.BOTTOM_OBJECT_ROLE);
-        boolean bl = hasBottomObjectProperty = permanentHasBottomObjectProperty || this.m_additionalDLOntology != null && this.m_additionalDLOntology.containsObjectRole(AtomicRole.BOTTOM_OBJECT_ROLE);
+        boolean hasBottomObjectProperty = permanentHasBottomObjectProperty || this.m_additionalDLOntology != null && this.m_additionalDLOntology.containsObjectRole(AtomicRole.BOTTOM_OBJECT_ROLE);
         if (!additionalDLOntology.getAllDescriptionGraphs().isEmpty() || additionalDLOntology.hasInverseRoles() && !hasInverseRoles || additionalDLOntology.hasNominals() && !hasNominals || !additionalDLOntology.isHorn() && isHorn || hasBottomObjectProperty && !permanentHasBottomObjectProperty) {
             return false;
         }
@@ -398,13 +363,10 @@ implements Serializable {
             this.m_tableauMonitor.isSatisfiableStarted(reasoningTaskDescription);
         }
         this.clear();
-        System.out.println("[!] isSatisfiable Started");
-        //Agregar individuos del MBox a los nodos
         for (OWLMetamodellingAxiom metamodellingAxiom : this.m_permanentDLOntology.getMetamodellingAxioms()) {
         	Individual ind = Individual.create(metamodellingAxiom.getMetamodelIndividual().toStringID());
         	if (!termsToNodes.containsKey(ind)) {
         		Node node = this.createNewNamedNode(this.m_dependencySetFactory.emptySet());
-        		System.out.println("    Individual -> "+ind+" || Node -> "+node);
             	termsToNodes.put(ind, node);
         	}
         	this.mapNodeIndividual.put(termsToNodes.get(ind).m_nodeID, ind);
@@ -413,42 +375,28 @@ implements Serializable {
         	this.metamodellingNodes.add(termsToNodes.get(ind));
         }
         if (loadPermanentABox) {
-        	System.out.println("loadPermanentABox");
-        	System.out.println("	positiveFacts:");
             for (Atom atom : this.m_permanentDLOntology.getPositiveFacts()) {
-            	System.out.println("		atom -> "+atom);
                 this.loadPositiveFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
-            System.out.println("	negativeFacts:");
             for (Atom atom : this.m_permanentDLOntology.getNegativeFacts()) {
-            	System.out.println("		atom -> "+atom);
                 this.loadNegativeFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
         }
         if (loadAdditionalABox && this.m_additionalDLOntology != null) {
-        	System.out.println("loadAdditionalABox");
-        	System.out.println("	positiveFacts:");
             for (Atom atom : this.m_additionalDLOntology.getPositiveFacts()) {
-            	System.out.println("		atom -> "+atom);
                 this.loadPositiveFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
-            System.out.println("	negativeFacts:");
             for (Atom atom : this.m_additionalDLOntology.getNegativeFacts()) {
-            	System.out.println("		atom -> "+atom);
                 this.loadNegativeFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
         }
         if (perTestPositiveFactsNoDependency != null && !perTestPositiveFactsNoDependency.isEmpty()) {
-        	System.out.println("	perTestPositiveFactsNoDependency - positiveFacts:");
             for (Atom atom : perTestPositiveFactsNoDependency) {
-            	System.out.println("		atom -> "+atom);
                 this.loadPositiveFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
         }
         if (perTestNegativeFactsNoDependency != null && !perTestNegativeFactsNoDependency.isEmpty()) {
-        	System.out.println("	perTestNegativeFactsNoDependency - negativeFacts:");
             for (Atom atom : perTestNegativeFactsNoDependency) {
-            	System.out.println("		atom -> "+atom);
                 this.loadNegativeFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
         }
@@ -457,30 +405,23 @@ implements Serializable {
             ++this.m_currentBranchingPoint;
             this.m_nonbacktrackableBranchingPoint = this.m_currentBranchingPoint;
             PermanentDependencySet dependencySet = this.m_dependencySetFactory.addBranchingPoint(this.m_dependencySetFactory.emptySet(), this.m_currentBranchingPoint);
-            System.out.println("	perTestPositiveFactsDummyDependency - positiveFacts:");
             if (perTestPositiveFactsDummyDependency != null && !perTestPositiveFactsDummyDependency.isEmpty()) {
                 for (Atom atom : perTestPositiveFactsDummyDependency) {
-                	System.out.println("		atom -> "+atom);
                     this.loadPositiveFact(termsToNodes, atom, dependencySet);
                 }
             }
-            System.out.println("	perTestNegativeFactsDummyDependency - negativeFacts:");
             if (perTestNegativeFactsDummyDependency != null && !perTestNegativeFactsDummyDependency.isEmpty()) {
                 for (Atom atom : perTestNegativeFactsDummyDependency) {
-                	System.out.println("		atom -> "+atom);
                     this.loadNegativeFact(termsToNodes, atom, dependencySet);
                 }
             }
         }
         if (nodesForIndividuals != null) {
-        	System.out.println("	Iterate throuth nodesForIndividuals");
             for (Map.Entry<Individual, Node> entry : nodesForIndividuals.entrySet()) {
                 if (termsToNodes.get(entry.getKey()) == null) {
                     Atom topAssertion = Atom.create(AtomicConcept.THING, entry.getKey());
-                    System.out.println("		topAssertion -> "+topAssertion);
                     this.loadPositiveFact(termsToNodes, topAssertion, this.m_dependencySetFactory.emptySet());
                 }
-                System.out.println("		termsToNodes.get(entry.getKey()) -> "+termsToNodes.get(entry.getKey()));
                 entry.setValue(termsToNodes.get(entry.getKey()));
             }
         }
@@ -495,24 +436,18 @@ implements Serializable {
     }
 
     protected void loadPositiveFact(Map<Term, Node> termsToNodes, Atom atom, DependencySet dependencySet) {
-    	System.out.println("		* loadPositiveFact");
         DLPredicate dlPredicate = atom.getDLPredicate();
-        System.out.println("		 dlPredicate -> "+dlPredicate);
         if (dlPredicate instanceof LiteralConcept) {
-        	System.out.println("		is LiteralConcept");
             this.m_extensionManager.addConceptAssertion((LiteralConcept)((Object)dlPredicate), this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet), dependencySet, true);
         } else if (dlPredicate instanceof AtomicRole || Equality.INSTANCE.equals(dlPredicate) || Inequality.INSTANCE.equals(dlPredicate)) {
-        	System.out.println("		is AtomicRole or Equality or Inequality instance");
         	this.m_extensionManager.addAssertion(dlPredicate, this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet), this.getNodeForTerm(termsToNodes, atom.getArgument(1), dependencySet), dependencySet, true);
         } else if (dlPredicate instanceof DescriptionGraph) {
-        	System.out.println("		is DescriptionGraph");
             DescriptionGraph descriptionGraph = (DescriptionGraph)dlPredicate;
             Object[] tuple = new Object[descriptionGraph.getArity() + 1];
             tuple[0] = descriptionGraph;
             for (int argumentIndex = 0; argumentIndex < descriptionGraph.getArity(); ++argumentIndex) {
                 tuple[argumentIndex + 1] = this.getNodeForTerm(termsToNodes, atom.getArgument(argumentIndex), dependencySet);
             }
-            System.out.println("		tuple -> "+tuple);
             this.m_extensionManager.addTuple(tuple, dependencySet, true);
         } else {
             throw new IllegalArgumentException("Unsupported type of positive ground atom.");
@@ -520,37 +455,27 @@ implements Serializable {
     }
 
     protected void loadNegativeFact(Map<Term, Node> termsToNodes, Atom atom, DependencySet dependencySet) {
-    	System.out.println("		* loadNegativeFact");
         DLPredicate dlPredicate = atom.getDLPredicate();
-        System.out.println("		 dlPredicate -> "+dlPredicate);
         if (dlPredicate instanceof LiteralConcept) {
-        	System.out.println("		is LiteralConcept");
             this.m_extensionManager.addConceptAssertion(((LiteralConcept)((Object)dlPredicate)).getNegation(), this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet), dependencySet, true);
         } else if (dlPredicate instanceof AtomicRole) {
-        	System.out.println("		is AtomicRole");
             Object[] ternaryTuple = this.m_extensionManager.m_ternaryAuxiliaryTupleAdd;
             ternaryTuple[0] = NegatedAtomicRole.create((AtomicRole)dlPredicate);
             ternaryTuple[1] = this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet);
             ternaryTuple[2] = this.getNodeForTerm(termsToNodes, atom.getArgument(1), dependencySet);
-            System.out.println("		ternaryTuple -> "+ternaryTuple);
             this.m_extensionManager.addTuple(ternaryTuple, dependencySet, true);
         } else if (Equality.INSTANCE.equals(dlPredicate)) {
-        	System.out.println("		is Equality");
             this.m_extensionManager.addAssertion(Inequality.INSTANCE, this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet), this.getNodeForTerm(termsToNodes, atom.getArgument(1), dependencySet), dependencySet, true);
         } else if (Inequality.INSTANCE.equals(dlPredicate)) {
-        	System.out.println("		is Inequality");
             this.m_extensionManager.addAssertion(Equality.INSTANCE, this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet), this.getNodeForTerm(termsToNodes, atom.getArgument(1), dependencySet), dependencySet, true);
         } else {
             throw new IllegalArgumentException("Unsupported type of negative ground atom.");
         }
     }
 
-    //Crea nodos en el grafo
     protected Node getNodeForTerm(Map<Term, Node> termsToNodes, Term term, DependencySet dependencySet) {
         Node node = termsToNodes.get(term);
         if (node == null) {
-        	System.out.println("***** Going to create a Node ******");
-        	System.out.println("term -> "+term);
             if (term instanceof Individual) {
                 Individual individual = (Individual)term;
                 node = individual.isAnonymous() ? this.createNewNINode(dependencySet) : this.createNewNamedNode(dependencySet);
@@ -564,14 +489,10 @@ implements Serializable {
                 }
             }
             termsToNodes.put(term, node);
-            System.out.println("node -> "+node);
         }
         return node.getCanonicalNode();
     }
 
-    /*
-     * WARNING - Removed try catching itself - possible behaviour change.
-     */
     protected boolean runCalculus() {
     	int iterations = 0;
         this.m_interruptFlag.startTask();
@@ -585,11 +506,7 @@ implements Serializable {
                 if (this.m_tableauMonitor != null) {
                     this.m_tableauMonitor.iterationStarted();
                 }
-                System.out.println("====> ITERATION "+(++iterations));
-                long startTime = System.nanoTime();
                 hasMoreWork = this.doIteration();
-                long stopTime = System.nanoTime();
-                System.out.println("####################################################################### Iteration time: "+((stopTime - startTime)/1000000));
                 if (this.m_tableauMonitor != null) {
                     this.m_tableauMonitor.iterationFinished();
                 }
@@ -626,10 +543,7 @@ implements Serializable {
                     this.m_descriptionGraphManager.checkGraphConstraints();
                 }
                 if (!this.m_extensionManager.containsClash()) {
-                	long startTime = System.nanoTime();
                 	this.m_permanentHyperresolutionManager.applyDLClauses();
-                    long stopTime = System.nanoTime();
-                    System.out.println("####################################################################### APPLYDLCLAUSES time: "+((stopTime - startTime)/1000000));
                 }
                 if (this.m_additionalHyperresolutionManager != null && !this.m_extensionManager.containsClash()) {
                     this.m_additionalHyperresolutionManager.applyDLClauses();
@@ -642,27 +556,6 @@ implements Serializable {
                 }
                 if (!this.m_extensionManager.containsClash()) {
                     this.m_nominalIntroductionManager.processAnnotatedEqualities();
-                    
-                    ////test
-//                    if (this.metamodellingFlag) {
-//                    	long startTime = System.nanoTime();
-//                        boolean equalrule = this.m_metamodellingManager.checkEqualMetamodellingRule();
-//                        long stopTime = System.nanoTime();
-//                        System.out.println("####################################################################### checkEqualMetamodellingRule"+((stopTime - startTime)/1000000));
-//                        if (equalrule) {
-//                        	this.m_extensionManager.resetDeltaNew();
-//                        } else {
-//                        	startTime = System.nanoTime();
-//                        	boolean inequalityrule = this.m_metamodellingManager.checkInequalityMetamodellingRule();
-//                        	stopTime = System.nanoTime();
-//                            System.out.println("####################################################################### checkInequalityMetamodellingRule"+((stopTime - startTime)/1000000));
-//                        	if (inequalityrule) {
-//                        		this.m_extensionManager.resetDeltaNew();
-//                        	}
-//                        }
-//                        this.metamodellingFlag = false;
-//                    }
-                    
                     if (this.metamodellingFlag) {
                     	boolean equalMetamodellingRuleApplied = this.m_metamodellingManager.checkEqualMetamodellingRule();
                     	boolean inequalityMetamodellingRuleApplied = this.m_metamodellingManager.checkInequalityMetamodellingRule();
@@ -671,32 +564,14 @@ implements Serializable {
                     	}
                     	this.metamodellingFlag = false;
                     }
-                    
-                    
-                    
-                    ///test
-//                    long startTime = System.nanoTime();
-//                    if (this.m_metamodellingManager.checkEqualMetamodellingRule() || this.m_metamodellingManager.checkInequalityMetamodellingRule()) {
-//                    	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
-//                    	this.m_extensionManager.resetDeltaNew();
-//                    }
-//                    long stopTime = System.nanoTime();
-//                    System.out.println("####################################################################### = AND != METAMODELLING RULE: "+((stopTime - startTime)/1000000));
-                    long startTime = System.nanoTime();
                     if(this.m_metamodellingManager.checkPropertyNegation()) {
                     	return true;
                     }
-                    long stopTime = System.nanoTime();
-                    System.out.println("####################################################################### CHECKPROPERTYNEGATION: "+((stopTime - startTime)/1000000));
-                    startTime = System.nanoTime();
                     if (MetamodellingAxiomHelper.findCyclesInM(this)) {
-                    	//DependencySet clashDependencySet = this.m_firstGroundDisjunction != null? this.m_firstGroundDisjunction.getDependencySet() : this.m_dependencySetFactory.emptySet();
                     	DependencySet clashDependencySet = this.m_dependencySetFactory.getActualDependencySet();
                     	this.m_extensionManager.setClash(clashDependencySet);
                     	return true;
                     }
-                    stopTime = System.nanoTime();
-                    System.out.println("####################################################################### findCyclesInM: "+((stopTime - startTime)/1000000));
                 }
                 hasChange = true;
             }
@@ -708,43 +583,12 @@ implements Serializable {
             return true;
         }
         if (!this.m_extensionManager.containsClash()) {
-//        	long startTime = System.nanoTime();
-//        	if (this.m_metamodellingManager.checkCloseMetamodellingRule()) {
-//        		long stopTime = System.nanoTime();
-//                System.out.println("####################################################################### checkCloseMetamodellingRule: "+((stopTime - startTime)/1000000));
-//        		return true;
-//        	}
-//            startTime = System.nanoTime();
-//            if (this.m_metamodellingManager.checkCloseMetaRule()) {
-//            	long stopTime = System.nanoTime();
-//                System.out.println("####################################################################### checkCloseMetaRule: "+((stopTime - startTime)/1000000));
-//            	return true;
-//            }
-//            startTime = System.nanoTime();
-//            if(this.m_metamodellingManager.checkMetaRule()) {
-//            	this.m_extensionManager.resetDeltaNew();
-//            	long stopTime = System.nanoTime();
-//                System.out.println("####################################################################### checkMetaRule: "+((stopTime - startTime)/1000000));
-//            	return true;
-//            }
-        	long startTime = System.nanoTime();
-        	if (this.m_metamodellingManager.checkCloseMetamodellingRule()) {
-        		long stopTime = System.nanoTime();
-                System.out.println("####################################################################### checkCloseMetamodellingRule: "+((stopTime - startTime)/1000000));
-        		//return true;
-        	}
-            startTime = System.nanoTime();
-            if (this.m_metamodellingManager.checkCloseMetaRule()) {
-            	long stopTime = System.nanoTime();
-                System.out.println("####################################################################### checkCloseMetaRule: "+((stopTime - startTime)/1000000));
-            	//return true;
-            }else {
+        	this.m_metamodellingManager.checkCloseMetamodellingRule();
+            if (!this.m_metamodellingManager.checkCloseMetaRule()) {
             	this.m_metamodellingManager.checkMetaRule();
             }
         	while (this.m_firstUnprocessedGroundDisjunction != null) {
         		GroundDisjunction groundDisjunction = this.m_firstUnprocessedGroundDisjunction;
-        		System.out.println("$$$$ EVALUATE GROUND DISJUNCTION $$$$$");
-        		System.out.println("\nGround Disjunction: "+groundDisjunction);
         		if (this.m_tableauMonitor != null) {
         			this.m_tableauMonitor.processGroundDisjunctionStarted(groundDisjunction);
         		}
@@ -774,23 +618,15 @@ implements Serializable {
         	}
         }
         if (this.m_extensionManager.containsClash()) {
-        	System.out.println("#$# Se encuentra un Clash y se va a chequear si se debe hacer backtracking");
         	DependencySet clashDependencySet = this.m_extensionManager.getClashDependencySet();
     		int newCurrentBranchingPoint = clashDependencySet.getMaximumBranchingPoint();
     		if (newCurrentBranchingPoint <= this.m_nonbacktrackableBranchingPoint || this.m_branchingPoints[newCurrentBranchingPoint] == null) {
-    			System.out.println("#$# Se va a chequear si se debe hacer backtracking manual por motivos de metamodelling");
     			if (shouldBacktrackHyperresolutionManager()) {
-    				System.out.println("#$# Se va a hacer backtracking manual");
-    	        	//Se remueven las dlclauses agregadas y se vuelve el hyperresolutionManager al estado anterior
     	    		backtrackHyperresolutionManager();
-
-    	            //Backtracking manual: false - inconsistente | true - sigue corriendo
     	            return backtrackMetamodellingClash();
     	        }
     		    return false;
     		}
-    		//backtrack axioms added by metamodelling rule if needed
-    		System.out.println("#$# Se hara el backtracking normal de Hermit");
     		this.backtrackTo(newCurrentBranchingPoint);
     		BranchingPoint branchingPoint = this.getCurrentBranchingPoint();
     		if (this.m_tableauMonitor != null) {
@@ -819,30 +655,38 @@ implements Serializable {
     }
     
     protected List<Node> getRelatedNodes(Node node, String property) {
-    	List<Node> relatedNodes = new ArrayList<Node>();
-		for (int j=0; j<this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages.length; j++) {
-			if (this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j] != null) {
-				for (int i = 0; i < this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects.length; i++) {
-	    			Object obj = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i];
-	    			if (obj instanceof AtomicRole && ((AtomicRole) obj).toString().equals(property) && (i + 2) <= this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects.length) {
-	    				Object obj1 = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i+1];
-	    				Object obj2 = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i+2];
-	    				if (obj1 instanceof Node && obj2 instanceof Node && (((Node) obj1).getNodeID() == node.getNodeID() || ((Node) obj1).getCanonicalNode().getNodeID() == node.getCanonicalNode().getNodeID())) {
-	    					relatedNodes.add(((Node) obj2));
-	    					if (((Node) obj2).getCanonicalNode().m_nodeID != ((Node) obj2).m_nodeID) {
-	    						relatedNodes.add(((Node) obj2).getCanonicalNode());
-	    					}
-	    				}
-	    			}
-	    		}
-			}
-		}
-    	return relatedNodes;
+    	Set<Node> relatedNodes = new HashSet<Node>();
+    	if (this.nodeProperties.containsKey(node.m_nodeID)) {
+    		for (Integer node2 : this.nodeProperties.get(node.m_nodeID).keySet()) {
+    			for (String propertyIter : this.nodeProperties.get(node.m_nodeID).get(node2)) {
+    				if (propertyIter.equals(property)) {
+    					for (Node metamodellingNode : this.metamodellingNodes) {
+    						if (metamodellingNode.m_nodeID == node2 || metamodellingNode.getCanonicalNode().m_nodeID == node2) {
+    							relatedNodes.add(metamodellingNode);
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    	if (this.nodeProperties.containsKey(node.getCanonicalNode().m_nodeID)) {
+    		for (Integer node2 : this.nodeProperties.get(node.getCanonicalNode().m_nodeID).keySet()) {
+    			for (String propertyIter : this.nodeProperties.get(node.getCanonicalNode().m_nodeID).get(node2)) {
+    				if (propertyIter.equals(property)) {
+    					for (Node metamodellingNode : this.metamodellingNodes) {
+    						if (metamodellingNode.m_nodeID == node2 || metamodellingNode.getCanonicalNode().m_nodeID == node2) {
+    							relatedNodes.add(metamodellingNode);
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    	
+    	return new ArrayList<Node>(relatedNodes);
     }
 
 	public boolean startBacktracking(GroundDisjunction groundDisjunction) {
-		System.out.println("@@@@@@ Backtracking @@@@");
-		System.out.println("@@@@@@ groundDisjunction -> "+groundDisjunction);
 		if (this.m_tableauMonitor != null) {
 		    this.m_tableauMonitor.processGroundDisjunctionStarted(groundDisjunction);
 		}
@@ -874,9 +718,7 @@ implements Serializable {
 	}
     
     private boolean shouldBacktrackHyperresolutionManager() {
-    	//Si encontramos clash y hay mas de 1 elemento en branchedHyperresolutionManagers y el tableau se encuentra en estado de backtracking
         if (this.m_extensionManager.containsClash() && this.branchedHyperresolutionManagers.size() > 1 && this.m_branchingPoints[0] != null) {
-        	//Si el branching point y el branching point level coinciden con el ultimo elemento almacenado en branchedHyperresolutionManagers
         	if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() <= this.m_currentBranchingPoint 
         			&& this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-1).getBranchingPoint() <= this.getCurrentBranchingPointLevel()) {
         		return true;
@@ -886,8 +728,6 @@ implements Serializable {
     }
 
 	private void backtrackHyperresolutionManager() {
-		//Remover axiomas agregados por rule =
-		System.out.println("BACKTRACK HYPERRESOLUTIONMANAGER");
 		for (int i=1; i<this.branchedHyperresolutionManagers.size(); i++) {
 			if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.m_currentBranchingPoint && 
 					this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.getCurrentBranchingPointLevel()) {
@@ -895,12 +735,10 @@ implements Serializable {
 					DLClause dlClauseAdded = this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getDlClausesAdded().get(j);
 					removeFromInequalityMetamodellingPairs(i, j, dlClauseAdded);
 					this.getPermanentDLOntology().getDLClauses().remove(dlClauseAdded);
-					System.out.println("Se remueve -> "+dlClauseAdded);
+					this.setPermanentHyperresolutionManager(this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getHyperresolutionManager());
 				}
 			}
 		}
-		//Volver el HyperresolutionManager a su estado anterior
-		this.setPermanentHyperresolutionManager(new HyperresolutionManager(this, this.getPermanentDLOntology().getDLClauses()));
 	}
 
 	private void removeFromInequalityMetamodellingPairs(int i, int j, DLClause dlClauseAdded) {
@@ -952,24 +790,20 @@ implements Serializable {
 	}
 
 	private boolean backtrackMetamodellingClash() {
-		//Backtracking de distintas estructuras
 		this.m_existentialExpansionStrategy.backtrack();
 		this.m_existentialExpasionManager.backtrack();
 		this.m_nominalIntroductionManager.backtrack();
 		this.m_extensionManager.backtrack();
 		
-		//Backtracking de merge de nodos
 		Node lastMergedOrPrunedNodeShouldBe = this.m_branchingPoints[this.m_currentBranchingPoint].m_lastMergedOrPrunedNode;
 		while (this.m_lastMergedOrPrunedNode != lastMergedOrPrunedNodeShouldBe) {
 		    this.backtrackLastMergedOrPrunedNode();
 		}
-		//Backtracking de creacion de nodos
 		Node lastTableauNodeShouldBe = this.m_branchingPoints[this.m_currentBranchingPoint].m_lastTableauNode;
 		while (lastTableauNodeShouldBe != this.m_lastTableauNode) {
 		    this.destroyLastTableauNode();
 		}
 		
-		//Pasar a la siguiete opcion, de lo contrario se retorna una exception y Hermit determina inconsistencia
 		if (this.m_branchingPoints[this.m_currentBranchingPoint].canStartNextChoice()) {
 			this.m_branchingPoints[this.m_currentBranchingPoint].startNextChoice(this, this.m_extensionManager.getClashDependencySet());
 		} else {
@@ -981,24 +815,9 @@ implements Serializable {
 	}
     
     public boolean containsClassAssertion(String def) {
-//    	for (int j=0; j < m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages.length; j++) {
-//    		if (m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[j] != null) {
-//    			for (int i=0; i < m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[j].m_objects.length ;i++) {
-//    	    		Object object = this.m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i];
-//    	    		if (object != null && object.toString().equals(def)) {
-//    	    			System.out.println("containsClassAssertion TRUE for def: "+def+" obj: "+this.m_extensionManager.m_binaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i+1]);
-//    	    			return true;
-//    	    		}
-//    	    	}
-//    		}
-//    	}
-//    	return false;
     	return this.m_metamodellingManager.defAssertions.contains(def);
     }
     
-    /*
-		Devuelve true si los 2 nodos son diferentes
-    */
     protected boolean areDifferentIndividual(Node node1, Node node2) {
     	if (this.differentIndividualsMap.containsKey(node1.m_nodeID)) {
     		if (this.differentIndividualsMap.get(node1.m_nodeID).contains(node2.m_nodeID) || this.differentIndividualsMap.get(node1.m_nodeID).contains(node2.getCanonicalNode().m_nodeID)) {
@@ -1021,48 +840,11 @@ implements Serializable {
     		}
     	}
     	return false;
-    	//buscar si existe el axioma de node1 != node2
-    	//Recorrer la ternaryTable del etension manager en busca de axiomas de !=
-//		for (int i=0; i < this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects.length-2 ;i++) {
-//			Object object = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i];
-//			if (object != null && object.toString().equals("!=")) {
-//				Node obj1 = (Node) this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+1];
-//				Node obj2 = (Node) this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[0].m_objects[i+2];
-//				if ((obj1.getCanonicalNode() == node1.getCanonicalNode() && obj2.getCanonicalNode() == node2.getCanonicalNode()) ||
-//						(obj2.getCanonicalNode() == node1.getCanonicalNode() && obj1.getCanonicalNode() == node2.getCanonicalNode())) {
-//					return true;
-//				}
-//			}
-//		}
-//	    return false;
     }
 
-    /*
-    	Devuelve true si los 2 nodos son iguales, ya sea porque sean el mismo nodo, igualados por un axioma o si fueron mergeados
-    */
     protected boolean areSameIndividual(Node node1, Node node2) {
-    	//Checkeo si es el mismo nodo
-    	//El canonical node el nodo que queda luego del merge
     	if ((node1.m_nodeID == node2.m_nodeID) || (node1.getCanonicalNode() == node2.getCanonicalNode())) return true;
-    	//Checkear si los nodos fueron mergeados (Igualdad inferida)
     	if ((node1.isMerged() && node1.m_mergedInto == node2) || (node2.isMerged() && node2.m_mergedInto == node1)) return true;
-    	
-//    	//Obtengo los individuos a partir de los nodos
-//    	Individual paramIndividual1 = this.nodeToMetaIndividual.get(node1.m_nodeID);
-//    	Individual paramIndividual2 = this.nodeToMetaIndividual.get(node2.m_nodeID);
-//    	
-//    	//chequeo en axiomas de la ontologia
-//    	for (Atom positiveFact : this.m_permanentDLOntology.getPositiveFacts()) {
-//    		//Si es un axioma de igualdad de individuos
-//    		if (Equality.INSTANCE.equals(positiveFact.getDLPredicate())) {
-//    			Individual ind1 = (Individual) positiveFact.getArgument(0);
-//    			Individual ind2 = (Individual) positiveFact.getArgument(1);
-//    			//chequear que los nodos coincidan con los individuos del axioma o si son el mismo individuo
-//    			if ((paramIndividual1 == ind1 && paramIndividual2 == ind2 ) || (paramIndividual2 == ind1 && paramIndividual1 == ind2 )) {
-//    				return true;
-//    			}
-//    		}
-//    	}
     	return false;
     }
     
@@ -1077,9 +859,6 @@ implements Serializable {
     	return equivalentNodes;
     }
     
-    /*
-     Devuelve true si ya se creo la disjunction por close rule
-    */
     protected boolean alreadyCreateDisjunction(Node node0, Node node1) {
     	if (createdDisjunction.containsKey(node0.m_nodeID)) {
     		for (int nodeIter : createdDisjunction.get(node0.m_nodeID)) {

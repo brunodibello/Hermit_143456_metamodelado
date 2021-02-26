@@ -1,14 +1,9 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.binarydata;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.binarydata.BinaryData;
-import org.semanticweb.HermiT.datatypes.binarydata.BinaryDataLengthInterval;
 
 public class BinaryDataValueSpaceSubset
 implements ValueSpaceSubset {

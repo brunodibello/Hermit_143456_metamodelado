@@ -1,12 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.model;
 
 import java.io.Serializable;
 import org.semanticweb.HermiT.Prefixes;
-import org.semanticweb.HermiT.model.Atom;
-import org.semanticweb.HermiT.model.Term;
 
 public abstract class Role
 implements Serializable {

@@ -1,11 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import org.semanticweb.HermiT.tableau.DependencySet;
 
 final public class UnionDependencySet
 implements DependencySet,

@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals;
 
 import java.util.ArrayList;
@@ -10,9 +7,6 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import rationals.Automaton;
-import rationals.State;
-import rationals.StateFactory;
 
 public class DefaultStateFactory
 implements StateFactory,

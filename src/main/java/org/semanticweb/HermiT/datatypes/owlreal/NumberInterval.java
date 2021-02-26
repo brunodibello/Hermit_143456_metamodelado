@@ -1,14 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.owlreal;
 
 import java.util.Collection;
-import org.semanticweb.HermiT.datatypes.owlreal.BoundType;
-import org.semanticweb.HermiT.datatypes.owlreal.MinusInfinity;
-import org.semanticweb.HermiT.datatypes.owlreal.NumberRange;
-import org.semanticweb.HermiT.datatypes.owlreal.Numbers;
-import org.semanticweb.HermiT.datatypes.owlreal.PlusInfinity;
 
 public class NumberInterval {
     protected final NumberRange m_baseRange;

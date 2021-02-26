@@ -1,10 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
-import org.semanticweb.HermiT.tableau.DependencySet;
 
 public final class PermanentDependencySet
 implements DependencySet,

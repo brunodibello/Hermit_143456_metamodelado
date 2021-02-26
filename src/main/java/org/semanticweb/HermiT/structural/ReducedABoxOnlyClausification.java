@@ -1,41 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.model.IRI
- *  org.semanticweb.owlapi.model.NodeID
- *  org.semanticweb.owlapi.model.OWLAnonymousIndividual
- *  org.semanticweb.owlapi.model.OWLAxiomVisitor
- *  org.semanticweb.owlapi.model.OWLClass
- *  org.semanticweb.owlapi.model.OWLClassAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLClassExpression
- *  org.semanticweb.owlapi.model.OWLDataProperty
- *  org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLDataPropertyExpression
- *  org.semanticweb.owlapi.model.OWLDatatype
- *  org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom
- *  org.semanticweb.owlapi.model.OWLIndividual
- *  org.semanticweb.owlapi.model.OWLIndividualAxiom
- *  org.semanticweb.owlapi.model.OWLLiteral
- *  org.semanticweb.owlapi.model.OWLNamedIndividual
- *  org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLObject
- *  org.semanticweb.owlapi.model.OWLObjectComplementOf
- *  org.semanticweb.owlapi.model.OWLObjectHasSelf
- *  org.semanticweb.owlapi.model.OWLObjectHasValue
- *  org.semanticweb.owlapi.model.OWLObjectProperty
- *  org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLObjectPropertyExpression
- *  org.semanticweb.owlapi.model.OWLPropertyAssertionObject
- *  org.semanticweb.owlapi.model.OWLPropertyExpression
- *  org.semanticweb.owlapi.model.OWLSameIndividualAxiom
- *  org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter
- */
 package org.semanticweb.HermiT.structural;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Prefixes;
@@ -48,9 +13,6 @@ import org.semanticweb.HermiT.model.Equality;
 import org.semanticweb.HermiT.model.Individual;
 import org.semanticweb.HermiT.model.Inequality;
 import org.semanticweb.HermiT.model.Term;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.NodeID;
-import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLAxiomVisitor;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
@@ -58,23 +20,18 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
-import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLObjectHasSelf;
 import org.semanticweb.owlapi.model.OWLObjectHasValue;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
-import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
-import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 

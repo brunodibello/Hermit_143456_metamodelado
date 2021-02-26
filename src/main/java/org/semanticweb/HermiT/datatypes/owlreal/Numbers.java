@@ -1,13 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.owlreal;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import org.semanticweb.HermiT.datatypes.owlreal.BigRational;
-import org.semanticweb.HermiT.datatypes.owlreal.MinusInfinity;
-import org.semanticweb.HermiT.datatypes.owlreal.PlusInfinity;
 
 public class Numbers {
     public static boolean isValidNumber(Number n) {

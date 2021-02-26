@@ -1,9 +1,4 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals;
-
-import rationals.State;
 
 public class Couple {
     private final int hash;

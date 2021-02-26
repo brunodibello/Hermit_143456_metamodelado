@@ -1,11 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.doublenum;
 
 import java.util.Collection;
 import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.doublenum.DoubleInterval;
 
 public class EntireDoubleSubset
 implements ValueSpaceSubset {

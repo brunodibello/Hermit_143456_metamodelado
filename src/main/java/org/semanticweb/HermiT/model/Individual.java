@@ -1,11 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.model;
 
 import org.semanticweb.HermiT.Prefixes;
-import org.semanticweb.HermiT.model.InterningManager;
-import org.semanticweb.HermiT.model.Term;
 
 public class Individual
 extends Term {

@@ -1,19 +1,10 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.monitor;
 
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import org.semanticweb.HermiT.Prefixes;
-import org.semanticweb.HermiT.monitor.TableauMonitorAdapter;
 import org.semanticweb.HermiT.tableau.BranchingPoint;
-import org.semanticweb.HermiT.tableau.DependencySetFactory;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
-import org.semanticweb.HermiT.tableau.ExtensionTable;
 import org.semanticweb.HermiT.tableau.ReasoningTaskDescription;
-import org.semanticweb.HermiT.tableau.Tableau;
 
 public class Timer
 extends TableauMonitorAdapter {

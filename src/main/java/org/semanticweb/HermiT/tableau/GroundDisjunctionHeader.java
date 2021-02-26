@@ -1,13 +1,9 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.model.AtLeastConcept;
 import org.semanticweb.HermiT.model.AtomicNegationConcept;
 import org.semanticweb.HermiT.model.DLPredicate;
-import org.semanticweb.HermiT.model.LiteralConcept;
 
 public final class GroundDisjunctionHeader {
     protected final DLPredicate[] m_dlPredicates;

@@ -1,12 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes;
 
 import java.util.Set;
-import org.semanticweb.HermiT.datatypes.MalformedLiteralException;
-import org.semanticweb.HermiT.datatypes.UnsupportedFacetException;
-import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
 import org.semanticweb.HermiT.model.DatatypeRestriction;
 
 public interface DatatypeHandler {

@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.properties;
 
 import java.util.HashSet;
@@ -10,7 +7,6 @@ import rationals.Automaton;
 import rationals.Couple;
 import rationals.State;
 import rationals.Transition;
-import rationals.properties.Relation;
 
 public class Bisimulation
 implements Relation {

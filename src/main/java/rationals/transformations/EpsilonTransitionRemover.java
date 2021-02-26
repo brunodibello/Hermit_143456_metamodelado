@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.transformations;
 
 import java.util.ArrayList;
@@ -10,11 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import rationals.Automaton;
 import rationals.State;
-import rationals.StateFactory;
 import rationals.Transition;
-import rationals.transformations.HashValue;
-import rationals.transformations.TransformationsToolBox;
-import rationals.transformations.UnaryTransformation;
 
 public class EpsilonTransitionRemover
 implements UnaryTransformation {

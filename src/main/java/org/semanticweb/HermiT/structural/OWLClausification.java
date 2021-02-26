@@ -1,90 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  com.google.common.base.Optional
- *  org.semanticweb.owlapi.apibinding.OWLManager
- *  org.semanticweb.owlapi.model.IRI
- *  org.semanticweb.owlapi.model.NodeID
- *  org.semanticweb.owlapi.model.OWLAnonymousIndividual
- *  org.semanticweb.owlapi.model.OWLAxiomVisitor
- *  org.semanticweb.owlapi.model.OWLClass
- *  org.semanticweb.owlapi.model.OWLClassAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLClassExpression
- *  org.semanticweb.owlapi.model.OWLClassExpressionVisitor
- *  org.semanticweb.owlapi.model.OWLDataAllValuesFrom
- *  org.semanticweb.owlapi.model.OWLDataComplementOf
- *  org.semanticweb.owlapi.model.OWLDataExactCardinality
- *  org.semanticweb.owlapi.model.OWLDataFactory
- *  org.semanticweb.owlapi.model.OWLDataHasValue
- *  org.semanticweb.owlapi.model.OWLDataIntersectionOf
- *  org.semanticweb.owlapi.model.OWLDataMaxCardinality
- *  org.semanticweb.owlapi.model.OWLDataMinCardinality
- *  org.semanticweb.owlapi.model.OWLDataOneOf
- *  org.semanticweb.owlapi.model.OWLDataProperty
- *  org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLDataPropertyExpression
- *  org.semanticweb.owlapi.model.OWLDataRange
- *  org.semanticweb.owlapi.model.OWLDataSomeValuesFrom
- *  org.semanticweb.owlapi.model.OWLDataUnionOf
- *  org.semanticweb.owlapi.model.OWLDataVisitor
- *  org.semanticweb.owlapi.model.OWLDataVisitorEx
- *  org.semanticweb.owlapi.model.OWLDatatype
- *  org.semanticweb.owlapi.model.OWLDatatypeRestriction
- *  org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom
- *  org.semanticweb.owlapi.model.OWLFacetRestriction
- *  org.semanticweb.owlapi.model.OWLHasKeyAxiom
- *  org.semanticweb.owlapi.model.OWLIndividual
- *  org.semanticweb.owlapi.model.OWLIndividualAxiom
- *  org.semanticweb.owlapi.model.OWLLiteral
- *  org.semanticweb.owlapi.model.OWLNamedIndividual
- *  org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLObjectAllValuesFrom
- *  org.semanticweb.owlapi.model.OWLObjectComplementOf
- *  org.semanticweb.owlapi.model.OWLObjectExactCardinality
- *  org.semanticweb.owlapi.model.OWLObjectHasSelf
- *  org.semanticweb.owlapi.model.OWLObjectHasValue
- *  org.semanticweb.owlapi.model.OWLObjectIntersectionOf
- *  org.semanticweb.owlapi.model.OWLObjectInverseOf
- *  org.semanticweb.owlapi.model.OWLObjectMaxCardinality
- *  org.semanticweb.owlapi.model.OWLObjectMinCardinality
- *  org.semanticweb.owlapi.model.OWLObjectOneOf
- *  org.semanticweb.owlapi.model.OWLObjectProperty
- *  org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLObjectPropertyExpression
- *  org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom
- *  org.semanticweb.owlapi.model.OWLObjectUnionOf
- *  org.semanticweb.owlapi.model.OWLOntology
- *  org.semanticweb.owlapi.model.OWLOntologyID
- *  org.semanticweb.owlapi.model.OWLOntologyManager
- *  org.semanticweb.owlapi.model.OWLPropertyAssertionObject
- *  org.semanticweb.owlapi.model.OWLPropertyExpression
- *  org.semanticweb.owlapi.model.OWLPropertyRange
- *  org.semanticweb.owlapi.model.OWLSameIndividualAxiom
- *  org.semanticweb.owlapi.model.SWRLArgument
- *  org.semanticweb.owlapi.model.SWRLAtom
- *  org.semanticweb.owlapi.model.SWRLBuiltInAtom
- *  org.semanticweb.owlapi.model.SWRLClassAtom
- *  org.semanticweb.owlapi.model.SWRLDArgument
- *  org.semanticweb.owlapi.model.SWRLDataPropertyAtom
- *  org.semanticweb.owlapi.model.SWRLDataRangeAtom
- *  org.semanticweb.owlapi.model.SWRLDifferentIndividualsAtom
- *  org.semanticweb.owlapi.model.SWRLIArgument
- *  org.semanticweb.owlapi.model.SWRLIndividualArgument
- *  org.semanticweb.owlapi.model.SWRLLiteralArgument
- *  org.semanticweb.owlapi.model.SWRLObjectPropertyAtom
- *  org.semanticweb.owlapi.model.SWRLObjectVisitorEx
- *  org.semanticweb.owlapi.model.SWRLRule
- *  org.semanticweb.owlapi.model.SWRLSameIndividualAtom
- *  org.semanticweb.owlapi.model.SWRLVariable
- *  org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter
- *  org.semanticweb.owlapi.vocab.OWLFacet
- */
 package org.semanticweb.HermiT.structural;
 
 import com.google.common.base.Optional;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -92,7 +8,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Prefixes;
@@ -108,7 +23,6 @@ import org.semanticweb.HermiT.model.Constant;
 import org.semanticweb.HermiT.model.ConstantEnumeration;
 import org.semanticweb.HermiT.model.DLClause;
 import org.semanticweb.HermiT.model.DLOntology;
-import org.semanticweb.HermiT.model.DLPredicate;
 import org.semanticweb.HermiT.model.DatatypeRestriction;
 import org.semanticweb.HermiT.model.DescriptionGraph;
 import org.semanticweb.HermiT.model.Equality;
@@ -122,15 +36,8 @@ import org.semanticweb.HermiT.model.NodeIDsAscendingOrEqual;
 import org.semanticweb.HermiT.model.Role;
 import org.semanticweb.HermiT.model.Term;
 import org.semanticweb.HermiT.model.Variable;
-import org.semanticweb.HermiT.structural.BuiltInPropertyManager;
-import org.semanticweb.HermiT.structural.OWLAxioms;
-import org.semanticweb.HermiT.structural.OWLAxiomsExpressivity;
-import org.semanticweb.HermiT.structural.OWLNormalization;
-import org.semanticweb.HermiT.structural.ObjectPropertyInclusionManager;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.NodeID;
-import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLAxiomVisitor;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
@@ -161,7 +68,6 @@ import org.semanticweb.owlapi.model.OWLHasKeyAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
@@ -181,13 +87,7 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
-import org.semanticweb.owlapi.model.OWLPropertyExpression;
-import org.semanticweb.owlapi.model.OWLPropertyRange;
 import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
-import org.semanticweb.owlapi.model.SWRLArgument;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLBuiltInAtom;
 import org.semanticweb.owlapi.model.SWRLClassAtom;
@@ -204,7 +104,6 @@ import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owlapi.vocab.OWLFacet;
 
 public class OWLClausification {
     protected static final Variable X = Variable.create("X");
@@ -217,7 +116,6 @@ public class OWLClausification {
     }
 
     public Object[] preprocessAndClausify(OWLOntology rootOntology, Collection<DescriptionGraph> descriptionGraphs) {
-    	System.out.println("** OWLClausification -> preprocessAndClausify **");
         OWLDataFactory factory = rootOntology.getOWLOntologyManager().getOWLDataFactory();
         Optional defaultDocumentIRI = rootOntology.getOntologyID().getDefaultDocumentIRI();
         String ontologyIRI = defaultDocumentIRI.isPresent() ? ((IRI)defaultDocumentIRI.get()).toString() : "urn:hermit:kb";
@@ -237,10 +135,7 @@ public class OWLClausification {
         }
         OWLAxiomsExpressivity axiomsExpressivity = new OWLAxiomsExpressivity(axioms);
         DLOntology dlOntology = this.clausify(factory, ontologyIRI, axioms, axiomsExpressivity, descriptionGraphs);
-        System.out.println("Se crea dlOntology, dlClauses:");
-        for (DLClause dlClause : dlOntology.getDLClauses()) {
-        	System.out.println(dlClause.toString());
-        }
+
         return new Object[]{objectPropertyInclusionManager, dlOntology};
     }
 

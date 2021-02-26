@@ -1,17 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  gnu.getopt.Getopt
- *  gnu.getopt.LongOpt
- *  org.semanticweb.owlapi.apibinding.OWLManager
- *  org.semanticweb.owlapi.model.IRI
- *  org.semanticweb.owlapi.model.OWLException
- *  org.semanticweb.owlapi.model.OWLOntology
- *  org.semanticweb.owlapi.model.OWLOntologyManager
- *  org.semanticweb.owlapi.util.AutoIRIMapper
- *  org.semanticweb.owlapi.util.PriorityCollection
- */
 package org.semanticweb.HermiT.cli;
 
 import gnu.getopt.Getopt;
@@ -69,23 +55,11 @@ public class CommandLine {
             	String arg;
                 switch (opt) {
                     case 104: {
-                        System.out.println("Usage: hermit [OPTION]... IRI...");
-                        for (String s : constants.helpHeader) {
-                            System.out.println(s);
-                        }
-                        System.out.println(Option.formatOptionHelp(Option.options));
-                        for (String s : constants.footer) {
-                            System.out.println(s);
-                        }
                         System.exit(0);
                         didSomething = true;
                         continue block55;
                     }
                     case 86: {
-                        System.out.println(constants.versionString);
-                        for (String s : constants.footer) {
-                            System.out.println(s);
-                        }
                         System.exit(0);
                         didSomething = true;
                         continue block55;
@@ -355,17 +329,11 @@ public class CommandLine {
                         AutoIRIMapper mapper = new AutoIRIMapper(file, false);
                         ontologyManager.getIRIMappers().add(mapper);
                     }
-                    System.out.println("Start load Ontology");
                     OWLOntology ontology = ontologyManager.loadOntology(ont);
-                    System.out.println("End load Ontology");
-                    System.out.println("*************************");
                     long parseTime = System.currentTimeMillis() - startTime;
                     status.log(2, "Ontology parsed in " + String.valueOf(parseTime) + " msec.");
                     startTime = System.currentTimeMillis();
-                    System.out.println("Start Crear Hermit Reasoner");
                     Reasoner hermit = new Reasoner(config, ontology);
-                    System.out.println("End Crear Hermit Reasoner");
-                    System.out.println("*************************");
                     Prefixes prefixes = hermit.getPrefixes();
                     if (defaultPrefix != null) {
                         try {
@@ -388,10 +356,7 @@ public class CommandLine {
                     for (Action action : actions) {
                         status.log(2, "Doing action...");
                         startTime = System.currentTimeMillis();
-                        System.out.println("Start action -> "+action.toString());
                         action.run(hermit, status, output, ignoreOntologyPrefixes);
-                        System.out.println("End Action -> "+action.toString());
-                        System.out.println("*************************");
                         long actionTime = System.currentTimeMillis() - startTime;
                         status.log(2, "...action completed in " + String.valueOf(actionTime) + " msec.");
                     }

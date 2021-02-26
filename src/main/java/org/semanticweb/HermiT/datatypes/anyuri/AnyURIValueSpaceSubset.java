@@ -1,13 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  dk.brics.automaton.Automaton
- *  dk.brics.automaton.BasicAutomata
- *  dk.brics.automaton.BasicOperations
- *  dk.brics.automaton.Datatypes
- *  dk.brics.automaton.RegExp
- */
 package org.semanticweb.HermiT.datatypes.anyuri;
 
 import dk.brics.automaton.Automaton;

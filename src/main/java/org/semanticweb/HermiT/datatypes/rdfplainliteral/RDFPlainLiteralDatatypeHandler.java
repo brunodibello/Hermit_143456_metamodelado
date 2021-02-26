@@ -1,9 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  dk.brics.automaton.Automaton
- */
 package org.semanticweb.HermiT.datatypes.rdfplainliteral;
 
 import dk.brics.automaton.Automaton;
@@ -18,10 +12,6 @@ import org.semanticweb.HermiT.datatypes.DatatypeHandler;
 import org.semanticweb.HermiT.datatypes.MalformedLiteralException;
 import org.semanticweb.HermiT.datatypes.UnsupportedFacetException;
 import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.rdfplainliteral.RDFPlainLiteralDataValue;
-import org.semanticweb.HermiT.datatypes.rdfplainliteral.RDFPlainLiteralLengthInterval;
-import org.semanticweb.HermiT.datatypes.rdfplainliteral.RDFPlainLiteralLengthValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.rdfplainliteral.RDFPlainLiteralPatternValueSpaceSubset;
 import org.semanticweb.HermiT.model.Constant;
 import org.semanticweb.HermiT.model.DatatypeRestriction;
 

@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.transformations;
 
 import java.util.Collection;
@@ -8,8 +5,6 @@ import java.util.Collections;
 import java.util.Set;
 import rationals.Automaton;
 import rationals.Synchronization;
-import rationals.transformations.BinaryTransformation;
-import rationals.transformations.Mix;
 
 public class Shuffle
 implements BinaryTransformation {
