@@ -42,7 +42,7 @@ public final class MetamodellingManager {
 					//Checkear si existe Axiom A U !B y B U !A
 					// <#B>(X) :- <#A>(X)
 					// <#A>(X) :- <#B>(X)
-					if (node1Class != node0Class && !MetamodellingAxiomHelper.containsSubClassOfAxiom( node0Class, node1Class, this.m_tableau.getPermanentDLOntology()) && !MetamodellingAxiomHelper.containsSubClassOfAxiom(node1Class, node0Class, this.m_tableau.getPermanentDLOntology())) {
+					if (node1Class != node0Class && (!MetamodellingAxiomHelper.containsSubClassOfAxiom( node0Class, node1Class, this.m_tableau.getPermanentDLOntology()) || !MetamodellingAxiomHelper.containsSubClassOfAxiom(node1Class, node0Class, this.m_tableau.getPermanentDLOntology()))) {
 						MetamodellingAxiomHelper.addSubClassOfAxioms(node0Class, node1Class, this.m_tableau.getPermanentDLOntology(), this.m_tableau);
 						return true;
 					}
@@ -281,12 +281,13 @@ public final class MetamodellingManager {
     private List<String> getNodesClasses(List<Node> nodes) {
     	List<String> classes = new ArrayList<String>();
     	for (Node node : nodes) {
-    		int nodeId = -1;
-    		for (Node metamodellingNode : this.m_tableau.metamodellingNodes) {
-    			if (metamodellingNode.getCanonicalNode().m_nodeID == node.getCanonicalNode().m_nodeID) {
-    				nodeId = metamodellingNode.m_nodeID;
-    			}
-    		}
+//    		int nodeId = -1;
+//    		for (Node metamodellingNode : this.m_tableau.metamodellingNodes) {
+//    			if (metamodellingNode.getCanonicalNode().m_nodeID == node.getCanonicalNode().m_nodeID) {
+//    				nodeId = metamodellingNode.m_nodeID;
+//    			}
+//    		}
+    		int nodeId = node.m_nodeID;
     		if (this.m_tableau.nodeToMetaIndividual.containsKey(nodeId)) {
     			Individual individual = this.m_tableau.nodeToMetaIndividual.get(nodeId);
     			for (OWLMetamodellingAxiom metamodellingAxiom : this.m_tableau.m_permanentDLOntology.getMetamodellingAxioms()) {

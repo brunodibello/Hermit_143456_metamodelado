@@ -642,27 +642,6 @@ implements Serializable {
                 }
                 if (!this.m_extensionManager.containsClash()) {
                     this.m_nominalIntroductionManager.processAnnotatedEqualities();
-                    
-                    ////test
-//                    if (this.metamodellingFlag) {
-//                    	long startTime = System.nanoTime();
-//                        boolean equalrule = this.m_metamodellingManager.checkEqualMetamodellingRule();
-//                        long stopTime = System.nanoTime();
-//                        System.out.println("####################################################################### checkEqualMetamodellingRule"+((stopTime - startTime)/1000000));
-//                        if (equalrule) {
-//                        	this.m_extensionManager.resetDeltaNew();
-//                        } else {
-//                        	startTime = System.nanoTime();
-//                        	boolean inequalityrule = this.m_metamodellingManager.checkInequalityMetamodellingRule();
-//                        	stopTime = System.nanoTime();
-//                            System.out.println("####################################################################### checkInequalityMetamodellingRule"+((stopTime - startTime)/1000000));
-//                        	if (inequalityrule) {
-//                        		this.m_extensionManager.resetDeltaNew();
-//                        	}
-//                        }
-//                        this.metamodellingFlag = false;
-//                    }
-                    
                     if (this.metamodellingFlag) {
                     	boolean equalMetamodellingRuleApplied = this.m_metamodellingManager.checkEqualMetamodellingRule();
                     	boolean inequalityMetamodellingRuleApplied = this.m_metamodellingManager.checkInequalityMetamodellingRule();
@@ -671,17 +650,6 @@ implements Serializable {
                     	}
                     	this.metamodellingFlag = false;
                     }
-                    
-                    
-                    
-                    ///test
-//                    long startTime = System.nanoTime();
-//                    if (this.m_metamodellingManager.checkEqualMetamodellingRule() || this.m_metamodellingManager.checkInequalityMetamodellingRule()) {
-//                    	//si se agregan los axiomas por rule 1, ademas de crear de nuevo el hyperresolution manager y reiniciar el delta new
-//                    	this.m_extensionManager.resetDeltaNew();
-//                    }
-//                    long stopTime = System.nanoTime();
-//                    System.out.println("####################################################################### = AND != METAMODELLING RULE: "+((stopTime - startTime)/1000000));
                     long startTime = System.nanoTime();
                     if(this.m_metamodellingManager.checkPropertyNegation()) {
                     	return true;
@@ -819,25 +787,53 @@ implements Serializable {
     }
     
     protected List<Node> getRelatedNodes(Node node, String property) {
-    	List<Node> relatedNodes = new ArrayList<Node>();
-		for (int j=0; j<this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages.length; j++) {
-			if (this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j] != null) {
-				for (int i = 0; i < this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects.length; i++) {
-	    			Object obj = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i];
-	    			if (obj instanceof AtomicRole && ((AtomicRole) obj).toString().equals(property) && (i + 2) <= this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects.length) {
-	    				Object obj1 = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i+1];
-	    				Object obj2 = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i+2];
-	    				if (obj1 instanceof Node && obj2 instanceof Node && (((Node) obj1).getNodeID() == node.getNodeID() || ((Node) obj1).getCanonicalNode().getNodeID() == node.getCanonicalNode().getNodeID())) {
-	    					relatedNodes.add(((Node) obj2));
-	    					if (((Node) obj2).getCanonicalNode().m_nodeID != ((Node) obj2).m_nodeID) {
-	    						relatedNodes.add(((Node) obj2).getCanonicalNode());
-	    					}
-	    				}
-	    			}
-	    		}
-			}
-		}
-    	return relatedNodes;
+    	Set<Node> relatedNodes = new HashSet<Node>();
+//		for (int j=0; j<this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages.length; j++) {
+//			if (this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j] != null) {
+//				for (int i = 0; i < this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects.length; i++) {
+//	    			Object obj = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i];
+//	    			if (obj instanceof AtomicRole && ((AtomicRole) obj).toString().equals(property) && (i + 2) <= this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects.length) {
+//	    				Object obj1 = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i+1];
+//	    				Object obj2 = this.m_extensionManager.m_ternaryExtensionTable.m_tupleTable.m_pages[j].m_objects[i+2];
+//	    				if (obj1 instanceof Node && obj2 instanceof Node && (((Node) obj1).getNodeID() == node.getNodeID() || ((Node) obj1).getCanonicalNode().getNodeID() == node.getCanonicalNode().getNodeID())) {
+//	    					relatedNodes.add(((Node) obj2));
+//	    					if (this.areSameIndividual((Node) obj2, (Node) obj1)) relatedNodes.add(((Node) obj1));
+//	    					if (((Node) obj2).getCanonicalNode().m_nodeID != ((Node) obj2).m_nodeID) {
+//	    						relatedNodes.add(((Node) obj2).getCanonicalNode());
+//	    					}
+//	    				}
+//	    			}
+//	    		}
+//			}
+//		}
+    	if (this.nodeProperties.containsKey(node.m_nodeID)) {
+    		for (Integer node2 : this.nodeProperties.get(node.m_nodeID).keySet()) {
+    			for (String propertyIter : this.nodeProperties.get(node.m_nodeID).get(node2)) {
+    				if (propertyIter.equals(property)) {
+    					for (Node metamodellingNode : this.metamodellingNodes) {
+    						if (metamodellingNode.m_nodeID == node2 || metamodellingNode.getCanonicalNode().m_nodeID == node2) {
+    							relatedNodes.add(metamodellingNode);
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    	if (this.nodeProperties.containsKey(node.getCanonicalNode().m_nodeID)) {
+    		for (Integer node2 : this.nodeProperties.get(node.getCanonicalNode().m_nodeID).keySet()) {
+    			for (String propertyIter : this.nodeProperties.get(node.getCanonicalNode().m_nodeID).get(node2)) {
+    				if (propertyIter.equals(property)) {
+    					for (Node metamodellingNode : this.metamodellingNodes) {
+    						if (metamodellingNode.m_nodeID == node2 || metamodellingNode.getCanonicalNode().m_nodeID == node2) {
+    							relatedNodes.add(metamodellingNode);
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    	
+    	return new ArrayList<Node>(relatedNodes);
     }
 
 	public boolean startBacktracking(GroundDisjunction groundDisjunction) {
