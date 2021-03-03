@@ -1,12 +1,8 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.blocking;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.semanticweb.HermiT.blocking.DirectBlockingChecker;
 import org.semanticweb.HermiT.tableau.Node;
 
 class ValidatedBlockersCache {

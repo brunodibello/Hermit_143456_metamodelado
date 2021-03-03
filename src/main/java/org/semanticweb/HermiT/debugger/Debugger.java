@@ -1,20 +1,12 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.debugger;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,8 +17,6 @@ import java.util.TreeMap;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import org.semanticweb.HermiT.Prefixes;
-import org.semanticweb.HermiT.debugger.ConsoleTextArea;
-import org.semanticweb.HermiT.debugger.DerivationHistory;
 import org.semanticweb.HermiT.debugger.commands.ActiveNodesCommand;
 import org.semanticweb.HermiT.debugger.commands.AgainCommand;
 import org.semanticweb.HermiT.debugger.commands.BreakpointTimeCommand;
@@ -56,7 +46,6 @@ import org.semanticweb.HermiT.debugger.commands.WaitForCommand;
 import org.semanticweb.HermiT.model.AtLeastConcept;
 import org.semanticweb.HermiT.model.ExistentialConcept;
 import org.semanticweb.HermiT.model.ExistsDescriptionGraph;
-import org.semanticweb.HermiT.monitor.TableauMonitor;
 import org.semanticweb.HermiT.monitor.TableauMonitorForwarder;
 import org.semanticweb.HermiT.tableau.Node;
 import org.semanticweb.HermiT.tableau.ReasoningTaskDescription;

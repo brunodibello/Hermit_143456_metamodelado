@@ -1,46 +1,5 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.model.OWLAxiomVisitor
- *  org.semanticweb.owlapi.model.OWLClass
- *  org.semanticweb.owlapi.model.OWLClassAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLClassExpression
- *  org.semanticweb.owlapi.model.OWLClassExpressionVisitor
- *  org.semanticweb.owlapi.model.OWLDataAllValuesFrom
- *  org.semanticweb.owlapi.model.OWLDataExactCardinality
- *  org.semanticweb.owlapi.model.OWLDataHasValue
- *  org.semanticweb.owlapi.model.OWLDataMaxCardinality
- *  org.semanticweb.owlapi.model.OWLDataMinCardinality
- *  org.semanticweb.owlapi.model.OWLDataProperty
- *  org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLDataPropertyExpression
- *  org.semanticweb.owlapi.model.OWLDataRange
- *  org.semanticweb.owlapi.model.OWLDataSomeValuesFrom
- *  org.semanticweb.owlapi.model.OWLIndividualAxiom
- *  org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLObjectAllValuesFrom
- *  org.semanticweb.owlapi.model.OWLObjectComplementOf
- *  org.semanticweb.owlapi.model.OWLObjectExactCardinality
- *  org.semanticweb.owlapi.model.OWLObjectHasSelf
- *  org.semanticweb.owlapi.model.OWLObjectHasValue
- *  org.semanticweb.owlapi.model.OWLObjectIntersectionOf
- *  org.semanticweb.owlapi.model.OWLObjectMaxCardinality
- *  org.semanticweb.owlapi.model.OWLObjectMinCardinality
- *  org.semanticweb.owlapi.model.OWLObjectOneOf
- *  org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLObjectPropertyExpression
- *  org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom
- *  org.semanticweb.owlapi.model.OWLObjectUnionOf
- *  org.semanticweb.owlapi.model.OWLPropertyExpression
- *  org.semanticweb.owlapi.model.OWLPropertyRange
- *  org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter
- */
 package org.semanticweb.HermiT.structural;
 
-import java.util.Collection;
-import java.util.Set;
-import org.semanticweb.HermiT.structural.OWLAxioms;
 import org.semanticweb.owlapi.model.OWLAxiomVisitor;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
@@ -51,10 +10,7 @@ import org.semanticweb.owlapi.model.OWLDataExactCardinality;
 import org.semanticweb.owlapi.model.OWLDataHasValue;
 import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
 import org.semanticweb.owlapi.model.OWLDataMinCardinality;
-import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
-import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
@@ -71,8 +27,6 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
-import org.semanticweb.owlapi.model.OWLPropertyExpression;
-import org.semanticweb.owlapi.model.OWLPropertyRange;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
 public class OWLAxiomsExpressivity

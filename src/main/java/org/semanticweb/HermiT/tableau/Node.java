@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
@@ -8,12 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.semanticweb.HermiT.model.ExistentialConcept;
-import org.semanticweb.HermiT.tableau.DependencySet;
-import org.semanticweb.HermiT.tableau.DependencySetFactory;
-import org.semanticweb.HermiT.tableau.DescriptionGraphManager;
-import org.semanticweb.HermiT.tableau.NodeType;
-import org.semanticweb.HermiT.tableau.PermanentDependencySet;
-import org.semanticweb.HermiT.tableau.Tableau;
 
 public final class Node
 implements Serializable {

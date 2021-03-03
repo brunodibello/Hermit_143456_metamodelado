@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.transformations;
 
 import java.util.Set;

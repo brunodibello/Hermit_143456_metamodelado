@@ -1,10 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.reasoner.ReasonerInterruptedException
- *  org.semanticweb.owlapi.reasoner.TimeOutException
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;

@@ -1,14 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.properties;
 
-import java.util.Iterator;
-import java.util.Set;
 import rationals.Automaton;
 import rationals.State;
-import rationals.Transition;
-import rationals.properties.UnaryTest;
 
 public class isNormalized
 implements UnaryTest {

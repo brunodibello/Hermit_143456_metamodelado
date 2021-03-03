@@ -1,21 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
 import org.semanticweb.HermiT.model.AnnotatedEquality;
-import org.semanticweb.HermiT.monitor.TableauMonitor;
-import org.semanticweb.HermiT.tableau.BranchingPoint;
-import org.semanticweb.HermiT.tableau.DependencySet;
-import org.semanticweb.HermiT.tableau.DependencySetFactory;
-import org.semanticweb.HermiT.tableau.InterruptFlag;
-import org.semanticweb.HermiT.tableau.MergingManager;
-import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.PermanentDependencySet;
-import org.semanticweb.HermiT.tableau.Tableau;
-import org.semanticweb.HermiT.tableau.TupleTable;
-import org.semanticweb.HermiT.tableau.TupleTableFullIndex;
 
 final class NominalIntroductionManager
 implements Serializable {

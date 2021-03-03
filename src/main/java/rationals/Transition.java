@@ -1,10 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals;
 
 import java.awt.Point;
-import rationals.State;
 
 public class Transition {
     private int hash = Integer.MIN_VALUE;

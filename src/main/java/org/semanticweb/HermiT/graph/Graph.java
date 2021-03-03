@@ -1,11 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.graph;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;

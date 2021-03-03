@@ -1,15 +1,8 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.hierarchy;
 
 import java.io.PrintWriter;
-import java.util.Collection;
 import java.util.Comparator;
-import java.util.Set;
 import java.util.TreeSet;
-import org.semanticweb.HermiT.hierarchy.Hierarchy;
-import org.semanticweb.HermiT.hierarchy.HierarchyNode;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
 import org.semanticweb.HermiT.model.InverseRole;

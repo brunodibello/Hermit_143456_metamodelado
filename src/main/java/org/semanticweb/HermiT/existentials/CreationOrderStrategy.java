@@ -1,14 +1,8 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.existentials;
 
 import java.io.Serializable;
 import org.semanticweb.HermiT.blocking.BlockingStrategy;
-import org.semanticweb.HermiT.existentials.AbstractExpansionStrategy;
 import org.semanticweb.HermiT.model.AtLeast;
-import org.semanticweb.HermiT.model.ExistentialConcept;
-import org.semanticweb.HermiT.tableau.ExistentialExpansionManager;
 import org.semanticweb.HermiT.tableau.Node;
 
 public class CreationOrderStrategy

@@ -1,9 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  gnu.getopt.LongOpt
- */
 package org.semanticweb.HermiT.cli;
 
 import gnu.getopt.LongOpt;

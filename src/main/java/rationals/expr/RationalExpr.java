@@ -1,11 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.expr;
 
 import rationals.algebra.SemiRing;
-import rationals.expr.Plus;
-import rationals.expr.Product;
 
 public abstract class RationalExpr
 implements SemiRing {

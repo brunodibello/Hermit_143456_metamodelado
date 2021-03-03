@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT;
 
 import java.io.Serializable;

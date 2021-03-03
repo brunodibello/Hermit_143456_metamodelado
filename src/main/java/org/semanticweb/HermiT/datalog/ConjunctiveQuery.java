@@ -1,26 +1,18 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datalog;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import org.semanticweb.HermiT.datalog.DatalogEngine;
-import org.semanticweb.HermiT.datalog.QueryResultCollector;
 import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.DLClause;
 import org.semanticweb.HermiT.model.Term;
 import org.semanticweb.HermiT.model.Variable;
 import org.semanticweb.HermiT.tableau.DLClauseEvaluator;
 import org.semanticweb.HermiT.tableau.DependencySet;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
 import org.semanticweb.HermiT.tableau.ExtensionTable;
 import org.semanticweb.HermiT.tableau.HyperresolutionManager;
 import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.UnionDependencySet;
 
 public class ConjunctiveQuery {
     protected final DatalogEngine m_datalogEngine;

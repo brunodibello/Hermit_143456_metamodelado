@@ -1,14 +1,9 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.debugger;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Stack;
 import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.model.Concept;
@@ -20,17 +15,14 @@ import org.semanticweb.HermiT.model.DatatypeRestriction;
 import org.semanticweb.HermiT.model.Equality;
 import org.semanticweb.HermiT.model.ExistentialConcept;
 import org.semanticweb.HermiT.model.Inequality;
-import org.semanticweb.HermiT.model.LiteralDataRange;
 import org.semanticweb.HermiT.model.NodeIDLessEqualThan;
 import org.semanticweb.HermiT.model.NodeIDsAscendingOrEqual;
 import org.semanticweb.HermiT.monitor.TableauMonitorAdapter;
 import org.semanticweb.HermiT.tableau.BranchingPoint;
 import org.semanticweb.HermiT.tableau.DLClauseEvaluator;
 import org.semanticweb.HermiT.tableau.DatatypeManager;
-import org.semanticweb.HermiT.tableau.DescriptionGraphManager;
 import org.semanticweb.HermiT.tableau.GroundDisjunction;
 import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.Tableau;
 
 public class DerivationHistory
 extends TableauMonitorAdapter {

@@ -1,12 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.datetime;
 
 import java.util.Collection;
-import org.semanticweb.HermiT.datatypes.datetime.BoundType;
-import org.semanticweb.HermiT.datatypes.datetime.DateTime;
-import org.semanticweb.HermiT.datatypes.datetime.IntervalType;
 
 public class DateTimeInterval {
     protected final IntervalType m_intervalType;

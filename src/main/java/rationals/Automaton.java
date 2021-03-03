@@ -1,22 +1,11 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import rationals.Acceptor;
-import rationals.DefaultStateFactory;
-import rationals.Rational;
-import rationals.State;
-import rationals.StateFactory;
-import rationals.StateMachine;
-import rationals.Transition;
 import rationals.converters.toAscii;
 import rationals.transformations.TransformationsToolBox;
 

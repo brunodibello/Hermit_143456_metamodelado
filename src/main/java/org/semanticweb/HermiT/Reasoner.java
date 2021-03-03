@@ -1,99 +1,15 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.formats.PrefixDocumentFormat
- *  org.semanticweb.owlapi.model.AddAxiom
- *  org.semanticweb.owlapi.model.AddOntologyAnnotation
- *  org.semanticweb.owlapi.model.AxiomType
- *  org.semanticweb.owlapi.model.IRI
- *  org.semanticweb.owlapi.model.NodeID
- *  org.semanticweb.owlapi.model.OWLAnonymousIndividual
- *  org.semanticweb.owlapi.model.OWLAxiom
- *  org.semanticweb.owlapi.model.OWLClass
- *  org.semanticweb.owlapi.model.OWLClassAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLClassExpression
- *  org.semanticweb.owlapi.model.OWLDataFactory
- *  org.semanticweb.owlapi.model.OWLDataProperty
- *  org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLDataPropertyExpression
- *  org.semanticweb.owlapi.model.OWLDataRange
- *  org.semanticweb.owlapi.model.OWLDataSomeValuesFrom
- *  org.semanticweb.owlapi.model.OWLDatatype
- *  org.semanticweb.owlapi.model.OWLDeclarationAxiom
- *  org.semanticweb.owlapi.model.OWLDisjointDataPropertiesAxiom
- *  org.semanticweb.owlapi.model.OWLDocumentFormat
- *  org.semanticweb.owlapi.model.OWLEntity
- *  org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom
- *  org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom
- *  org.semanticweb.owlapi.model.OWLIndividual
- *  org.semanticweb.owlapi.model.OWLIndividualAxiom
- *  org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom
- *  org.semanticweb.owlapi.model.OWLLiteral
- *  org.semanticweb.owlapi.model.OWLNamedIndividual
- *  org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLObject
- *  org.semanticweb.owlapi.model.OWLObjectAllValuesFrom
- *  org.semanticweb.owlapi.model.OWLObjectComplementOf
- *  org.semanticweb.owlapi.model.OWLObjectHasSelf
- *  org.semanticweb.owlapi.model.OWLObjectHasValue
- *  org.semanticweb.owlapi.model.OWLObjectInverseOf
- *  org.semanticweb.owlapi.model.OWLObjectProperty
- *  org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLObjectPropertyExpression
- *  org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom
- *  org.semanticweb.owlapi.model.OWLOntology
- *  org.semanticweb.owlapi.model.OWLOntologyChange
- *  org.semanticweb.owlapi.model.OWLOntologyChangeListener
- *  org.semanticweb.owlapi.model.OWLOntologyManager
- *  org.semanticweb.owlapi.model.OWLSubClassOfAxiom
- *  org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom
- *  org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom
- *  org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom
- *  org.semanticweb.owlapi.model.RemoveAxiom
- *  org.semanticweb.owlapi.model.RemoveOntologyAnnotation
- *  org.semanticweb.owlapi.model.SWRLRule
- *  org.semanticweb.owlapi.reasoner.BufferingMode
- *  org.semanticweb.owlapi.reasoner.FreshEntitiesException
- *  org.semanticweb.owlapi.reasoner.FreshEntityPolicy
- *  org.semanticweb.owlapi.reasoner.InconsistentOntologyException
- *  org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy
- *  org.semanticweb.owlapi.reasoner.InferenceType
- *  org.semanticweb.owlapi.reasoner.Node
- *  org.semanticweb.owlapi.reasoner.NodeSet
- *  org.semanticweb.owlapi.reasoner.OWLReasoner
- *  org.semanticweb.owlapi.reasoner.ReasonerInterruptedException
- *  org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor
- *  org.semanticweb.owlapi.reasoner.TimeOutException
- *  org.semanticweb.owlapi.reasoner.impl.OWLClassNode
- *  org.semanticweb.owlapi.reasoner.impl.OWLClassNodeSet
- *  org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNode
- *  org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNodeSet
- *  org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNode
- *  org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNodeSet
- *  org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNode
- *  org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNodeSet
- *  org.semanticweb.owlapi.util.Version
- */
 package org.semanticweb.HermiT;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.semanticweb.HermiT.Configuration;
-import org.semanticweb.HermiT.EntailmentChecker;
-import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.blocking.AncestorBlocking;
 import org.semanticweb.HermiT.blocking.AnywhereBlocking;
 import org.semanticweb.HermiT.blocking.AnywhereValidatedBlocking;
@@ -107,7 +23,6 @@ import org.semanticweb.HermiT.blocking.ValidatedSingleDirectBlockingChecker;
 import org.semanticweb.HermiT.debugger.Debugger;
 import org.semanticweb.HermiT.existentials.AbstractExpansionStrategy;
 import org.semanticweb.HermiT.existentials.CreationOrderStrategy;
-import org.semanticweb.HermiT.existentials.ExistentialExpansionStrategy;
 import org.semanticweb.HermiT.existentials.IndividualReuseStrategy;
 import org.semanticweb.HermiT.hierarchy.ClassificationProgressMonitor;
 import org.semanticweb.HermiT.hierarchy.DeterministicClassification;
@@ -123,16 +38,13 @@ import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
 import org.semanticweb.HermiT.model.Constant;
-import org.semanticweb.HermiT.model.DLClause;
 import org.semanticweb.HermiT.model.DLOntology;
-import org.semanticweb.HermiT.model.DatatypeRestriction;
 import org.semanticweb.HermiT.model.DescriptionGraph;
 import org.semanticweb.HermiT.model.Equality;
 import org.semanticweb.HermiT.model.Individual;
 import org.semanticweb.HermiT.model.Inequality;
 import org.semanticweb.HermiT.model.InverseRole;
 import org.semanticweb.HermiT.model.Role;
-import org.semanticweb.HermiT.model.Term;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
 import org.semanticweb.HermiT.monitor.TableauMonitorFork;
 import org.semanticweb.HermiT.monitor.Timer;
@@ -145,7 +57,6 @@ import org.semanticweb.HermiT.structural.OWLNormalization;
 import org.semanticweb.HermiT.structural.ObjectPropertyInclusionManager;
 import org.semanticweb.HermiT.structural.ReducedABoxOnlyClausification;
 import org.semanticweb.HermiT.tableau.InterruptFlag;
-import org.semanticweb.HermiT.tableau.Node;
 import org.semanticweb.HermiT.tableau.ReasoningTaskDescription;
 import org.semanticweb.HermiT.tableau.Tableau;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
@@ -153,7 +64,6 @@ import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.AddOntologyAnnotation;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.NodeID;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -164,7 +74,6 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDataRange;
-import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointDataPropertiesAxiom;
@@ -183,15 +92,12 @@ import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLObjectHasSelf;
 import org.semanticweb.owlapi.model.OWLObjectHasValue;
-import org.semanticweb.owlapi.model.OWLObjectInverseOf;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
-import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
@@ -208,7 +114,6 @@ import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.ReasonerInterruptedException;
-import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 import org.semanticweb.owlapi.reasoner.TimeOutException;
 import org.semanticweb.owlapi.reasoner.impl.OWLClassNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLClassNodeSet;

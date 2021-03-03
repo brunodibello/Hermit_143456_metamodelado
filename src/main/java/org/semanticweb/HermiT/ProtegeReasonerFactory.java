@@ -1,24 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.protege.editor.owl.model.OWLModelManager
- *  org.protege.editor.owl.model.inference.AbstractProtegeOWLReasonerInfo
- *  org.protege.editor.owl.model.inference.ReasonerPreferences
- *  org.protege.editor.owl.model.inference.ReasonerPreferences$OptionalInferenceTask
- *  org.semanticweb.owlapi.reasoner.BufferingMode
- *  org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration
- *  org.semanticweb.owlapi.reasoner.OWLReasonerFactory
- *  org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor
- */
 package org.semanticweb.HermiT;
 
-import java.lang.reflect.Method;
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.inference.AbstractProtegeOWLReasonerInfo;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
-import org.semanticweb.HermiT.Configuration;
-import org.semanticweb.HermiT.ReasonerFactory;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;

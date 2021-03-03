@@ -1,15 +1,9 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.semanticweb.HermiT.existentials.ExistentialExpansionStrategy;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicNegationConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
@@ -18,16 +12,6 @@ import org.semanticweb.HermiT.model.DescriptionGraph;
 import org.semanticweb.HermiT.model.ExistentialConcept;
 import org.semanticweb.HermiT.model.NegatedAtomicRole;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
-import org.semanticweb.HermiT.tableau.BranchingPoint;
-import org.semanticweb.HermiT.tableau.ClashManager;
-import org.semanticweb.HermiT.tableau.DependencySet;
-import org.semanticweb.HermiT.tableau.DependencySetFactory;
-import org.semanticweb.HermiT.tableau.DescriptionGraphManager;
-import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.PermanentDependencySet;
-import org.semanticweb.HermiT.tableau.Tableau;
-import org.semanticweb.HermiT.tableau.TupleTable;
-import org.semanticweb.HermiT.tableau.TupleTable.Page;
 
 public abstract class ExtensionTable
 implements Serializable {
@@ -134,20 +118,6 @@ implements Serializable {
     public abstract boolean isCore(Object[] var1);
 
     public boolean propagateDeltaNew() {
-//    	System.out.println("Table elements:");
-    	if (this.m_tupleTable.m_pages != null) {
-//    		for(Page p : this.m_tupleTable.m_pages) {
-//        		if(p != null) {
-//        			for (Object o : p.m_objects) {
-//        				if(o != null && (o.toString().startsWith("<") || o.toString().startsWith("!="))) System.out.println();
-//            			if(o != null) System.out.print("    "+ o);
-//            			if(o == null) break;
-//            		}
-//        			
-//        		}
-//
-//        	}
-    	}
     	System.out.println();
         boolean deltaNewNotEmpty = this.m_afterExtensionThisTupleIndex != this.m_afterDeltaNewTupleIndex;
         this.m_afterExtensionOldTupleIndex = this.m_afterExtensionThisTupleIndex;

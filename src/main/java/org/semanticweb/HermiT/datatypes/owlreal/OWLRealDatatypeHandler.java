@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.owlreal;
 
 import java.math.BigInteger;
@@ -15,13 +12,6 @@ import org.semanticweb.HermiT.datatypes.DatatypeHandler;
 import org.semanticweb.HermiT.datatypes.MalformedLiteralException;
 import org.semanticweb.HermiT.datatypes.UnsupportedFacetException;
 import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.owlreal.BoundType;
-import org.semanticweb.HermiT.datatypes.owlreal.MinusInfinity;
-import org.semanticweb.HermiT.datatypes.owlreal.NumberInterval;
-import org.semanticweb.HermiT.datatypes.owlreal.NumberRange;
-import org.semanticweb.HermiT.datatypes.owlreal.Numbers;
-import org.semanticweb.HermiT.datatypes.owlreal.OWLRealValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.owlreal.PlusInfinity;
 import org.semanticweb.HermiT.model.Constant;
 import org.semanticweb.HermiT.model.DatatypeRestriction;
 

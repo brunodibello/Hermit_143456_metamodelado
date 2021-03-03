@@ -1,13 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  dk.brics.automaton.Automaton
- *  dk.brics.automaton.BasicAutomata
- *  dk.brics.automaton.BasicOperations
- *  dk.brics.automaton.Datatypes
- *  dk.brics.automaton.RegExp
- */
 package org.semanticweb.HermiT.datatypes.rdfplainliteral;
 
 import dk.brics.automaton.Automaton;
@@ -21,10 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.rdfplainliteral.RDFPlainLiteralDataValue;
-import org.semanticweb.HermiT.datatypes.rdfplainliteral.RDFPlainLiteralDatatypeHandler;
-import org.semanticweb.HermiT.datatypes.rdfplainliteral.RDFPlainLiteralLengthInterval;
-import org.semanticweb.HermiT.datatypes.rdfplainliteral.RDFPlainLiteralLengthValueSpaceSubset;
 
 public class RDFPlainLiteralPatternValueSpaceSubset
 implements ValueSpaceSubset {

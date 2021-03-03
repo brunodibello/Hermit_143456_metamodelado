@@ -1,16 +1,8 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.reasoner.InferenceType
- */
 package org.semanticweb.HermiT.cli;
 
 import java.io.PrintWriter;
 import java.util.HashSet;
 import org.semanticweb.HermiT.Reasoner;
-import org.semanticweb.HermiT.cli.Action;
-import org.semanticweb.HermiT.cli.StatusOutput;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 
 class ClassifyAction

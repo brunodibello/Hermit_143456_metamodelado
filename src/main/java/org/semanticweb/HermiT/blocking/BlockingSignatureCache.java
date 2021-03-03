@@ -1,11 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.blocking;
 
 import java.io.Serializable;
-import org.semanticweb.HermiT.blocking.BlockingSignature;
-import org.semanticweb.HermiT.blocking.DirectBlockingChecker;
 import org.semanticweb.HermiT.tableau.Node;
 
 public class BlockingSignatureCache

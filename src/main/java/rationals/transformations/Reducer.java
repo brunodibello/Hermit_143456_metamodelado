@@ -1,9 +1,5 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.transformations;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,11 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import rationals.Automaton;
 import rationals.State;
-import rationals.StateFactory;
 import rationals.Transition;
-import rationals.transformations.ToDFA;
-import rationals.transformations.TransformationsToolBox;
-import rationals.transformations.UnaryTransformation;
 
 public class Reducer
 implements UnaryTransformation {

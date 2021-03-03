@@ -1,9 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.apache.axiom.c14n.impl.Canonicalizer20010315ExclWithComments
- */
 package org.semanticweb.HermiT.datatypes.xmlliteral;
 
 import org.apache.axiom.c14n.impl.Canonicalizer20010315ExclWithComments;

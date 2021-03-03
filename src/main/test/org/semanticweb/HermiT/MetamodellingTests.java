@@ -32,7 +32,7 @@ public class MetamodellingTests extends TestCase {
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("Entrega3 es consistente");
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -44,7 +44,7 @@ public class MetamodellingTests extends TestCase {
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("FiltroInfantil es consistente");
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -56,7 +56,7 @@ public class MetamodellingTests extends TestCase {
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("Hidrografia es consistente");
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -67,7 +67,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("ObjetosHidrograficos es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -79,7 +79,7 @@ public class MetamodellingTests extends TestCase {
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality20 es consistente");
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -99,7 +99,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -115,7 +115,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -131,7 +131,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -147,7 +147,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -163,7 +163,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -179,7 +179,7 @@ public class MetamodellingTests extends TestCase {
 			
 			cl.main(flags.toArray(new String[flagsCount+1]));
 			System.out.println("AccountingConsistente1 es consistente");
-			//remover la flag del escenario
+			
 			flags.remove(flagsCount);
 			TestCase.assertEquals(true, true);
 		}
@@ -191,7 +191,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("AccountingConsistente1Corta es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -203,7 +203,7 @@ public class MetamodellingTests extends TestCase {
 			
 			cl.main(flags.toArray(new String[flagsCount+1]));
 			System.out.println("AccountingConsistente2 es consistente");
-			//remover la flag del escenario
+			
 			flags.remove(flagsCount);
 			TestCase.assertEquals(true, true);
 		}
@@ -215,7 +215,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("AccountingConsistente3 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -226,7 +226,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality2 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -237,7 +237,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality4 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -248,7 +248,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality6 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -259,7 +259,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality8 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -270,7 +270,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality10 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -281,7 +281,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality12 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -292,7 +292,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality14 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -303,7 +303,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality15 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -314,7 +314,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality16 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -325,7 +325,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestEquality18 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -345,7 +345,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -361,7 +361,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -377,7 +377,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -393,7 +393,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -409,7 +409,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -425,7 +425,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -441,7 +441,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -457,7 +457,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -473,7 +473,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -489,7 +489,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -506,7 +506,7 @@ public class MetamodellingTests extends TestCase {
 				result = true;
 			}
 			
-			//remover la flag del escenario
+			
 			flags.remove(flagsCount);
 			TestCase.assertEquals(true, result);
 		}
@@ -524,7 +524,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -540,7 +540,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -556,7 +556,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -572,7 +572,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -588,7 +588,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -604,7 +604,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -620,7 +620,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -637,7 +637,7 @@ public class MetamodellingTests extends TestCase {
 				result = true;
 			}
 			
-			//remover la flag del escenario
+			
 			flags.remove(flagsCount);
 			TestCase.assertEquals(true, result);
 		}
@@ -654,7 +654,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -670,7 +670,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -686,7 +686,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -702,7 +702,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -718,7 +718,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -734,7 +734,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -750,7 +750,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -765,7 +765,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("AccountingCons1CortaRule es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -776,7 +776,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestCaseG1 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -787,7 +787,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestCaseG2 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -798,7 +798,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestCaseG3 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -809,7 +809,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestCaseG4 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -820,7 +820,7 @@ public class MetamodellingTests extends TestCase {
 		
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("TestCaseG5 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -840,7 +840,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -856,7 +856,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -872,7 +872,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -888,7 +888,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -904,7 +904,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -918,7 +918,7 @@ public class MetamodellingTests extends TestCase {
 		flags.add(testCasesPath+"Prototipo/ont1.owl");
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("Prototipo2 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -934,7 +934,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -950,7 +950,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -960,7 +960,7 @@ public class MetamodellingTests extends TestCase {
 		flags.add(testCasesPath+"Prototipo/ont4.owl");
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("Prototipo4 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -970,7 +970,7 @@ public class MetamodellingTests extends TestCase {
 		flags.add(testCasesPath+"Prototipo/ont5.owl");
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("Prototipo5 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}
@@ -986,7 +986,7 @@ public class MetamodellingTests extends TestCase {
 			result = true;
 		}
 		
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, result);
 	}
@@ -996,7 +996,7 @@ public class MetamodellingTests extends TestCase {
 		flags.add(testCasesPath+"Prototipo/ont7.owl");
 		cl.main(flags.toArray(new String[flagsCount+1]));
 		System.out.println("Prototipo7 es consistente");
-		//remover la flag del escenario
+		
 		flags.remove(flagsCount);
 		TestCase.assertEquals(true, true);
 	}

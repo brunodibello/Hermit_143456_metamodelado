@@ -1,13 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.model;
 
 import org.semanticweb.HermiT.Prefixes;
-import org.semanticweb.HermiT.model.DLPredicate;
-import org.semanticweb.HermiT.model.DescriptionGraph;
-import org.semanticweb.HermiT.model.ExistentialConcept;
-import org.semanticweb.HermiT.model.InterningManager;
 
 public class ExistsDescriptionGraph
 extends ExistentialConcept

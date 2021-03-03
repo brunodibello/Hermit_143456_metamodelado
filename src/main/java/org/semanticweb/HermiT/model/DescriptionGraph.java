@@ -1,18 +1,8 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.model;
 
 import java.io.Serializable;
 import java.util.Set;
 import org.semanticweb.HermiT.Prefixes;
-import org.semanticweb.HermiT.model.Atom;
-import org.semanticweb.HermiT.model.AtomicConcept;
-import org.semanticweb.HermiT.model.AtomicRole;
-import org.semanticweb.HermiT.model.DLClause;
-import org.semanticweb.HermiT.model.DLPredicate;
-import org.semanticweb.HermiT.model.ExistsDescriptionGraph;
-import org.semanticweb.HermiT.model.Variable;
 
 public class DescriptionGraph
 implements DLPredicate,

@@ -1,18 +1,13 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.xmlliteral;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Set;
 import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.datatypes.DatatypeHandler;
 import org.semanticweb.HermiT.datatypes.MalformedLiteralException;
 import org.semanticweb.HermiT.datatypes.UnsupportedFacetException;
 import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.xmlliteral.XMLLiteral;
 import org.semanticweb.HermiT.model.DatatypeRestriction;
 
 public class XMLLiteralDatatypeHandler

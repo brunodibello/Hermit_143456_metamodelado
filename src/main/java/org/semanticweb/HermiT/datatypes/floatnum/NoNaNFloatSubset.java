@@ -1,13 +1,9 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.floatnum;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.floatnum.FloatInterval;
 
 public class NoNaNFloatSubset
 implements ValueSpaceSubset {

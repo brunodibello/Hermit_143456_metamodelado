@@ -1,16 +1,11 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.transformations;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import rationals.Automaton;
 import rationals.State;
-import rationals.StateFactory;
 import rationals.Transition;
 
 public class TransformationsToolBox {

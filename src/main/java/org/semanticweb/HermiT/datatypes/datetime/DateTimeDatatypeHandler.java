@@ -1,24 +1,14 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.datetime;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.datatypes.DatatypeHandler;
 import org.semanticweb.HermiT.datatypes.MalformedLiteralException;
 import org.semanticweb.HermiT.datatypes.UnsupportedFacetException;
 import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.datetime.BoundType;
-import org.semanticweb.HermiT.datatypes.datetime.DateTime;
-import org.semanticweb.HermiT.datatypes.datetime.DateTimeInterval;
-import org.semanticweb.HermiT.datatypes.datetime.DateTimeValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.datetime.IntervalType;
-import org.semanticweb.HermiT.model.Constant;
 import org.semanticweb.HermiT.model.DatatypeRestriction;
 
 public class DateTimeDatatypeHandler

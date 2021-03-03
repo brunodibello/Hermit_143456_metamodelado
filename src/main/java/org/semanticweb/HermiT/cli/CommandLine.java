@@ -1,17 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  gnu.getopt.Getopt
- *  gnu.getopt.LongOpt
- *  org.semanticweb.owlapi.apibinding.OWLManager
- *  org.semanticweb.owlapi.model.IRI
- *  org.semanticweb.owlapi.model.OWLException
- *  org.semanticweb.owlapi.model.OWLOntology
- *  org.semanticweb.owlapi.model.OWLOntologyManager
- *  org.semanticweb.owlapi.util.AutoIRIMapper
- *  org.semanticweb.owlapi.util.PriorityCollection
- */
 package org.semanticweb.HermiT.cli;
 
 import gnu.getopt.Getopt;

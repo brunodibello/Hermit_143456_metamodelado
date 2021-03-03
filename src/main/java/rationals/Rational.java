@@ -1,11 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals;
 
 import java.util.Set;
-import rationals.State;
-import rationals.Transition;
 
 public interface Rational {
     public State addState(boolean var1, boolean var2);

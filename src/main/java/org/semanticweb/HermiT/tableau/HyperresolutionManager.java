@@ -1,11 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,14 +17,6 @@ import org.semanticweb.HermiT.model.NodeIDLessEqualThan;
 import org.semanticweb.HermiT.model.NodeIDsAscendingOrEqual;
 import org.semanticweb.HermiT.model.Term;
 import org.semanticweb.HermiT.model.Variable;
-import org.semanticweb.HermiT.tableau.DLClauseEvaluator;
-import org.semanticweb.HermiT.tableau.DependencySet;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
-import org.semanticweb.HermiT.tableau.ExtensionTable;
-import org.semanticweb.HermiT.tableau.InterruptFlag;
-import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.Tableau;
-import org.semanticweb.HermiT.tableau.UnionDependencySet;
 
 public final class HyperresolutionManager
 implements Serializable {

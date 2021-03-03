@@ -1,9 +1,5 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.hierarchy;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

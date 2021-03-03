@@ -1,9 +1,4 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.expr;
-
-import rationals.expr.RationalExpr;
 
 public abstract class BinaryExpr
 extends RationalExpr {

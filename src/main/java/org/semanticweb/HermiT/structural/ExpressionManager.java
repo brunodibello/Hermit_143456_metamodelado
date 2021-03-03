@@ -1,49 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.model.OWLClass
- *  org.semanticweb.owlapi.model.OWLClassExpression
- *  org.semanticweb.owlapi.model.OWLClassExpressionVisitorEx
- *  org.semanticweb.owlapi.model.OWLDataAllValuesFrom
- *  org.semanticweb.owlapi.model.OWLDataComplementOf
- *  org.semanticweb.owlapi.model.OWLDataExactCardinality
- *  org.semanticweb.owlapi.model.OWLDataFactory
- *  org.semanticweb.owlapi.model.OWLDataHasValue
- *  org.semanticweb.owlapi.model.OWLDataIntersectionOf
- *  org.semanticweb.owlapi.model.OWLDataMaxCardinality
- *  org.semanticweb.owlapi.model.OWLDataMinCardinality
- *  org.semanticweb.owlapi.model.OWLDataOneOf
- *  org.semanticweb.owlapi.model.OWLDataPropertyExpression
- *  org.semanticweb.owlapi.model.OWLDataRange
- *  org.semanticweb.owlapi.model.OWLDataSomeValuesFrom
- *  org.semanticweb.owlapi.model.OWLDataUnionOf
- *  org.semanticweb.owlapi.model.OWLDataVisitorEx
- *  org.semanticweb.owlapi.model.OWLDatatype
- *  org.semanticweb.owlapi.model.OWLDatatypeRestriction
- *  org.semanticweb.owlapi.model.OWLFacetRestriction
- *  org.semanticweb.owlapi.model.OWLIndividual
- *  org.semanticweb.owlapi.model.OWLLiteral
- *  org.semanticweb.owlapi.model.OWLObject
- *  org.semanticweb.owlapi.model.OWLObjectAllValuesFrom
- *  org.semanticweb.owlapi.model.OWLObjectComplementOf
- *  org.semanticweb.owlapi.model.OWLObjectExactCardinality
- *  org.semanticweb.owlapi.model.OWLObjectHasSelf
- *  org.semanticweb.owlapi.model.OWLObjectHasValue
- *  org.semanticweb.owlapi.model.OWLObjectIntersectionOf
- *  org.semanticweb.owlapi.model.OWLObjectMaxCardinality
- *  org.semanticweb.owlapi.model.OWLObjectMinCardinality
- *  org.semanticweb.owlapi.model.OWLObjectOneOf
- *  org.semanticweb.owlapi.model.OWLObjectPropertyExpression
- *  org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom
- *  org.semanticweb.owlapi.model.OWLObjectUnionOf
- *  org.semanticweb.owlapi.model.OWLPropertyRange
- */
 package org.semanticweb.HermiT.structural;
 
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLClassExpressionVisitorEx;
@@ -56,7 +13,6 @@ import org.semanticweb.owlapi.model.OWLDataIntersectionOf;
 import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
 import org.semanticweb.owlapi.model.OWLDataMinCardinality;
 import org.semanticweb.owlapi.model.OWLDataOneOf;
-import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLDataUnionOf;
@@ -66,7 +22,6 @@ import org.semanticweb.owlapi.model.OWLDatatypeRestriction;
 import org.semanticweb.owlapi.model.OWLFacetRestriction;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
@@ -76,10 +31,8 @@ import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
 import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectOneOf;
-import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
-import org.semanticweb.owlapi.model.OWLPropertyRange;
 
 public class ExpressionManager {
     protected final OWLDataFactory m_factory;

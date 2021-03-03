@@ -1,11 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.owlreal;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import org.semanticweb.HermiT.datatypes.owlreal.BigRational;
 
 public enum NumberRange {
     NOTHING,

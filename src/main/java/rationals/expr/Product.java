@@ -1,10 +1,4 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.expr;
-
-import rationals.expr.BinaryExpr;
-import rationals.expr.RationalExpr;
 
 public class Product
 extends BinaryExpr {

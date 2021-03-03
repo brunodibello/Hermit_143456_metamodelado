@@ -1,28 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.apibinding.OWLManager
- *  org.semanticweb.owlapi.model.IRI
- *  org.semanticweb.owlapi.model.OWLClass
- *  org.semanticweb.owlapi.model.OWLClassAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLClassExpression
- *  org.semanticweb.owlapi.model.OWLDataFactory
- *  org.semanticweb.owlapi.model.OWLIndividual
- *  org.semanticweb.owlapi.model.OWLIndividualAxiom
- *  org.semanticweb.owlapi.model.OWLNamedIndividual
- *  org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom
- *  org.semanticweb.owlapi.model.OWLObjectAllValuesFrom
- *  org.semanticweb.owlapi.model.OWLObjectCardinalityRestriction
- *  org.semanticweb.owlapi.model.OWLObjectComplementOf
- *  org.semanticweb.owlapi.model.OWLObjectHasSelf
- *  org.semanticweb.owlapi.model.OWLObjectInverseOf
- *  org.semanticweb.owlapi.model.OWLObjectProperty
- *  org.semanticweb.owlapi.model.OWLObjectPropertyExpression
- *  org.semanticweb.owlapi.model.OWLPropertyAssertionObject
- *  org.semanticweb.owlapi.model.OWLPropertyExpression
- *  org.semanticweb.owlapi.model.OWLPropertyRange
- */
 package org.semanticweb.HermiT.structural;
 
 import java.util.ArrayList;
@@ -33,9 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import org.semanticweb.HermiT.graph.Graph;
-import org.semanticweb.HermiT.structural.OWLAxioms;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -44,7 +17,6 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectCardinalityRestriction;
@@ -53,9 +25,6 @@ import org.semanticweb.owlapi.model.OWLObjectHasSelf;
 import org.semanticweb.owlapi.model.OWLObjectInverseOf;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
-import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
-import org.semanticweb.owlapi.model.OWLPropertyExpression;
-import org.semanticweb.owlapi.model.OWLPropertyRange;
 import rationals.Automaton;
 import rationals.State;
 import rationals.Transition;

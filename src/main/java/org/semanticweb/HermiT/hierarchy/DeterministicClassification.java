@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.hierarchy;
 
 import java.util.ArrayList;
@@ -13,13 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
-import org.semanticweb.HermiT.hierarchy.ClassificationProgressMonitor;
-import org.semanticweb.HermiT.hierarchy.Hierarchy;
-import org.semanticweb.HermiT.hierarchy.HierarchyNode;
 import org.semanticweb.HermiT.model.Atom;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.Individual;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
 import org.semanticweb.HermiT.tableau.ExtensionTable;
 import org.semanticweb.HermiT.tableau.Node;
 import org.semanticweb.HermiT.tableau.ReasoningTaskDescription;

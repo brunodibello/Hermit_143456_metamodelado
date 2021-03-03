@@ -1,12 +1,8 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.tableau;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -16,24 +12,14 @@ import org.semanticweb.HermiT.datatypes.DatatypeRegistry;
 import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
 import org.semanticweb.HermiT.model.AtomicDataRange;
 import org.semanticweb.HermiT.model.AtomicNegationDataRange;
-import org.semanticweb.HermiT.model.Constant;
 import org.semanticweb.HermiT.model.ConstantEnumeration;
 import org.semanticweb.HermiT.model.DLOntology;
-import org.semanticweb.HermiT.model.DLPredicate;
 import org.semanticweb.HermiT.model.DataRange;
 import org.semanticweb.HermiT.model.DatatypeRestriction;
 import org.semanticweb.HermiT.model.Inequality;
 import org.semanticweb.HermiT.model.InternalDatatype;
 import org.semanticweb.HermiT.model.LiteralDataRange;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
-import org.semanticweb.HermiT.tableau.DependencySet;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
-import org.semanticweb.HermiT.tableau.ExtensionTable;
-import org.semanticweb.HermiT.tableau.InterruptFlag;
-import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.NodeType;
-import org.semanticweb.HermiT.tableau.Tableau;
-import org.semanticweb.HermiT.tableau.UnionDependencySet;
 
 public final class DatatypeManager
 implements Serializable {

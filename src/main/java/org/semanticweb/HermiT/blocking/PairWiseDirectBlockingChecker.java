@@ -1,19 +1,12 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.blocking;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import org.semanticweb.HermiT.blocking.BlockingSignature;
-import org.semanticweb.HermiT.blocking.DirectBlockingChecker;
-import org.semanticweb.HermiT.blocking.SetFactory;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.model.AtomicRole;
 import org.semanticweb.HermiT.model.Concept;
 import org.semanticweb.HermiT.model.DataRange;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
 import org.semanticweb.HermiT.tableau.ExtensionTable;
 import org.semanticweb.HermiT.tableau.Node;
 import org.semanticweb.HermiT.tableau.NodeType;

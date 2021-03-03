@@ -1,17 +1,11 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.debugger.commands;
 
 import java.io.PrintWriter;
-import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.debugger.Debugger;
-import org.semanticweb.HermiT.debugger.commands.AbstractCommand;
 import org.semanticweb.HermiT.existentials.ExistentialExpansionStrategy;
 import org.semanticweb.HermiT.existentials.IndividualReuseStrategy;
 import org.semanticweb.HermiT.model.AtomicConcept;
 import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.Tableau;
 
 public class ReuseNodeForCommand
 extends AbstractCommand {

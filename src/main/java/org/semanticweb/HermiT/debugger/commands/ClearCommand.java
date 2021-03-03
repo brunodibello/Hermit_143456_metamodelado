@@ -1,12 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.debugger.commands;
 
 import java.io.PrintWriter;
-import org.semanticweb.HermiT.debugger.ConsoleTextArea;
 import org.semanticweb.HermiT.debugger.Debugger;
-import org.semanticweb.HermiT.debugger.commands.AbstractCommand;
 
 public class ClearCommand
 extends AbstractCommand {

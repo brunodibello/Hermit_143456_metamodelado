@@ -1,12 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.reasoner.FreshEntityPolicy
- *  org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy
- *  org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration
- *  org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor
- */
 package org.semanticweb.HermiT;
 
 import java.io.File;

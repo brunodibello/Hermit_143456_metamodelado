@@ -1,26 +1,16 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.debugger.commands;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
-import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.debugger.Debugger;
 import org.semanticweb.HermiT.debugger.Printing;
-import org.semanticweb.HermiT.debugger.commands.AbstractCommand;
 import org.semanticweb.HermiT.model.Concept;
 import org.semanticweb.HermiT.model.DLPredicate;
 import org.semanticweb.HermiT.model.NegatedAtomicRole;
-import org.semanticweb.HermiT.tableau.ExtensionManager;
 import org.semanticweb.HermiT.tableau.ExtensionTable;
 import org.semanticweb.HermiT.tableau.Node;
-import org.semanticweb.HermiT.tableau.Tableau;
 
 public class ShowModelCommand
 extends AbstractCommand {

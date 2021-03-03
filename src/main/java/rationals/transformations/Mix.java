@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals.transformations;
 
 import java.util.ArrayList;
@@ -14,9 +11,6 @@ import rationals.DefaultSynchronization;
 import rationals.State;
 import rationals.Synchronization;
 import rationals.Transition;
-import rationals.transformations.BinaryTransformation;
-import rationals.transformations.StatesCouple;
-import rationals.transformations.TransformationsToolBox;
 
 public class Mix
 implements BinaryTransformation {

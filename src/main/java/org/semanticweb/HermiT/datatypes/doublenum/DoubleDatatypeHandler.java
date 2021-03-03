@@ -1,24 +1,15 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.doublenum;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.semanticweb.HermiT.Prefixes;
 import org.semanticweb.HermiT.datatypes.DatatypeHandler;
 import org.semanticweb.HermiT.datatypes.MalformedLiteralException;
 import org.semanticweb.HermiT.datatypes.UnsupportedFacetException;
 import org.semanticweb.HermiT.datatypes.ValueSpaceSubset;
-import org.semanticweb.HermiT.datatypes.doublenum.DoubleInterval;
-import org.semanticweb.HermiT.datatypes.doublenum.EmptyDoubleSubset;
-import org.semanticweb.HermiT.datatypes.doublenum.EntireDoubleSubset;
-import org.semanticweb.HermiT.datatypes.doublenum.NoNaNDoubleSubset;
-import org.semanticweb.HermiT.model.Constant;
 import org.semanticweb.HermiT.model.DatatypeRestriction;
 
 public class DoubleDatatypeHandler

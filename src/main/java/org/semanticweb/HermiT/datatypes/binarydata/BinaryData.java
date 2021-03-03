@@ -1,11 +1,6 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.datatypes.binarydata;
 
 import java.io.ByteArrayOutputStream;
-import org.semanticweb.HermiT.datatypes.binarydata.Base64;
-import org.semanticweb.HermiT.datatypes.binarydata.BinaryDataType;
 
 public class BinaryData {
     protected static final char[] INT_TO_HEX;

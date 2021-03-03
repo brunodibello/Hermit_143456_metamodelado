@@ -1,17 +1,7 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package org.semanticweb.HermiT.blocking;
 
-import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
-import org.semanticweb.HermiT.blocking.BlockingStrategy;
-import org.semanticweb.HermiT.blocking.BlockingValidator;
-import org.semanticweb.HermiT.blocking.DirectBlockingChecker;
-import org.semanticweb.HermiT.blocking.ValidatedBlockersCache;
-import org.semanticweb.HermiT.blocking.ValidatedSingleDirectBlockingChecker;
 import org.semanticweb.HermiT.model.AtomicRole;
 import org.semanticweb.HermiT.model.Concept;
 import org.semanticweb.HermiT.model.DLClause;
@@ -20,7 +10,6 @@ import org.semanticweb.HermiT.model.DataRange;
 import org.semanticweb.HermiT.model.Variable;
 import org.semanticweb.HermiT.monitor.TableauMonitor;
 import org.semanticweb.HermiT.tableau.DLClauseEvaluator;
-import org.semanticweb.HermiT.tableau.HyperresolutionManager;
 import org.semanticweb.HermiT.tableau.Node;
 import org.semanticweb.HermiT.tableau.NodeType;
 import org.semanticweb.HermiT.tableau.Tableau;

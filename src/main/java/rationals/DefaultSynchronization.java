@@ -1,12 +1,8 @@
-/*
- * Decompiled with CFR 0.137.
- */
 package rationals;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import rationals.Synchronization;
 
 public class DefaultSynchronization
 implements Synchronization {

@@ -1,19 +1,3 @@
-/*
- * Decompiled with CFR 0.137.
- * 
- * Could not load the following classes:
- *  org.semanticweb.owlapi.model.OWLClass
- *  org.semanticweb.owlapi.model.OWLClassExpression
- *  org.semanticweb.owlapi.model.OWLDataProperty
- *  org.semanticweb.owlapi.model.OWLDataPropertyExpression
- *  org.semanticweb.owlapi.model.OWLDataRange
- *  org.semanticweb.owlapi.model.OWLHasKeyAxiom
- *  org.semanticweb.owlapi.model.OWLIndividualAxiom
- *  org.semanticweb.owlapi.model.OWLNamedIndividual
- *  org.semanticweb.owlapi.model.OWLObjectProperty
- *  org.semanticweb.owlapi.model.OWLObjectPropertyExpression
- *  org.semanticweb.owlapi.model.SWRLAtom
- */
 package org.semanticweb.HermiT.structural;
 
 import java.util.ArrayList;
