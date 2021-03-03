@@ -21,7 +21,6 @@ import org.semanticweb.owlapi.model.OWLMetamodellingAxiom;
 public class MetamodellingAxiomHelper {
 	
 	protected final static String DEF_STRING = "<internal:def#";
-	//For cycle control
 	private static Stack<Node> nodeStack;
 	private static boolean existCycle;
 	private static List<Node> flaggedNodes;
@@ -76,9 +75,6 @@ public class MetamodellingAxiomHelper {
 		return instances;
 	}
 	
-	/*
-	  Dado un individuo y una ontologia devuelve la lista de clases asociados a ese individuo a traves de axiomas de metamodelling 
-	*/
 	public static List<OWLClassExpression> getMetamodellingClassesByIndividual(Individual ind, DLOntology ontology) {
 		List<OWLClassExpression> classes = new ArrayList<OWLClassExpression>();
 		if (ind != null) {
@@ -91,11 +87,6 @@ public class MetamodellingAxiomHelper {
 		return classes;
 	}
 	
-	/*
-	  Crea el axioma
-	  <internal:def#0>(Y) :- <TE2#A>(X), <TE2#S>(X,Y)
-	  <TE2#B>(X) v <TE2#C>(X) :- <internal:def#0>(X)
-	*/
 	public static void addMetaRuleAddedAxiom(String classA, String propertyS, List<String> classesFromImage, Tableau tableau) {
 		String defClass = DEF_STRING + getNextDef(tableau.getPermanentDLOntology()) + ">";
 		
@@ -138,11 +129,6 @@ public class MetamodellingAxiomHelper {
 		createHyperResolutionManager(tableau, dlClauses);
 	}
 	
-	/*
-	  Devuelve true si en la ontologia se encuentra el axioma 
-	  <internal:def#0>(Y) :- <TE2#A>(X), <TE2#S>(X,Y)
-	  <TE2#B>(X) v <TE2#C>(X) :- <internal:def#0>(X)
-	*/
 	public static boolean containsMetaRuleAddedAxiom(String classA, String propertyS, List<String> classesFromImage, Tableau tableau) {
 		DLOntology ontology = tableau.getPermanentDLOntology();
 		for (DLClause dlClause1 : ontology.getDLClauses()) {
@@ -178,14 +164,6 @@ public class MetamodellingAxiomHelper {
 		return false;
 	}
 	
-	/*
-	  Devuelve true si en la ontologia se encuentra el axioma 
-	  <internal:def#1>(X) v <internal:def#2>(X) :- <internal:def#0>(X),
-	  :- <#A>(X), <internal:def#2>(X), 
-	  <#B>(X) :- <internal:def#2>(X),  
-	  :- <#B>(X), <internal:def#1>(X), 
-	  <#A>(X) :- <internal:def#1>(X)
-	*/
 	public static Atom containsInequalityRuleAxiom(OWLClassExpression classA, OWLClassExpression classB, Tableau tableau) {
 		DLOntology ontology = tableau.getPermanentDLOntology();
 		
@@ -265,20 +243,14 @@ public class MetamodellingAxiomHelper {
 					
 					if ((hasDef1SubClassA && hasDef2SubClassB && hasDef2DiffClassA && hasDef1DiffClassB) || 
 							(hasDef2SubClassA && hasDef1SubClassB && hasDef1DiffClassA && hasDef2DiffClassB)) {
-						//Ya se verifico que existen los DLClauses, resta ver si esta en la binaryTable, o sea que si hay un Z con esa clase.
-						//return tableau.containsClassAssertion(def0.getDLPredicate().toString());
 						return def0;
 					}
 				}
 			}
 		}
-		//return false;
 		return null;
 	}
 	
-	/*
-	  Devuelve true si en la ontologia se encuentra el axioma que dice que classA es subclase de classB 
-	*/
 	public static boolean containsSubClassOfAxiom(OWLClassExpression classA, OWLClassExpression classB, DLOntology ontology) {
 		for (DLClause dlClause : ontology.getDLClauses()) {
 			if (dlClause.isAtomicConceptInclusion()) {
@@ -290,12 +262,6 @@ public class MetamodellingAxiomHelper {
 		return false;
 	}
 	
-	/*
-		Agrega los siguientes axiomas en la ontologia:
-			- classA es subclase de classB
-			- classB es subclase de classA
-		Crea el nuevo hyperresolutionManager y lo asocia al tableau
-	*/
 	public static boolean addSubClassOfAxioms(OWLClassExpression classA, OWLClassExpression classB, DLOntology ontology, Tableau tableau) {
 		
 		Atom classAAtom = Atom.create(AtomicConcept.create(classA.toString().substring(1, classA.toString().length()-1)), Variable.create("X"));
@@ -330,9 +296,6 @@ public class MetamodellingAxiomHelper {
 		return true;
 	}
 	
-	/*
-	 Se obtiene el proximo X de <internal:def#X> 
-	*/
 	private static int getNextDef(DLOntology ontology) {
 		int nextDef = -1;
 		for (DLClause dlClause : ontology.getDLClauses()) {
@@ -452,11 +415,6 @@ public class MetamodellingAxiomHelper {
 		}	
 	}
 	
-	/*
-	 Crea un nuevo hyperresolutionManager para asociarlo al tableau
-	 Tambien crea un nuevo BranchedHyperresolutionManager con el nuevo hyperresolutionManager, sus nuevos axiomas y los estados de backtracking 
-	 actuales del tableau en la coleccion de BranchedHyperresolutionManagers del tableau.
-	*/
 	private static void createHyperResolutionManager(Tableau tableau, List<DLClause> dlClauses) {
 		
 		HyperresolutionManager hypM =  new HyperresolutionManager(tableau, tableau.getPermanentDLOntology().getDLClauses());

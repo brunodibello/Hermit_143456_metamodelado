@@ -34,14 +34,12 @@ implements Serializable {
     protected final int m_maxNumberOfVariables;
 
     public HyperresolutionManager(Tableau tableau, Set<DLClause> dlClauses) {
-    	//System.out.println("** Tableau -> HyperresolutionManager **");
         InterruptFlag interruptFlag = tableau.m_interruptFlag;
         this.m_extensionManager = tableau.m_extensionManager;
         this.m_tupleConsumersByDeltaPredicate = new HashMap<DLPredicate, CompiledDLClauseInfo>();
         this.m_atomicRoleTupleConsumersUnguarded = new HashMap<AtomicRole, CompiledDLClauseInfo>();
         this.m_atomicRoleTupleConsumersByGuardConcept1 = new HashMap<AtomicRole, Map<AtomicConcept, CompiledDLClauseInfo>>();
         this.m_atomicRoleTupleConsumersByGuardConcept2 = new HashMap<AtomicRole, Map<AtomicConcept, CompiledDLClauseInfo>>();
-        //System.out.println("Se construye dlClausesByBody");
         HashMap<DLClauseBodyKey, ArrayList<DLClause>> dlClausesByBody = new HashMap<DLClauseBodyKey, ArrayList<DLClause>>();
         for (DLClause dlClause : dlClauses) {
             DLClauseBodyKey key = new DLClauseBodyKey(dlClause);
@@ -61,23 +59,15 @@ implements Serializable {
         HashMap<Integer, UnionDependencySet> unionDependencySetsBySize = new HashMap<Integer, UnionDependencySet>();
         ArrayList<Atom> guardingAtomicConceptAtoms1 = new ArrayList<Atom>();
         ArrayList<Atom> guardingAtomicConceptAtoms2 = new ArrayList<Atom>();
-        //System.out.println("	Iteracion [* Map.Entry entry : dlClausesByBody.entrySet() *] en HyperResulutionManager");
         for (Map.Entry entry : dlClausesByBody.entrySet()) {
             DLClause bodyDLClause = ((DLClauseBodyKey)entry.getKey()).m_dlClause;
-            //System.out.println("	bodyDLClause -> "+bodyDLClause);
             BodyAtomsSwapper bodyAtomsSwapper = new BodyAtomsSwapper(bodyDLClause);
-            //System.out.println("	Iteracion [* int bodyAtomIndex = 0; bodyAtomIndex < bodyDLClause.getBodyLength(); ++bodyAtomIndex *]");
             for (int bodyAtomIndex = 0; bodyAtomIndex < bodyDLClause.getBodyLength(); ++bodyAtomIndex) {
-            	//System.out.println("		isPredicateWithExtension -> "+(HyperresolutionManager.isPredicateWithExtension(bodyDLClause.getBodyAtom(bodyAtomIndex).getDLPredicate())));
                 if (!HyperresolutionManager.isPredicateWithExtension(bodyDLClause.getBodyAtom(bodyAtomIndex).getDLPredicate())) continue;
                 DLClause swappedDLClause = bodyAtomsSwapper.getSwappedDLClause(bodyAtomIndex);
-                //System.out.println("		swappedDLClause -> "+swappedDLClause);
                 Atom deltaAtom = swappedDLClause.getBodyAtom(0);
-                //System.out.println("		deltaAtom -> "+deltaAtom);
                 DLPredicate deltaDLPredicate = deltaAtom.getDLPredicate();
-                //System.out.println("		deltaDLPredicate -> "+deltaDLPredicate);
                 Integer arity = deltaDLPredicate.getArity() + 1;
-                //System.out.println("		arity -> "+arity);
                 ExtensionTable.Retrieval firstTableRetrieval = (ExtensionTable.Retrieval)retrievalsByArity.get(arity);
                 if (firstTableRetrieval == null) {
                     ExtensionTable extensionTable = this.m_extensionManager.getExtensionTable(arity);
@@ -185,9 +175,7 @@ implements Serializable {
 
     public void applyDLClauses() {
     	System.out.println("\n$$$$ APPLY DLCLAUSES $$$$$");
-    	//System.out.println(this.m_deltaOldRetrievals.length+" m_deltaOldRetrievals");
         for (int index = 0; index < this.m_deltaOldRetrievals.length; ++index) {
-        	//System.out.println("----| DELTAOLDRETRIEVAL - NRO: "+(index+1));
             ExtensionTable.Retrieval deltaOldRetrieval = this.m_deltaOldRetrievals[index];
             deltaOldRetrieval.open();
             Object[] deltaOldTupleBuffer = deltaOldRetrieval.getTupleBuffer();
@@ -195,14 +183,6 @@ implements Serializable {
                 CompiledDLClauseInfo unguardedCompiledDLClauseInfo;
                 Object deltaOldPredicate = deltaOldTupleBuffer[0];
                 CompiledDLClauseInfo unoptimizedCompiledDLClauseInfo = this.m_tupleConsumersByDeltaPredicate.get(deltaOldPredicate);
-//                System.out.print("----| deltaOldTupleBuffer: ");
-//                for (Object o : deltaOldTupleBuffer) {
-//                	System.out.print(o+" ");
-//                }
-//                System.out.println();
-                
-//                if (unoptimizedCompiledDLClauseInfo != null)
-//                	System.out.println("----| unoptimizedCompiledDLClauseInfo: \n"+unoptimizedCompiledDLClauseInfo.m_evaluator.toString());
                 boolean applyUnoptimized = true;
                 if (unoptimizedCompiledDLClauseInfo != null && deltaOldTupleBuffer[0] instanceof AtomicRole && unoptimizedCompiledDLClauseInfo.m_indexInList > ((Node)deltaOldTupleBuffer[1]).getNumberOfPositiveAtomicConcepts() + ((Node)deltaOldTupleBuffer[2]).getNumberOfPositiveAtomicConcepts() + ((unguardedCompiledDLClauseInfo = this.m_atomicRoleTupleConsumersUnguarded.get(deltaOldPredicate)) == null ? 0 : unguardedCompiledDLClauseInfo.m_indexInList)) {
                     CompiledDLClauseInfo optimizedCompiledDLClauseInfo;
@@ -211,7 +191,6 @@ implements Serializable {
                     Map<AtomicConcept, CompiledDLClauseInfo> compiledDLClauseInfos;
                     applyUnoptimized = false;
                     while (unguardedCompiledDLClauseInfo != null && !this.m_extensionManager.containsClash()) {
-                    	//Agregar logs en evaluate
                         unguardedCompiledDLClauseInfo.m_evaluator.evaluate();
                         unguardedCompiledDLClauseInfo = unguardedCompiledDLClauseInfo.m_next;
                     }
@@ -224,7 +203,6 @@ implements Serializable {
                             if (atomicConceptObject instanceof AtomicConcept) {
                                 optimizedCompiledDLClauseInfo = compiledDLClauseInfos.get(atomicConceptObject);
                                 while (optimizedCompiledDLClauseInfo != null && !this.m_extensionManager.containsClash()) {
-                                	//Agregar logs en evaluate y entender diferencia con el evaluate anterior
                                     optimizedCompiledDLClauseInfo.m_evaluator.evaluate();
                                     optimizedCompiledDLClauseInfo = optimizedCompiledDLClauseInfo.m_next;
                                 }
@@ -241,7 +219,6 @@ implements Serializable {
                             if (atomicConceptObject instanceof AtomicConcept) {
                                 optimizedCompiledDLClauseInfo = compiledDLClauseInfos.get(atomicConceptObject);
                                 while (optimizedCompiledDLClauseInfo != null && !this.m_extensionManager.containsClash()) {
-                                	//Agregar logs en evaluate y entender diferencia con el evaluate anterior
                                     optimizedCompiledDLClauseInfo.m_evaluator.evaluate();
                                     optimizedCompiledDLClauseInfo = optimizedCompiledDLClauseInfo.m_next;
                                 }
@@ -252,7 +229,6 @@ implements Serializable {
                 }
                 if (applyUnoptimized) {
                     while (unoptimizedCompiledDLClauseInfo != null && !this.m_extensionManager.containsClash()) {
-                    	//Agregar logs en evaluate y entender diferencia con el evaluate anterior
                         unoptimizedCompiledDLClauseInfo.m_evaluator.evaluate();
                         unoptimizedCompiledDLClauseInfo = unoptimizedCompiledDLClauseInfo.m_next;
                     }
