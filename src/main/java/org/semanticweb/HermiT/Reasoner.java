@@ -167,23 +167,23 @@ implements OWLReasoner {
 
     protected void loadOntology() {
         this.clearState();
-        System.out.println("** REASONER -> loadOntology **");
-        System.out.println("*************");
-        System.out.println("ABox Axioms de la ontologia:");
-        for (OWLAxiom axiom : this.m_rootOntology.getABoxAxioms(null)) {
-        	System.out.println("- "+axiom.toString());
-        }
-        System.out.println("*************");
-        System.out.println("TBox Axioms de la ontologia:");
-        for (OWLAxiom axiom : this.m_rootOntology.getTBoxAxioms(null)) {
-        	System.out.println("- "+axiom.toString());
-        }
-        System.out.println("*************");
-        System.out.println("MBox Axioms de la ontologia:");
-        for (OWLAxiom axiom : this.m_rootOntology.getMBoxAxioms(null)) {
-        	System.out.println("- "+axiom.toString());
-        }
-        System.out.println("*************");
+//        System.out.println("** REASONER -> loadOntology **");
+//        System.out.println("*************");
+//        System.out.println("ABox Axioms de la ontologia:");
+//        for (OWLAxiom axiom : this.m_rootOntology.getABoxAxioms(null)) {
+//        	System.out.println("- "+axiom.toString());
+//        }
+//        System.out.println("*************");
+//        System.out.println("TBox Axioms de la ontologia:");
+//        for (OWLAxiom axiom : this.m_rootOntology.getTBoxAxioms(null)) {
+//        	System.out.println("- "+axiom.toString());
+//        }
+//        System.out.println("*************");
+//        System.out.println("MBox Axioms de la ontologia:");
+//        for (OWLAxiom axiom : this.m_rootOntology.getMBoxAxioms(null)) {
+//        	System.out.println("- "+axiom.toString());
+//        }
+//        System.out.println("*************");
         OWLClausification clausifier = new OWLClausification(this.m_configuration);
         Object[] result = clausifier.preprocessAndClausify(this.m_rootOntology, this.m_descriptionGraphs);
         this.m_objectPropertyInclusionManager = (ObjectPropertyInclusionManager)result[0];
@@ -711,10 +711,10 @@ implements OWLReasoner {
     }
 
     public boolean isSatisfiable(OWLClassExpression classExpression) {
-    	System.out.println("*** isSatisfiable? -> "+classExpression);
+//    	System.out.println("*** isSatisfiable? -> "+classExpression);
         this.checkPreConditions(new OWLObject[]{classExpression});
         if (!this.isConsistent()) {
-        	System.out.println("	Not Consistent");
+        	//System.out.println("	Not Consistent");
             return false;
         }
         if (classExpression instanceof OWLClass && this.m_atomicConceptHierarchy != null) {

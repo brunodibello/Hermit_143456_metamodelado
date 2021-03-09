@@ -94,11 +94,11 @@ implements Serializable {
 				this.m_tableau.nodeProperties.get(node0.m_nodeID).get(node1.m_nodeID).add(tuple[0].toString());
             }
         }
-        System.out.print("TUPLE ADDED: ");
-    	for (Object obj : tuple) {
-    		System.out.println(obj+" ");
-    	}
-    	System.out.println();
+//        System.out.print("TUPLE ADDED: ");
+//    	for (Object obj : tuple) {
+//    		System.out.println(obj+" ");
+//    	}
+//    	System.out.println();
     }
 
     public abstract boolean containsTuple(Object[] var1);
@@ -118,7 +118,6 @@ implements Serializable {
     public abstract boolean isCore(Object[] var1);
 
     public boolean propagateDeltaNew() {
-    	System.out.println();
         boolean deltaNewNotEmpty = this.m_afterExtensionThisTupleIndex != this.m_afterDeltaNewTupleIndex;
         this.m_afterExtensionOldTupleIndex = this.m_afterExtensionThisTupleIndex;
         this.m_afterExtensionThisTupleIndex = this.m_afterDeltaNewTupleIndex;

@@ -363,13 +363,13 @@ implements Serializable {
             this.m_tableauMonitor.isSatisfiableStarted(reasoningTaskDescription);
         }
         this.clear();
-        System.out.println("[!] isSatisfiable Started");
+//        System.out.println("[!] isSatisfiable Started");
         //Agregar individuos del MBox a los nodos
         for (OWLMetamodellingAxiom metamodellingAxiom : this.m_permanentDLOntology.getMetamodellingAxioms()) {
         	Individual ind = Individual.create(metamodellingAxiom.getMetamodelIndividual().toStringID());
         	if (!termsToNodes.containsKey(ind)) {
         		Node node = this.createNewNamedNode(this.m_dependencySetFactory.emptySet());
-        		System.out.println("    Individual -> "+ind+" || Node -> "+node);
+//        		System.out.println("    Individual -> "+ind+" || Node -> "+node);
             	termsToNodes.put(ind, node);
         	}
         	this.mapNodeIndividual.put(termsToNodes.get(ind).m_nodeID, ind);
@@ -378,42 +378,42 @@ implements Serializable {
         	this.metamodellingNodes.add(termsToNodes.get(ind));
         }
         if (loadPermanentABox) {
-        	System.out.println("loadPermanentABox");
-        	System.out.println("	positiveFacts:");
+//        	System.out.println("loadPermanentABox");
+//        	System.out.println("	positiveFacts:");
             for (Atom atom : this.m_permanentDLOntology.getPositiveFacts()) {
-            	System.out.println("		atom -> "+atom);
+//            	System.out.println("		atom -> "+atom);
                 this.loadPositiveFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
-            System.out.println("	negativeFacts:");
+//            System.out.println("	negativeFacts:");
             for (Atom atom : this.m_permanentDLOntology.getNegativeFacts()) {
-            	System.out.println("		atom -> "+atom);
+//            	System.out.println("		atom -> "+atom);
                 this.loadNegativeFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
         }
         if (loadAdditionalABox && this.m_additionalDLOntology != null) {
-        	System.out.println("loadAdditionalABox");
-        	System.out.println("	positiveFacts:");
+//        	System.out.println("loadAdditionalABox");
+//        	System.out.println("	positiveFacts:");
             for (Atom atom : this.m_additionalDLOntology.getPositiveFacts()) {
-            	System.out.println("		atom -> "+atom);
+//            	System.out.println("		atom -> "+atom);
                 this.loadPositiveFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
-            System.out.println("	negativeFacts:");
+//            System.out.println("	negativeFacts:");
             for (Atom atom : this.m_additionalDLOntology.getNegativeFacts()) {
-            	System.out.println("		atom -> "+atom);
+//            	System.out.println("		atom -> "+atom);
                 this.loadNegativeFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
         }
         if (perTestPositiveFactsNoDependency != null && !perTestPositiveFactsNoDependency.isEmpty()) {
-        	System.out.println("	perTestPositiveFactsNoDependency - positiveFacts:");
+//        	System.out.println("	perTestPositiveFactsNoDependency - positiveFacts:");
             for (Atom atom : perTestPositiveFactsNoDependency) {
-            	System.out.println("		atom -> "+atom);
+//            	System.out.println("		atom -> "+atom);
                 this.loadPositiveFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
         }
         if (perTestNegativeFactsNoDependency != null && !perTestNegativeFactsNoDependency.isEmpty()) {
-        	System.out.println("	perTestNegativeFactsNoDependency - negativeFacts:");
+//        	System.out.println("	perTestNegativeFactsNoDependency - negativeFacts:");
             for (Atom atom : perTestNegativeFactsNoDependency) {
-            	System.out.println("		atom -> "+atom);
+//            	System.out.println("		atom -> "+atom);
                 this.loadNegativeFact(termsToNodes, atom, this.m_dependencySetFactory.emptySet());
             }
         }
@@ -422,30 +422,30 @@ implements Serializable {
             ++this.m_currentBranchingPoint;
             this.m_nonbacktrackableBranchingPoint = this.m_currentBranchingPoint;
             PermanentDependencySet dependencySet = this.m_dependencySetFactory.addBranchingPoint(this.m_dependencySetFactory.emptySet(), this.m_currentBranchingPoint);
-            System.out.println("	perTestPositiveFactsDummyDependency - positiveFacts:");
+//            System.out.println("	perTestPositiveFactsDummyDependency - positiveFacts:");
             if (perTestPositiveFactsDummyDependency != null && !perTestPositiveFactsDummyDependency.isEmpty()) {
                 for (Atom atom : perTestPositiveFactsDummyDependency) {
-                	System.out.println("		atom -> "+atom);
+//                	System.out.println("		atom -> "+atom);
                     this.loadPositiveFact(termsToNodes, atom, dependencySet);
                 }
             }
-            System.out.println("	perTestNegativeFactsDummyDependency - negativeFacts:");
+//            System.out.println("	perTestNegativeFactsDummyDependency - negativeFacts:");
             if (perTestNegativeFactsDummyDependency != null && !perTestNegativeFactsDummyDependency.isEmpty()) {
                 for (Atom atom : perTestNegativeFactsDummyDependency) {
-                	System.out.println("		atom -> "+atom);
+//                	System.out.println("		atom -> "+atom);
                     this.loadNegativeFact(termsToNodes, atom, dependencySet);
                 }
             }
         }
         if (nodesForIndividuals != null) {
-        	System.out.println("	Iterate throuth nodesForIndividuals");
+//        	System.out.println("	Iterate throuth nodesForIndividuals");
             for (Map.Entry<Individual, Node> entry : nodesForIndividuals.entrySet()) {
                 if (termsToNodes.get(entry.getKey()) == null) {
                     Atom topAssertion = Atom.create(AtomicConcept.THING, entry.getKey());
-                    System.out.println("		topAssertion -> "+topAssertion);
+//                    System.out.println("		topAssertion -> "+topAssertion);
                     this.loadPositiveFact(termsToNodes, topAssertion, this.m_dependencySetFactory.emptySet());
                 }
-                System.out.println("		termsToNodes.get(entry.getKey()) -> "+termsToNodes.get(entry.getKey()));
+//                System.out.println("		termsToNodes.get(entry.getKey()) -> "+termsToNodes.get(entry.getKey()));
                 entry.setValue(termsToNodes.get(entry.getKey()));
             }
         }
@@ -460,24 +460,24 @@ implements Serializable {
     }
 
     protected void loadPositiveFact(Map<Term, Node> termsToNodes, Atom atom, DependencySet dependencySet) {
-    	System.out.println("		* loadPositiveFact");
+//    	System.out.println("		* loadPositiveFact");
         DLPredicate dlPredicate = atom.getDLPredicate();
-        System.out.println("		 dlPredicate -> "+dlPredicate);
+//        System.out.println("		 dlPredicate -> "+dlPredicate);
         if (dlPredicate instanceof LiteralConcept) {
-        	System.out.println("		is LiteralConcept");
+//        	System.out.println("		is LiteralConcept");
             this.m_extensionManager.addConceptAssertion((LiteralConcept)((Object)dlPredicate), this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet), dependencySet, true);
         } else if (dlPredicate instanceof AtomicRole || Equality.INSTANCE.equals(dlPredicate) || Inequality.INSTANCE.equals(dlPredicate)) {
-        	System.out.println("		is AtomicRole or Equality or Inequality instance");
+//        	System.out.println("		is AtomicRole or Equality or Inequality instance");
         	this.m_extensionManager.addAssertion(dlPredicate, this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet), this.getNodeForTerm(termsToNodes, atom.getArgument(1), dependencySet), dependencySet, true);
         } else if (dlPredicate instanceof DescriptionGraph) {
-        	System.out.println("		is DescriptionGraph");
+//        	System.out.println("		is DescriptionGraph");
             DescriptionGraph descriptionGraph = (DescriptionGraph)dlPredicate;
             Object[] tuple = new Object[descriptionGraph.getArity() + 1];
             tuple[0] = descriptionGraph;
             for (int argumentIndex = 0; argumentIndex < descriptionGraph.getArity(); ++argumentIndex) {
                 tuple[argumentIndex + 1] = this.getNodeForTerm(termsToNodes, atom.getArgument(argumentIndex), dependencySet);
             }
-            System.out.println("		tuple -> "+tuple);
+//            System.out.println("		tuple -> "+tuple);
             this.m_extensionManager.addTuple(tuple, dependencySet, true);
         } else {
             throw new IllegalArgumentException("Unsupported type of positive ground atom.");
@@ -485,25 +485,25 @@ implements Serializable {
     }
 
     protected void loadNegativeFact(Map<Term, Node> termsToNodes, Atom atom, DependencySet dependencySet) {
-    	System.out.println("		* loadNegativeFact");
+//    	System.out.println("		* loadNegativeFact");
         DLPredicate dlPredicate = atom.getDLPredicate();
-        System.out.println("		 dlPredicate -> "+dlPredicate);
+//        System.out.println("		 dlPredicate -> "+dlPredicate);
         if (dlPredicate instanceof LiteralConcept) {
-        	System.out.println("		is LiteralConcept");
+//        	System.out.println("		is LiteralConcept");
             this.m_extensionManager.addConceptAssertion(((LiteralConcept)((Object)dlPredicate)).getNegation(), this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet), dependencySet, true);
         } else if (dlPredicate instanceof AtomicRole) {
-        	System.out.println("		is AtomicRole");
+//        	System.out.println("		is AtomicRole");
             Object[] ternaryTuple = this.m_extensionManager.m_ternaryAuxiliaryTupleAdd;
             ternaryTuple[0] = NegatedAtomicRole.create((AtomicRole)dlPredicate);
             ternaryTuple[1] = this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet);
             ternaryTuple[2] = this.getNodeForTerm(termsToNodes, atom.getArgument(1), dependencySet);
-            System.out.println("		ternaryTuple -> "+ternaryTuple);
+//            System.out.println("		ternaryTuple -> "+ternaryTuple);
             this.m_extensionManager.addTuple(ternaryTuple, dependencySet, true);
         } else if (Equality.INSTANCE.equals(dlPredicate)) {
-        	System.out.println("		is Equality");
+//        	System.out.println("		is Equality");
             this.m_extensionManager.addAssertion(Inequality.INSTANCE, this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet), this.getNodeForTerm(termsToNodes, atom.getArgument(1), dependencySet), dependencySet, true);
         } else if (Inequality.INSTANCE.equals(dlPredicate)) {
-        	System.out.println("		is Inequality");
+//        	System.out.println("		is Inequality");
             this.m_extensionManager.addAssertion(Equality.INSTANCE, this.getNodeForTerm(termsToNodes, atom.getArgument(0), dependencySet), this.getNodeForTerm(termsToNodes, atom.getArgument(1), dependencySet), dependencySet, true);
         } else {
             throw new IllegalArgumentException("Unsupported type of negative ground atom.");
@@ -513,8 +513,8 @@ implements Serializable {
     protected Node getNodeForTerm(Map<Term, Node> termsToNodes, Term term, DependencySet dependencySet) {
         Node node = termsToNodes.get(term);
         if (node == null) {
-        	System.out.println("***** Going to create a Node ******");
-        	System.out.println("term -> "+term);
+//        	System.out.println("***** Going to create a Node ******");
+//        	System.out.println("term -> "+term);
             if (term instanceof Individual) {
                 Individual individual = (Individual)term;
                 node = individual.isAnonymous() ? this.createNewNINode(dependencySet) : this.createNewNamedNode(dependencySet);
@@ -528,7 +528,7 @@ implements Serializable {
                 }
             }
             termsToNodes.put(term, node);
-            System.out.println("node -> "+node);
+//            System.out.println("node -> "+node);
         }
         return node.getCanonicalNode();
     }
@@ -546,11 +546,11 @@ implements Serializable {
                 if (this.m_tableauMonitor != null) {
                     this.m_tableauMonitor.iterationStarted();
                 }
-                System.out.println("====> ITERATION "+(++iterations));
+//                System.out.println("====> ITERATION "+(++iterations));
                 long startTime = System.nanoTime();
                 hasMoreWork = this.doIteration();
                 long stopTime = System.nanoTime();
-                System.out.println("####################################################################### Iteration time: "+((stopTime - startTime)/1000000));
+//                System.out.println("####################################################################### Iteration time: "+((stopTime - startTime)/1000000));
                 if (this.m_tableauMonitor != null) {
                     this.m_tableauMonitor.iterationFinished();
                 }
@@ -587,10 +587,10 @@ implements Serializable {
                     this.m_descriptionGraphManager.checkGraphConstraints();
                 }
                 if (!this.m_extensionManager.containsClash()) {
-                	long startTime = System.nanoTime();
+//                	long startTime = System.nanoTime();
                 	this.m_permanentHyperresolutionManager.applyDLClauses();
-                    long stopTime = System.nanoTime();
-                    System.out.println("####################################################################### APPLYDLCLAUSES time: "+((stopTime - startTime)/1000000));
+//                    long stopTime = System.nanoTime();
+//                    System.out.println("####################################################################### APPLYDLCLAUSES time: "+((stopTime - startTime)/1000000));
                 }
                 if (this.m_additionalHyperresolutionManager != null && !this.m_extensionManager.containsClash()) {
                     this.m_additionalHyperresolutionManager.applyDLClauses();
@@ -616,7 +616,7 @@ implements Serializable {
                     	return true;
                     }
                     long stopTime = System.nanoTime();
-                    System.out.println("####################################################################### CHECKPROPERTYNEGATION: "+((stopTime - startTime)/1000000));
+//                    System.out.println("####################################################################### CHECKPROPERTYNEGATION: "+((stopTime - startTime)/1000000));
                     startTime = System.nanoTime();
                     if (MetamodellingAxiomHelper.findCyclesInM(this)) {
                     	DependencySet clashDependencySet = this.m_dependencySetFactory.getActualDependencySet();
@@ -624,7 +624,7 @@ implements Serializable {
                     	return true;
                     }
                     stopTime = System.nanoTime();
-                    System.out.println("####################################################################### findCyclesInM: "+((stopTime - startTime)/1000000));
+//                    System.out.println("####################################################################### findCyclesInM: "+((stopTime - startTime)/1000000));
                 }
                 hasChange = true;
             }
@@ -639,19 +639,19 @@ implements Serializable {
         	long startTime = System.nanoTime();
         	if (this.m_metamodellingManager.checkCloseMetamodellingRule()) {
         		long stopTime = System.nanoTime();
-                System.out.println("####################################################################### checkCloseMetamodellingRule: "+((stopTime - startTime)/1000000));
+//                System.out.println("####################################################################### checkCloseMetamodellingRule: "+((stopTime - startTime)/1000000));
         	}
             startTime = System.nanoTime();
             if (this.m_metamodellingManager.checkCloseMetaRule()) {
             	long stopTime = System.nanoTime();
-                System.out.println("####################################################################### checkCloseMetaRule: "+((stopTime - startTime)/1000000));
+//                System.out.println("####################################################################### checkCloseMetaRule: "+((stopTime - startTime)/1000000));
             }else {
             	this.m_metamodellingManager.checkMetaRule();
             }
         	while (this.m_firstUnprocessedGroundDisjunction != null) {
         		GroundDisjunction groundDisjunction = this.m_firstUnprocessedGroundDisjunction;
-        		System.out.println("$$$$ EVALUATE GROUND DISJUNCTION $$$$$");
-        		System.out.println("\nGround Disjunction: "+groundDisjunction);
+//        		System.out.println("$$$$ EVALUATE GROUND DISJUNCTION $$$$$");
+//        		System.out.println("\nGround Disjunction: "+groundDisjunction);
         		if (this.m_tableauMonitor != null) {
         			this.m_tableauMonitor.processGroundDisjunctionStarted(groundDisjunction);
         		}
@@ -681,19 +681,19 @@ implements Serializable {
         	}
         }
         if (this.m_extensionManager.containsClash()) {
-        	System.out.println("#$# Se encuentra un Clash y se va a chequear si se debe hacer backtracking");
+        	//System.out.println("#$# Se encuentra un Clash y se va a chequear si se debe hacer backtracking");
         	DependencySet clashDependencySet = this.m_extensionManager.getClashDependencySet();
     		int newCurrentBranchingPoint = clashDependencySet.getMaximumBranchingPoint();
     		if (newCurrentBranchingPoint <= this.m_nonbacktrackableBranchingPoint || this.m_branchingPoints[newCurrentBranchingPoint] == null) {
-    			System.out.println("#$# Se va a chequear si se debe hacer backtracking manual por motivos de metamodelling");
+//    			System.out.println("#$# Se va a chequear si se debe hacer backtracking manual por motivos de metamodelling");
     			if (shouldBacktrackHyperresolutionManager()) {
-    				System.out.println("#$# Se va a hacer backtracking manual");
+//    				System.out.println("#$# Se va a hacer backtracking manual");
     	    		backtrackHyperresolutionManager();
     	            return backtrackMetamodellingClash();
     	        }
     		    return false;
     		}
-    		System.out.println("#$# Se hara el backtracking normal de Hermit");
+//    		System.out.println("#$# Se hara el backtracking normal de Hermit");
     		this.backtrackTo(newCurrentBranchingPoint);
     		BranchingPoint branchingPoint = this.getCurrentBranchingPoint();
     		if (this.m_tableauMonitor != null) {
@@ -754,8 +754,8 @@ implements Serializable {
     }
 
 	public boolean startBacktracking(GroundDisjunction groundDisjunction) {
-		System.out.println("@@@@@@ Backtracking @@@@");
-		System.out.println("@@@@@@ groundDisjunction -> "+groundDisjunction);
+//		System.out.println("@@@@@@ Backtracking @@@@");
+//		System.out.println("@@@@@@ groundDisjunction -> "+groundDisjunction);
 		if (this.m_tableauMonitor != null) {
 		    this.m_tableauMonitor.processGroundDisjunctionStarted(groundDisjunction);
 		}
@@ -797,7 +797,7 @@ implements Serializable {
     }
 
 	private void backtrackHyperresolutionManager() {
-		System.out.println("BACKTRACK HYPERRESOLUTIONMANAGER");
+		//System.out.println("BACKTRACK HYPERRESOLUTIONMANAGER");
 		for (int i=1; i<this.branchedHyperresolutionManagers.size(); i++) {
 			if (this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.m_currentBranchingPoint && 
 					this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getBranchingPoint() == this.getCurrentBranchingPointLevel()) {
@@ -805,7 +805,7 @@ implements Serializable {
 					DLClause dlClauseAdded = this.branchedHyperresolutionManagers.get(this.branchedHyperresolutionManagers.size()-i).getDlClausesAdded().get(j);
 					removeFromInequalityMetamodellingPairs(i, j, dlClauseAdded);
 					this.getPermanentDLOntology().getDLClauses().remove(dlClauseAdded);
-					System.out.println("Se remueve -> "+dlClauseAdded);
+//					System.out.println("Se remueve -> "+dlClauseAdded);
 				}
 			}
 		}

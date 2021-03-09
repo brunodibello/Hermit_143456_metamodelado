@@ -16,8 +16,8 @@ public class ReasoningTaskDescription {
     }
 
     public /* varargs */ ReasoningTaskDescription(boolean flipSatisfiabilityResult, String message, Object ... arguments) {
-    	System.out.println("** ReasoningTaskDescription -> "+message);
-    	System.out.println("	flipSatisfiabilityResult -> "+flipSatisfiabilityResult);
+//    	System.out.println("** ReasoningTaskDescription -> "+message);
+//    	System.out.println("	flipSatisfiabilityResult -> "+flipSatisfiabilityResult);
         this.m_flipSatisfiabilityResult = flipSatisfiabilityResult;
         this.m_messagePattern = message;
         this.m_arguments = arguments;

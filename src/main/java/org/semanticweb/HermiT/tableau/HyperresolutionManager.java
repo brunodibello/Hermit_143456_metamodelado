@@ -174,7 +174,7 @@ implements Serializable {
     }
 
     public void applyDLClauses() {
-    	System.out.println("\n$$$$ APPLY DLCLAUSES $$$$$");
+//    	System.out.println("\n$$$$ APPLY DLCLAUSES $$$$$");
         for (int index = 0; index < this.m_deltaOldRetrievals.length; ++index) {
             ExtensionTable.Retrieval deltaOldRetrieval = this.m_deltaOldRetrievals[index];
             deltaOldRetrieval.open();

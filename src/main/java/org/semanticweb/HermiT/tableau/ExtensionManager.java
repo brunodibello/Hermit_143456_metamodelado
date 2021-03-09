@@ -368,9 +368,9 @@ implements Serializable {
         try {
             this.m_binaryAuxiliaryTupleAdd[0] = dataRange;
             this.m_binaryAuxiliaryTupleAdd[1] = node;
-            System.out.println("[!] Se agrega DataRangeAssertion a la binaryExtensionTable");
-            System.out.println("	DataRange -> "+dataRange);
-            System.out.println("	Node -> "+node);
+//            System.out.println("[!] Se agrega DataRangeAssertion a la binaryExtensionTable");
+//            System.out.println("	DataRange -> "+dataRange);
+//            System.out.println("	Node -> "+node);
             boolean bl = this.m_binaryExtensionTable.addTuple(this.m_binaryAuxiliaryTupleAdd, dependencySet, isCore);
             return bl;
         }

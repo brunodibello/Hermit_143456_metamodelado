@@ -33,7 +33,7 @@ public class OWLNormalization {
     }
 
     public void processOntology(OWLOntology ontology) {
-    	System.out.println("** OWLNormalization -> processOntology **");
+//    	System.out.println("** OWLNormalization -> processOntology **");
         this.m_axioms.m_classes.addAll(ontology.getClassesInSignature(Imports.INCLUDED));
         this.m_axioms.m_objectProperties.addAll(ontology.getObjectPropertiesInSignature(Imports.INCLUDED));
         this.m_axioms.m_dataProperties.addAll(ontology.getDataPropertiesInSignature(Imports.INCLUDED));

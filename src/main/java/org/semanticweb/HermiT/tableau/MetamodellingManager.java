@@ -71,7 +71,7 @@ public final class MetamodellingManager {
 							startTime = System.nanoTime();
 							MetamodellingAxiomHelper.addInequalityMetamodellingRuleAxiom(node0Class, node1Class, this.m_tableau.getPermanentDLOntology(), this.m_tableau, def0, this.inequalityMetamodellingPairs);
 							stopTime = System.nanoTime();
-					        System.out.println("####################################################################### addInequalityMetamodellingRuleAxiom"+((stopTime - startTime)/1000000));
+//					        System.out.println("####################################################################### addInequalityMetamodellingRuleAxiom"+((stopTime - startTime)/1000000));
 							return true;
 						}
 					}
@@ -96,12 +96,12 @@ public final class MetamodellingManager {
             }
 			GroundDisjunctionHeader gdh = new GroundDisjunctionHeader(dlPredicates, hashCode , null);
 			DependencySet dependencySet = this.m_tableau.m_dependencySetFactory.getActualDependencySet();
-			System.out.println("DEPENDENCYSET FOR CLOSE RULE DISJUNCTION -> "+dependencySet);
+//			System.out.println("DEPENDENCYSET FOR CLOSE RULE DISJUNCTION -> "+dependencySet);
 			GroundDisjunction groundDisjunction = new GroundDisjunction(this.m_tableau, gdh, new Node[] {node0Equivalent, node1Equivalent, node0Equivalent, node1Equivalent}, new boolean[] {true, true}, dependencySet);
 			if (!this.m_tableau.alreadyCreateDisjunction(node0Equivalent, node1Equivalent) && !groundDisjunction.isSatisfied(this.m_tableau)) {
 				this.m_tableau.addGroundDisjunction(groundDisjunction);
 				this.m_tableau.addCreatedDisjuntcion(node0Equivalent, node1Equivalent);
-				System.out.println("CLOSE RULE add the following disjunction -> "+eqAtom.toString() +" OR "+ineqAtom.toString());
+//				System.out.println("CLOSE RULE add the following disjunction -> "+eqAtom.toString() +" OR "+ineqAtom.toString());
 				return true;
 			}
 		}
@@ -119,7 +119,7 @@ public final class MetamodellingManager {
     						DependencySet clashDependencySet = this.m_tableau.m_dependencySetFactory.getActualDependencySet();
     						this.m_tableau.m_extensionManager.setClash(clashDependencySet);
     						findClash = true;
-    						System.out.println("FIND CLASH IN PROPERTY NEGATION: "+propertyIter +" || "+propertyR +" || "+node0 +" || "+node1);
+//    						System.out.println("FIND CLASH IN PROPERTY NEGATION: "+propertyIter +" || "+propertyR +" || "+node0 +" || "+node1);
     						break;
     					}
     				}
@@ -204,9 +204,9 @@ public final class MetamodellingManager {
         }    	            
 		GroundDisjunctionHeader gdh = new GroundDisjunctionHeader(dlPredicates, hashCode , null);
 		DependencySet dependencySet = this.m_tableau.m_dependencySetFactory.getActualDependencySet();
-		System.out.println("DEPENDENCYSET FOR CLOSE META RULE DISJUNCTION -> "+dependencySet);
+//		System.out.println("DEPENDENCYSET FOR CLOSE META RULE DISJUNCTION -> "+dependencySet);
 		GroundDisjunction groundDisjunction = new GroundDisjunction(this.m_tableau, gdh, new Node[] {node0Eq, node1Eq, node0Eq, node1Eq}, new boolean[] {true, true}, dependencySet);
-		System.out.println("CLOSE META RULE add the following disjunction -> "+relationR.toString() +" OR "+newRelationR.toString());
+//		System.out.println("CLOSE META RULE add the following disjunction -> "+relationR.toString() +" OR "+newRelationR.toString());
 		return groundDisjunction;
     }
     

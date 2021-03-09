@@ -33,10 +33,10 @@ public class MetamodellingAxiomHelper {
 			if (!flaggedNodes.contains(metamodellingNode)) {
 				controlCycle(metamodellingNode, tableau);
 				if (existCycle) {
-					System.out.println("-><- SE ENCONTRO CICLO CON LOS SIGUIENTES NODOS: ");
-					for (Node node : flaggedNodes) {
-						System.out.println(node.getNodeID());
-					}
+//					System.out.println("-><- SE ENCONTRO CICLO CON LOS SIGUIENTES NODOS: ");
+//					for (Node node : flaggedNodes) {
+//						System.out.println(node.getNodeID());
+//					}
 					return true;
 				}
 			}
@@ -115,9 +115,9 @@ public class MetamodellingAxiomHelper {
 		tableau.getPermanentDLOntology().getDLClauses().add(dlClause1);
 		tableau.getPermanentDLOntology().getDLClauses().add(dlClause2);
 		
-		System.out.println("Se agregan 2 dlClauses por MetaRule");
-		System.out.println("-> "+dlClause1);
-		System.out.println("-> "+dlClause2);
+//		System.out.println("Se agregan 2 dlClauses por MetaRule");
+//		System.out.println("-> "+dlClause1);
+//		System.out.println("-> "+dlClause2);
 		
 		List<DLClause> dlClauses = new ArrayList<DLClause>() { 
             { 
@@ -280,9 +280,9 @@ public class MetamodellingAxiomHelper {
 		ontology.getDLClauses().add(dlClause1);
 		ontology.getDLClauses().add(dlClause2);
 		
-		System.out.println("Se agregan 2 dlClauses por = rule");
-		System.out.println("-> "+dlClause1);
-		System.out.println("-> "+dlClause2);
+//		System.out.println("Se agregan 2 dlClauses por = rule");
+//		System.out.println("-> "+dlClause1);
+//		System.out.println("-> "+dlClause2);
 		
 		List<DLClause> dlClauses = new ArrayList<DLClause>() { 
             { 
@@ -327,7 +327,7 @@ public class MetamodellingAxiomHelper {
 			long startTime = System.nanoTime();
 			int nextDef = getNextDef(ontology);
 			long stopTime = System.nanoTime();
-            System.out.println("####################################################################### getNextDef: "+((stopTime - startTime)/1000000));
+//            System.out.println("####################################################################### getNextDef: "+((stopTime - startTime)/1000000));
 			String def0 = DEF_STRING + nextDef + ">";
 			String def1 = DEF_STRING + (nextDef+1) + ">";
 			String def2 = DEF_STRING + (nextDef+2) + ">";
@@ -372,12 +372,12 @@ public class MetamodellingAxiomHelper {
 			ontology.getDLClauses().add(dlClause5);
 			
 			
-			System.out.println("Se agregan dlClauses por la != metamodelling rule:");
-			System.out.println("-> "+dlClause1);
-			System.out.println("-> "+dlClause2);
-			System.out.println("-> "+dlClause3);
-			System.out.println("-> "+dlClause4);
-			System.out.println("-> "+dlClause5);
+//			System.out.println("Se agregan dlClauses por la != metamodelling rule:");
+//			System.out.println("-> "+dlClause1);
+//			System.out.println("-> "+dlClause2);
+//			System.out.println("-> "+dlClause3);
+//			System.out.println("-> "+dlClause4);
+//			System.out.println("-> "+dlClause5);
 			
 			List<DLClause> dlClauses = new ArrayList<DLClause>() { 
 	            { 

@@ -116,7 +116,7 @@ public class OWLClausification {
     }
 
     public Object[] preprocessAndClausify(OWLOntology rootOntology, Collection<DescriptionGraph> descriptionGraphs) {
-    	System.out.println("** OWLClausification -> preprocessAndClausify **");
+//    	System.out.println("** OWLClausification -> preprocessAndClausify **");
         OWLDataFactory factory = rootOntology.getOWLOntologyManager().getOWLDataFactory();
         Optional defaultDocumentIRI = rootOntology.getOntologyID().getDefaultDocumentIRI();
         String ontologyIRI = defaultDocumentIRI.isPresent() ? ((IRI)defaultDocumentIRI.get()).toString() : "urn:hermit:kb";
@@ -136,10 +136,10 @@ public class OWLClausification {
         }
         OWLAxiomsExpressivity axiomsExpressivity = new OWLAxiomsExpressivity(axioms);
         DLOntology dlOntology = this.clausify(factory, ontologyIRI, axioms, axiomsExpressivity, descriptionGraphs);
-        System.out.println("Se crea dlOntology, dlClauses:");
-        for (DLClause dlClause : dlOntology.getDLClauses()) {
-        	System.out.println(dlClause.toString());
-        }
+//        System.out.println("Se crea dlOntology, dlClauses:");
+//        for (DLClause dlClause : dlOntology.getDLClauses()) {
+//        	System.out.println(dlClause.toString());
+//        }
         return new Object[]{objectPropertyInclusionManager, dlOntology};
     }
 
